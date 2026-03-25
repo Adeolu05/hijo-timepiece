@@ -68,14 +68,11 @@ That uses Sanity’s hosted Studio URL. Alternatively, build with `npm run build
 
 Schema for watches lives in `hijo/schemaTypes/watch.ts`. If you maintain the duplicate under `sanity/schemaTypes/`, keep both in sync when you change fields.
 
-## Deploying the storefront
+## Deploying
 
-1. Set `VITE_SANITY_PROJECT_ID` and `VITE_SANITY_DATASET` on your host (e.g. Vercel, Netlify, Cloudflare Pages).
-2. Build: `npm run build`.
-3. Serve the **`dist`** directory as a static site.
-4. Add your live site URL to Sanity **CORS**.
+**Vercel (storefront + Studio):** see **[DEPLOYMENT.md](./DEPLOYMENT.md)** for step-by-step setup, environment variables, CORS, and troubleshooting.
 
-Published content only appears on the site after documents are **Published** in Studio, not while they are draft-only.
+In short: the storefront is a static build from the repo root (`dist/`); Studio is a second Vercel project with **Root Directory** set to `hijo/`. Add your live site URL to Sanity **CORS**. Published content only appears after editors click **Publish** in Studio.
 
 ## Repository layout
 
