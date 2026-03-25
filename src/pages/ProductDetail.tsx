@@ -19,11 +19,10 @@ export function ProductDetail() {
     fetchWatches();
   }, [fetchWatches]);
 
-  // Reset state when ID changes
+  // Reset gallery / qty when navigating to another product (scroll handled globally in ScrollToTop)
   useEffect(() => {
     setActiveImage(0);
     setQuantity(1);
-    window.scrollTo(0, 0);
   }, [id]);
 
   if (isLoading) {
@@ -77,11 +76,11 @@ export function ProductDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-background pt-48 pb-32">
+    <div className="min-h-screen bg-background pt-8 pb-24 md:pt-12 md:pb-32">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-12">
         
         {/* Breadcrumbs */}
-        <nav className="flex wide-label !text-[8px] text-on-surface-variant/40 mb-20">
+        <nav className="flex wide-label !text-[8px] text-on-surface-variant/40 mb-8 md:mb-10">
           <Link to="/" className="hover:text-primary transition-colors">Home</Link>
           <span className="mx-4 opacity-30">/</span>
           <Link to="/shop" className="hover:text-primary transition-colors">Collection</Link>
@@ -243,8 +242,8 @@ export function ProductDetail() {
         </div>
 
         {/* Related Products Section */}
-        <div className="mt-64 border-t border-outline-variant/10 pt-48">
-          <div className="mb-24">
+        <div className="mt-20 md:mt-28 border-t border-outline-variant/10 pt-16 md:pt-20">
+          <div className="mb-14 md:mb-16">
             <span className="wide-label text-secondary mb-6 block font-bold">
               Discovery
             </span>

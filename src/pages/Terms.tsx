@@ -3,7 +3,7 @@ import { SITE_NAME_FULL } from "../constants/site";
 
 export function Terms() {
   return (
-    <div className="min-h-screen bg-background pt-48 pb-32">
+    <div className="min-h-screen bg-background pt-8 pb-24 md:pt-12 md:pb-32">
       <div className="max-w-[720px] mx-auto px-4 sm:px-12">
         <nav className="flex wide-label !text-[8px] text-on-surface-variant/40 mb-12">
           <Link to="/" className="hover:text-primary transition-colors">

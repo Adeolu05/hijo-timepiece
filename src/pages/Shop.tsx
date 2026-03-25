@@ -96,7 +96,7 @@ export function Shop() {
           : "Name A–Z";
 
   return (
-    <div className="min-h-screen bg-background pt-48 pb-32">
+    <div className="min-h-screen bg-background pt-8 pb-24 md:pt-12 md:pb-32">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-12">
         {error && (
           <div
@@ -115,17 +115,17 @@ export function Shop() {
         )}
 
         {/* Page Header */}
-        <div className="mb-16 md:mb-24">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-12">
+        <div className="mb-12 md:mb-16">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-10">
             <div className="max-w-4xl">
-              <span className="wide-label text-secondary mb-8 block font-bold tracking-[0.4em]">
+              <span className="wide-label text-secondary mb-4 md:mb-5 block font-bold tracking-[0.4em]">
                 THE CURATED ARCHIVE
               </span>
-              <h1 className="font-headline text-7xl md:text-[9rem] text-primary tight-headline mb-12">
+              <h1 className="font-headline text-6xl sm:text-7xl md:text-[8rem] text-primary tight-headline mb-6 md:mb-8">
                 Masterpieces <br />
                 <span className="italic font-serif opacity-60">of Horology</span>
               </h1>
-              <p className="text-on-surface-variant max-w-2xl text-xl font-light leading-relaxed italic font-serif opacity-70">
+              <p className="text-on-surface-variant max-w-2xl text-lg md:text-xl font-light leading-relaxed italic font-serif opacity-70">
                 Explore our selection of luxury, vintage, and modern timepieces — authenticated and
                 offered with transparent service.
               </p>
@@ -134,7 +134,7 @@ export function Shop() {
               <label htmlFor="shop-search" className="wide-label !text-[9px] text-on-surface-variant/50 font-bold sr-only">
                 Search collection
               </label>
-              <div id="catalog-search" className="relative w-full scroll-mt-40">
+              <div id="catalog-search" className="relative w-full scroll-mt-32 md:scroll-mt-40">
                 <span className="material-symbols-outlined absolute left-0 top-1/2 -translate-y-1/2 text-on-surface-variant/40 text-xl font-light pointer-events-none">
                   search
                 </span>
@@ -187,7 +187,7 @@ export function Shop() {
         </div>
 
         {/* Filters */}
-        <div className="flex flex-wrap items-center gap-x-10 gap-y-4 mb-16 border-b border-outline-variant/10 pb-10">
+        <div className="flex flex-wrap items-center gap-x-10 gap-y-4 mb-12 md:mb-14 border-b border-outline-variant/10 pb-8 md:pb-10">
           <Link
             to="/shop"
             className={`wide-label !text-[10px] font-bold pb-2 border-b-[3px] transition-colors ${

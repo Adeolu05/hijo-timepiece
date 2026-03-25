@@ -54,7 +54,7 @@ export function Cart() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-container-lowest pt-48 pb-32">
+    <div className="min-h-screen bg-surface-container-lowest pt-8 pb-24 md:pt-12 md:pb-32">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         {/* Title Section */}
         <header className="mb-16">
