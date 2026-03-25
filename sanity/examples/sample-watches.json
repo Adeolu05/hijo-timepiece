@@ -1,0 +1,59 @@
+{
+  "description": "Reference field values for creating Watch documents in Sanity Studio. Upload primary image (required) and optional gallery in the UI—asset refs cannot be pasted as plain URLs here.",
+  "watches": [
+    {
+      "name": "Vanguard Skeleton",
+      "slugCurrent": "vanguard-skeleton",
+      "collection": "Tourbillon Collection",
+      "category": "men",
+      "price": 42500,
+      "stock": 2,
+      "description": "An exquisite masterwork of horological architecture. The Vanguard Skeleton features an intricate, open-worked dial that meticulously unveils the silent, synchronized dance of precision engineering.",
+      "specs": {
+        "movement": "Manual Wind Calibre 402",
+        "case": "18k Rose Gold / 42mm",
+        "powerReserve": "72-Hour Reserve",
+        "waterResistance": "50 Meters / 5 ATM"
+      },
+      "featured": true,
+      "isNewArrival": false,
+      "isLimitedEdition": true
+    },
+    {
+      "name": "Heritage Chrono 1954",
+      "slugCurrent": "heritage-chrono-1954",
+      "collection": "Historical Archives",
+      "category": "men",
+      "price": 18900,
+      "stock": 15,
+      "description": "A faithful recreation of our most iconic mid-century chronograph.",
+      "specs": {
+        "movement": "Automatic Chronograph Calibre 201",
+        "case": "Stainless Steel / 39mm",
+        "powerReserve": "48-Hour Reserve",
+        "waterResistance": "30 Meters / 3 ATM"
+      },
+      "featured": false,
+      "isNewArrival": false,
+      "isLimitedEdition": false
+    },
+    {
+      "name": "Lumina GMT",
+      "slugCurrent": "lumina-gmt",
+      "collection": "Steel & Precision",
+      "category": "unisex",
+      "price": 8200,
+      "stock": 8,
+      "description": "A modern traveler's companion featuring a dual-time zone complication.",
+      "specs": {
+        "movement": "Automatic GMT Calibre 505",
+        "case": "Stainless Steel / 40mm",
+        "powerReserve": "50-Hour Reserve",
+        "waterResistance": "100 Meters / 10 ATM"
+      },
+      "featured": false,
+      "isNewArrival": true,
+      "isLimitedEdition": false
+    }
+  ]
+}

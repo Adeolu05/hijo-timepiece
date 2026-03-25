@@ -1,0 +1,92 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap");
+@import "tailwindcss";
+
+@theme {
+  /* Stitch Design System Palette */
+  --color-background: #FDF9F1; /* Classic Cream */
+  --color-on-background: #1C1C17; /* Deep Charcoal/Black */
+  --color-primary: #1C1C17; /* Black Accents */
+  --color-secondary: #C9A46A; /* Restrained Champagne Gold */
+  --color-on-secondary: #FFFFFF;
+  
+  --color-surface: #FDF9F1;
+  --color-on-surface: #1C1C17;
+  --color-surface-container-low: #F7F3EB;
+  --color-surface-container: #F1EDE5;
+  --color-surface-container-high: #ECE8E0;
+  --color-surface-container-highest: #E6E2DA;
+  
+  --color-outline: #747878;
+  --color-outline-variant: #C4C7C7;
+  
+  --font-headline: "Newsreader", serif;
+  --font-noto: "Noto Serif", serif;
+  --font-body: "Inter", sans-serif;
+  --font-label: "Inter", sans-serif;
+
+  --radius-DEFAULT: 0rem;
+  --radius-lg: 0rem;
+  --radius-xl: 0rem;
+  --radius-full: 9999px;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-on-background font-body antialiased selection:bg-secondary/30;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-headline;
+  }
+}
+
+@layer utilities {
+  .editorial-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .luxury-shadow {
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05);
+  }
+  
+  .champagne-gradient {
+    background: linear-gradient(135deg, #C9A46A 0%, #E8C084 100%);
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .tight-headline {
+    line-height: 0.82;
+    letter-spacing: -0.04em;
+  }
+
+  .wide-label {
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    font-size: 0.65rem;
+  }
+
+  .hairline-gold {
+    border-color: #C9A46A;
+    border-width: 0.5px;
+  }
+
+  .obsidian-black {
+    background-color: #0A0A0A;
+  }
+
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+}
+
