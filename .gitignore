@@ -5,3 +5,5 @@ coverage/
 .DS_Store
 *.log
 .env*
+# Local-only (not pushed); copy values into .env.local as needed
+SANITY_HANDOFF.md
