@@ -40,7 +40,7 @@ export function Terms() {
             excludes rights that cannot legally be waived.
           </p>
           <p className="text-sm text-on-surface-variant/60 pt-8">
-            Last updated {new Date().getFullYear()}. These terms are a template for your business —
+            Last updated {new Date().getFullYear()}. These terms are a template for your business;
             have them reviewed by a lawyer before relying on them commercially.
           </p>
         </div>

@@ -1,7 +1,51 @@
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, type ImgHTMLAttributes } from 'react';
+import { FaWhatsapp } from 'react-icons/fa6';
+import { HiOutlineEnvelope } from 'react-icons/hi2';
 import { useProductStore } from '../store/productStore';
-import { EMAIL, whatsappHref } from '../constants/site';
+import type { Watch } from '../data/watches';
+import { WATCHES } from '../data/watches';
+import { EMAIL, whatsappHref, whatsappHrefWithText, WHATSAPP_GREETING_NAME } from '../constants/site';
+import { formatNgn } from '../lib/formatNgn';
+import { FALLBACK_WATCH_IMAGE_URL, resolveWatchImageUrl } from '../lib/watchImages';
+import { displayMerchandisingLabel } from '../lib/merchandisingLabels';
+import { BrandCertificateTrust } from '../components/BrandCertificateTrust';
+
+function WatchPhoto({
+  watch,
+  alt,
+  className,
+}: {
+  watch: Pick<Watch, 'image' | 'images'>;
+  alt: string;
+  className?: string;
+} & Omit<ImgHTMLAttributes<HTMLImageElement>, 'src' | 'alt'>) {
+  const src = resolveWatchImageUrl(watch);
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className={className}
+      loading="lazy"
+      decoding="async"
+      onError={(e) => {
+        const el = e.currentTarget;
+        if (!el.dataset.fallbackApplied) {
+          el.dataset.fallbackApplied = '1';
+          el.src = FALLBACK_WATCH_IMAGE_URL;
+        }
+      }}
+    />
+  );
+}
+
+/** Case + strap line; omits empty placeholder values from Sanity/local data. */
+function watchDetailLine(watch: Watch): string | null {
+  const parts = [watch.specs.case, watch.specs.strapOrBracelet].filter(
+    (s) => typeof s === "string" && s.trim().length > 0,
+  );
+  return parts.length > 0 ? parts.join(" · ") : null;
+}
 
 export function Home() {
   const { watches, fetchWatches } = useProductStore();
@@ -10,220 +54,332 @@ export function Home() {
     fetchWatches();
   }, [fetchWatches]);
 
-  const featuredWatches = watches.slice(0, 3);
+  const catalog = watches.length > 0 ? watches : WATCHES;
+  const heroWatch = catalog[0];
+  const stackedWatches = catalog.slice(1, 3);
+  const limitedHighlight = catalog.find((w) => w.isLimitedEdition) ?? catalog[catalog.length - 1] ?? heroWatch;
+  const sportWatch = catalog[3] ?? catalog[1] ?? heroWatch;
+  const heroDetailLine = watchDetailLine(heroWatch);
+  const heroCollectionLabel = displayMerchandisingLabel(heroWatch.collection);
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Utility Bar */}
-      <div className="obsidian-black py-2 text-center px-4">
-        <span className="wide-label text-secondary">
-          Worldwide shipping · Secure transactions · Authentic luxury &amp; vintage timepieces
-        </span>
-      </div>
-
       {/* Hero Section */}
-      <section className="relative h-[95vh] flex items-center overflow-hidden bg-background border-b border-outline-variant/10">
-        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 sm:px-12 flex flex-col md:flex-row items-center">
-          <div className="flex-1 text-center md:text-left z-20 pt-20 md:pt-0">
-            <span className="wide-label text-secondary mb-10 block font-bold">LAGOS, NIGERIA · WORLDWIDE</span>
-            <h1 className="font-headline text-7xl md:text-[11rem] text-primary mb-12 tight-headline">
-              The <br />
-              Architecture <br />
-              of <span className="italic font-light serif opacity-60">Time</span>
-            </h1>
-            <div className="flex flex-col sm:flex-row items-center gap-12 mt-16">
-              <Link
-                to="/shop"
-                className="bg-primary text-white px-16 py-6 wide-label !text-[10px] font-bold hover:bg-secondary transition-all duration-700 shadow-2xl"
-              >
-                Explore Collection
-              </Link>
-              <Link
-                to="/about"
-                className="wide-label !text-[10px] font-bold text-on-surface-variant hover:text-primary transition-colors border-b border-primary/20 hover:border-primary pb-2 italic"
-              >
-                About Us
-              </Link>
+      <section className="relative min-h-[82vh] md:min-h-[85vh] flex flex-col justify-center overflow-hidden bg-background border-b border-outline-variant/10">
+        <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 sm:px-12 py-12 md:py-14 lg:py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-14 lg:gap-y-0 lg:gap-x-14 xl:gap-x-20 items-center">
+            <div className="text-center lg:text-left z-20 order-1">
+              <span className="wide-label text-secondary mb-6 md:mb-8 block font-bold">
+                LAGOS, NIGERIA · WORLDWIDE
+              </span>
+              <h1 className="font-headline text-[2.75rem] min-[400px]:text-6xl md:text-7xl lg:text-[5.25rem] xl:text-[6rem] 2xl:text-[6.75rem] text-primary tight-headline leading-[0.88]">
+                The <br />
+                Architecture <br />
+                of <span className="italic font-light serif opacity-60">Time</span>
+              </h1>
+              <p className="mt-8 md:mt-9 max-w-md lg:max-w-lg mx-auto lg:mx-0 font-noto text-base md:text-[1.0625rem] leading-relaxed text-on-surface-variant/85 italic">
+                Authentic luxury and vintage watches from sources we trust around the world. We&apos;re based
+                in Lagos and work with buyers across Nigeria, clear advice when you&apos;re deciding, and
+                support you can count on after the sale.
+              </p>
+              <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center lg:justify-start gap-5 sm:gap-6 mt-8 md:mt-9">
+                <Link
+                  to="/shop"
+                  className="bg-primary text-white px-12 md:px-14 py-5 wide-label !text-[10px] font-bold hover:bg-secondary transition-all duration-700 shadow-2xl shrink-0"
+                >
+                  Explore Collection
+                </Link>
+                <a
+                  href={whatsappHrefWithText(
+                    `Hi, I'd like to ask ${WHATSAPP_GREETING_NAME} about a watch.`,
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2.5 border border-outline-variant/40 bg-background px-10 md:px-12 py-5 wide-label !text-[10px] font-bold text-primary hover:border-secondary hover:text-secondary transition-all duration-500 shrink-0"
+                >
+                  <FaWhatsapp className="text-[18px]" aria-hidden />
+                  Chat on WhatsApp
+                </a>
+              </div>
             </div>
-          </div>
-          
-          <div className="flex-1 relative mt-24 md:mt-0 flex justify-center">
-            <div className="relative group">
-              <img
-                src="https://images.unsplash.com/photo-1523170335258-f5ed11844a49?q=80&w=2080&auto=format&fit=crop"
-                alt="Luxury Watch"
-                className="w-full max-w-2xl drop-shadow-[0_50px_50px_rgba(0,0,0,0.15)] grayscale-[0.2] group-hover:grayscale-0 transition-all duration-[2000ms] scale-110 group-hover:scale-100"
-              />
-              {/* Decorative elements */}
-              <div className="absolute -top-20 -right-20 w-64 h-64 border border-secondary/10 rounded-full animate-pulse pointer-events-none"></div>
-              <div className="absolute -bottom-10 -left-10 w-40 h-40 border border-secondary/5 rounded-full pointer-events-none"></div>
+
+            <div className="relative flex justify-center lg:justify-end order-2 pt-10 md:pt-12 lg:pt-0">
+              <div className="relative group w-full max-w-[min(100%,420px)] lg:max-w-[min(100%,520px)]">
+                <img
+                  src="https://images.unsplash.com/photo-1523170335258-f5ed11844a49?q=80&w=2080&auto=format&fit=crop"
+                  alt="Luxury timepiece"
+                  className="w-full h-auto object-cover drop-shadow-[0_40px_45px_rgba(0,0,0,0.12)] grayscale-[0.15] group-hover:grayscale-0 transition-all duration-[2000ms] scale-105 group-hover:scale-100"
+                />
+                <div className="absolute -top-12 -right-8 lg:-top-16 lg:-right-12 w-48 h-48 lg:w-64 lg:h-64 border border-secondary/10 rounded-full pointer-events-none"></div>
+                <div className="absolute -bottom-6 -left-6 w-32 h-32 lg:w-40 lg:h-40 border border-secondary/5 rounded-none pointer-events-none"></div>
+              </div>
             </div>
           </div>
         </div>
-        
-        <div className="absolute bottom-24 right-12 hidden lg:block">
-          <div className="flex flex-col items-center gap-8">
+
+        <div className="absolute bottom-10 md:bottom-14 right-8 lg:right-12 hidden lg:block">
+          <div className="flex flex-col items-center gap-6">
             <span className="wide-label !text-[8px] text-on-surface-variant/40 vertical-text rotate-180 font-bold">
               Scroll to Archive
             </span>
-            <div className="w-px h-24 bg-secondary/30"></div>
+            <div className="w-px h-20 bg-secondary/30"></div>
           </div>
         </div>
       </section>
 
-      {/* Masterpieces Section */}
-      <section className="py-64 px-4 sm:px-12 max-w-[1600px] mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-32 gap-12">
-          <div className="max-w-2xl">
-            <h2 className="font-headline text-7xl md:text-8xl text-primary mb-10 leading-[0.85] tight-headline">
-              Masterpieces <br />
-              <span className="italic font-light serif opacity-60">of the</span> Season
-            </h2>
-            <p className="wide-label text-secondary font-bold">
-              A CURATED SELECTION OF HOROLOGICAL EXCELLENCE
+      {/* Masterpieces + editorial: one section */}
+      <section className="border-t border-outline-variant/10 bg-gradient-to-b from-background via-background to-surface-container-low/35">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-12 pt-10 pb-14 md:pt-14 md:pb-20">
+          {/* Section opener: headline + Browse paired; intro below */}
+          <div className="mb-5 md:mb-6 pb-4 border-b border-outline-variant/20">
+            <div className="flex flex-col lg:flex-row lg:items-baseline lg:justify-between gap-3 lg:gap-5">
+              <h2 className="font-headline text-5xl md:text-6xl lg:text-7xl text-primary leading-[0.88] tight-headline">
+                Masterpieces <br />
+                <span className="italic font-light serif opacity-60">of the</span> Season
+              </h2>
+              <Link
+                to="/shop"
+                className="wide-label text-primary hover:text-primary/90 transition-colors font-bold tracking-[0.26em] shrink-0 border-b border-secondary/40 hover:border-secondary pb-0.5 self-start lg:mt-1"
+              >
+                Browse collection
+              </Link>
+            </div>
+            <p className="font-noto text-sm md:text-[0.9375rem] text-on-surface-variant/85 leading-relaxed max-w-md mt-3">
+              A selection from our current stock, ask if you&apos;re looking for a specific reference.
             </p>
           </div>
-          <div className="flex items-center gap-10">
-            <Link to="/shop" className="wide-label text-on-surface-variant hover:text-primary transition-colors font-bold">
-              View Archive
-            </Link>
-            <div className="w-48 h-px bg-outline-variant/20"></div>
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-24">
-          {/* Large Vertical Card */}
-          <div className="md:col-span-7 group cursor-pointer">
-            <div className="aspect-[3/4] overflow-hidden bg-surface-container-low relative mb-12 luxury-shadow">
-              <div className="absolute top-10 left-10 z-10">
-                <span className="bg-primary text-white px-6 py-3 wide-label !text-[8px] font-bold">Limited Edition</span>
-              </div>
-              <img 
-                src="https://images.unsplash.com/photo-1547996160-81dfa63595aa?q=80&w=1974&auto=format&fit=crop" 
-                className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
-                alt="Featured Watch"
-              />
-              <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-            </div>
-            <div className="flex justify-between items-start pt-4">
-              <div>
-                <h3 className="font-headline text-4xl text-primary mb-3 tight-headline">The Obsidian Chronograph</h3>
-                <p className="wide-label !text-[9px] text-on-surface-variant/60 font-bold">Calibre 321 • Platinum Case</p>
-              </div>
-              <p className="font-headline text-3xl text-secondary italic">
-                <span className="wide-label !text-[10px] align-top mr-2 opacity-40">USD</span> 42,500
-              </p>
-            </div>
-          </div>
 
-          {/* Two Smaller Stacked Cards */}
-          <div className="md:col-span-5 flex flex-col gap-32">
-            {featuredWatches.slice(1, 3).map((watch) => (
-              <div key={watch.id} className="group cursor-pointer">
-                <div className="aspect-square overflow-hidden bg-surface-container-low mb-10 luxury-shadow relative">
-                  <img 
-                    src={watch.image} 
-                    className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
-                    alt={watch.name}
+          {/* Product grid: featured width capped; lighter crop */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-5 lg:gap-6 xl:gap-8 items-start md:pb-5 md:border-b md:border-outline-variant/10">
+            <div className="md:col-span-6 min-w-0 lg:max-w-[min(100%,26rem)] xl:max-w-[min(100%,27rem)]">
+              <Link
+                to={`/product/${heroWatch.id}`}
+                className="group block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary/60"
+              >
+                <div className="relative w-full aspect-[4/5] overflow-hidden bg-surface-container-low mb-4 luxury-shadow border border-outline-variant/10 min-h-0">
+                  {heroWatch.isLimitedEdition ? (
+                    <div className="absolute top-5 left-5 md:top-6 md:left-6 z-10">
+                      <span className="bg-primary text-white px-3 py-2 wide-label !text-[7px] font-bold tracking-[0.32em]">
+                        Limited edition
+                      </span>
+                    </div>
+                  ) : null}
+                  <WatchPhoto
+                    watch={heroWatch}
+                    alt={heroWatch.name}
+                    className="absolute inset-0 h-full w-full object-cover object-[center_22%] transition-transform duration-[2000ms] group-hover:scale-[1.025]"
                   />
-                  <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                  <div className="absolute inset-0 bg-black/[0.03] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                 </div>
-                <div className="flex justify-between items-start pt-2">
-                  <div>
-                    <h3 className="font-headline text-3xl text-primary mb-2 tight-headline">{watch.name}</h3>
-                    <p className="wide-label !text-[9px] text-on-surface-variant/60 font-bold">{watch.collection}</p>
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 sm:gap-4 pt-2.5 border-t border-outline-variant/10">
+                  <div className="min-w-0 space-y-1.5">
+                    <h3 className="font-headline text-2xl md:text-[1.7rem] text-primary tight-headline leading-[1.1]">
+                      {heroWatch.name}
+                    </h3>
+                    {heroCollectionLabel ? (
+                      <p className="text-[10px] tracking-[0.2em] uppercase text-on-surface-variant/50 font-semibold">
+                        {heroCollectionLabel}
+                      </p>
+                    ) : null}
+                    {heroDetailLine ? (
+                      <p className="font-noto text-[0.8125rem] md:text-sm text-on-surface-variant/72 leading-snug pt-0.5">
+                        {heroDetailLine}
+                      </p>
+                    ) : null}
                   </div>
-                  <p className="font-headline text-2xl text-secondary italic">
-                    <span className="wide-label !text-[10px] align-top mr-2 opacity-40">USD</span> {watch.price.toLocaleString()}
+                  <p className="font-headline text-xl md:text-2xl text-secondary tabular-nums shrink-0 pt-1 sm:pt-0">
+                    {formatNgn(heroWatch.price)}
                   </p>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+              </Link>
+            </div>
 
-      {/* Category Showcase */}
-      <section className="py-64 border-t border-outline-variant/10 bg-surface-container-low/30">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-32 items-center">
-            <div className="lg:col-span-7 relative">
-              <div className="aspect-[4/5] overflow-hidden luxury-shadow">
+            <div className="md:col-span-6 flex flex-col gap-6 lg:gap-7 border-l-0 md:border-l border-outline-variant/10 md:pl-5 lg:pl-7 min-w-0">
+              {stackedWatches.map((watch) => {
+              const stackedDetail = watchDetailLine(watch);
+              const collectionLabel = displayMerchandisingLabel(watch.collection);
+              return (
+                <Link
+                  key={watch.id}
+                  to={`/product/${watch.id}`}
+                  className="group block cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary/60 transition-colors"
+                >
+                  <div className="relative w-full aspect-[5/4] sm:aspect-square overflow-hidden bg-surface-container-low mb-3 luxury-shadow border border-outline-variant/10 min-h-0 transition-all duration-300 group-hover:border-secondary/35 group-hover:shadow-md">
+                    {watch.isNewArrival ? (
+                      <div className="absolute top-3 left-3 z-10">
+                        <span className="bg-primary/95 text-white px-2.5 py-1.5 wide-label !text-[6px] font-bold tracking-[0.32em]">
+                          New arrival
+                        </span>
+                      </div>
+                    ) : null}
+                    <WatchPhoto
+                      watch={watch}
+                      alt={watch.name}
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-[2000ms] group-hover:scale-[1.03]"
+                    />
+                    <div className="absolute inset-0 bg-black/[0.03] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                  </div>
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2 sm:gap-4 pt-2 border-t border-outline-variant/10">
+                    <div className="min-w-0 space-y-1.5">
+                      <h3 className="font-headline text-xl md:text-2xl text-primary tight-headline leading-[1.08]">
+                        {watch.name}
+                      </h3>
+                      {collectionLabel ? (
+                        <p className="text-[10px] tracking-[0.2em] uppercase text-on-surface-variant/50 font-semibold">
+                          {collectionLabel}
+                        </p>
+                      ) : null}
+                      {stackedDetail ? (
+                        <p className="font-noto text-xs text-on-surface-variant/72 line-clamp-2">
+                          {stackedDetail}
+                        </p>
+                      ) : null}
+                    </div>
+                    <p className="font-headline text-lg md:text-xl text-secondary tabular-nums shrink-0">
+                      {formatNgn(watch.price)}
+                    </p>
+                  </div>
+                </Link>
+              );
+            })}
+            </div>
+          </div>
+
+          {/* Editorial + supporting tiles: aligned rhythm with grid above */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-9 items-start mt-7 md:mt-8 pt-7 md:pt-8 border-t border-outline-variant/10">
+            <div className="lg:col-span-7 relative min-w-0">
+              <div className="relative w-full aspect-[4/5] overflow-hidden luxury-shadow border border-outline-variant/10 min-h-0">
                 <img
                   src="https://images.unsplash.com/photo-1587836374828-cb4387861007?q=80&w=2070&auto=format&fit=crop"
-                  alt="Watchmaking Craftsmanship"
-                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-[3000ms] scale-105 hover:scale-100"
+                  alt="Dress watch on wrist"
+                  className="absolute inset-0 h-full w-full object-cover object-center grayscale-[0.15] hover:grayscale-0 transition-all duration-[2000ms]"
+                  loading="lazy"
+                  decoding="async"
+                  onError={(e) => {
+                    const el = e.currentTarget;
+                    if (!el.dataset.fallbackApplied) {
+                      el.dataset.fallbackApplied = '1';
+                      el.src = FALLBACK_WATCH_IMAGE_URL;
+                    }
+                  }}
                 />
               </div>
-              <div className="absolute -bottom-20 -right-20 w-3/4 bg-background p-20 luxury-shadow hidden md:block border border-outline-variant/10">
-                <span className="wide-label text-secondary mb-8 block font-bold">PRECISION ENGINEERING</span>
-                <h3 className="font-headline text-6xl text-primary mb-10 leading-[0.9] tight-headline">
-                  The Dress Watch <br /> <span className="italic font-light serif opacity-60">Reimagined</span>
+              <div className="mt-5 lg:mt-0 lg:absolute lg:bottom-6 lg:right-6 lg:z-10 lg:max-w-[min(100%,22rem)] xl:max-w-[26rem] bg-background p-7 md:p-8 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.18)] border border-outline-variant/25 ring-1 ring-black/[0.04] backdrop-blur-[2px]">
+                <span className="wide-label text-secondary mb-3 block font-bold tracking-[0.32em]">
+                  Dress watches
+                </span>
+                <h3 className="font-headline text-3xl md:text-4xl text-primary mb-3 leading-[0.95] tight-headline">
+                  Quiet <span className="italic font-light serif opacity-60">elegance</span>
                 </h3>
-                <p className="text-on-surface-variant text-lg leading-relaxed mb-12 font-light italic font-serif opacity-80">
-                  "Slim profiles designed to glide beneath the cuff of a bespoke shirt. Elegance in its purest, most minimalist form."
+                <p className="text-on-surface text-[0.9375rem] leading-relaxed mb-5 font-noto">
+                  Understated cases for work and evenings. Tell us the setting and budget, we&apos;ll suggest a
+                  short list.
                 </p>
-                <Link to="/shop" className="wide-label text-primary border-b border-secondary pb-2 inline-block font-bold hover:text-secondary hover:border-primary transition-all">
-                  Shop Dress Watches
+                <Link
+                  to="/shop"
+                  className="wide-label text-primary border-b border-secondary pb-1.5 inline-block font-bold hover:text-secondary hover:border-primary transition-colors tracking-[0.28em]"
+                >
+                  Browse dress watches
                 </Link>
               </div>
             </div>
-            <div className="lg:col-span-5 flex flex-col gap-32">
-              <div className="aspect-square relative overflow-hidden group luxury-shadow">
-                <img 
-                  src="https://images.unsplash.com/photo-1523170335258-f5ed11844a49?q=80&w=2080&auto=format&fit=crop" 
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
-                  alt="Chronographs"
+
+            <div className="lg:col-span-5 flex flex-col gap-6 lg:gap-7 min-w-0">
+              <Link
+                to="/shop"
+                className="group relative aspect-square overflow-hidden luxury-shadow border border-outline-variant/10 block cursor-pointer min-h-0 transition-all duration-300 hover:border-secondary/45 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary/60 active:brightness-[0.98]"
+              >
+                <WatchPhoto
+                  watch={sportWatch}
+                  alt="Sport and chronograph timepiece"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-[2000ms] group-hover:scale-[1.04]"
                 />
-                <div className="absolute inset-0 bg-black/40 flex flex-col justify-end p-16 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                  <h4 className="text-white font-headline text-4xl mb-4 tight-headline">Chronographs</h4>
-                  <p className="text-white/70 wide-label font-bold">Racing & Aviation Icons</p>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-7">
+                  <h4 className="text-white font-headline text-2xl md:text-3xl mb-2 tight-headline drop-shadow-sm">
+                    Sport &amp; chronographs
+                  </h4>
+                  <p className="text-white/90 text-sm font-noto leading-relaxed mb-4">
+                    Timing for travel, sport, and daily wear, see what&apos;s in the case.
+                  </p>
+                  <span className="wide-label text-secondary font-bold tracking-[0.28em] group-hover:text-white transition-colors inline-flex items-center gap-2">
+                    Shop this edit
+                    <span aria-hidden className="text-lg font-light opacity-90 group-hover:translate-x-0.5 transition-transform">
+                      →
+                    </span>
+                  </span>
                 </div>
-              </div>
-              <div className="aspect-square relative overflow-hidden group bg-[#0B0B0B] luxury-shadow">
-                <div className="absolute inset-0 flex items-center justify-center p-16">
-                   <span className="font-headline text-8xl text-secondary/10 select-none italic">Limited</span>
+              </Link>
+
+              <Link
+                to="/shop"
+                className="group relative aspect-square overflow-hidden luxury-shadow border border-outline-variant/10 block cursor-pointer min-h-0 transition-all duration-300 hover:border-secondary/45 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary/60 active:brightness-[0.98]"
+              >
+                <WatchPhoto
+                  watch={limitedHighlight}
+                  alt={limitedHighlight.name}
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-[2000ms] group-hover:scale-[1.04]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/38 to-black/15 pointer-events-none" />
+                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-7">
+                  <h4 className="text-white font-headline text-2xl md:text-3xl mb-2 tight-headline drop-shadow-sm">
+                    Limited runs
+                  </h4>
+                  <p className="text-white/90 text-sm font-noto leading-relaxed mb-4">
+                    Numbered and small-batch pieces when we can get them, ask before they go.
+                  </p>
+                  <span className="wide-label text-secondary font-bold tracking-[0.28em] group-hover:text-white transition-colors inline-flex items-center gap-2">
+                    Shop limited pieces
+                    <span aria-hidden className="text-lg font-light opacity-90 group-hover:translate-x-0.5 transition-transform">
+                      →
+                    </span>
+                  </span>
                 </div>
-                <div className="absolute inset-0 flex flex-col justify-end p-16">
-                  <h4 className="text-white font-headline text-4xl mb-4 tight-headline">Limited Editions</h4>
-                  <p className="text-white/70 wide-label font-bold">Rare Horological Pieces</p>
-                </div>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Trust Section */}
-      <section className="py-48 bg-background border-y border-outline-variant/10">
+      {/* Trust: brand certificate + pillars */}
+      <section className="py-14 md:py-[4.25rem] bg-background border-y border-outline-variant/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-20 text-center">
+          <BrandCertificateTrust />
+          <div className="mt-8 md:mt-10 pt-8 md:pt-11 border-t border-outline-variant/10 grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-10 md:gap-x-10 md:gap-y-11 text-center">
             <div className="group">
-              <span className="material-symbols-outlined text-secondary text-5xl mb-8 font-light group-hover:scale-110 transition-transform duration-500">verified</span>
-              <h4 className="wide-label text-primary mb-4 font-bold">Authenticity</h4>
-              <p className="wide-label !text-[8px] text-on-surface-variant/40 font-bold">Verified guarantee</p>
+              <span className="material-symbols-outlined text-secondary text-4xl mb-2 font-light group-hover:scale-110 transition-transform duration-500">verified</span>
+              <h4 className="wide-label text-primary mb-1 font-bold">Verified watches</h4>
+              <p className="wide-label !text-[8px] text-on-surface-variant/40 font-bold leading-tight max-w-[11rem] mx-auto">
+                Authenticated and documented.
+              </p>
             </div>
             <div className="group">
-              <span className="material-symbols-outlined text-secondary text-5xl mb-8 font-light group-hover:scale-110 transition-transform duration-500">payments</span>
-              <h4 className="wide-label text-primary mb-4 font-bold">Pricing</h4>
-              <p className="wide-label !text-[8px] text-on-surface-variant/40 font-bold">Transparent &amp; competitive</p>
+              <span className="material-symbols-outlined text-secondary text-4xl mb-2 font-light group-hover:scale-110 transition-transform duration-500">payments</span>
+              <h4 className="wide-label text-primary mb-1 font-bold">Fair pricing</h4>
+              <p className="wide-label !text-[8px] text-on-surface-variant/40 font-bold leading-tight max-w-[11rem] mx-auto">
+                Clear NGN, no surprises.
+              </p>
             </div>
             <div className="group">
-              <span className="material-symbols-outlined text-secondary text-5xl mb-8 font-light group-hover:scale-110 transition-transform duration-500">public</span>
-              <h4 className="wide-label text-primary mb-4 font-bold">Shipping</h4>
-              <p className="wide-label !text-[8px] text-on-surface-variant/40 font-bold">Worldwide delivery</p>
+              <span className="material-symbols-outlined text-secondary text-4xl mb-2 font-light group-hover:scale-110 transition-transform duration-500">public</span>
+              <h4 className="wide-label text-primary mb-1 font-bold">Nigeria &amp; worldwide</h4>
+              <p className="wide-label !text-[8px] text-on-surface-variant/40 font-bold leading-tight max-w-[11rem] mx-auto">
+                Local care, global shipping.
+              </p>
             </div>
             <div className="group">
-              <span className="material-symbols-outlined text-secondary text-5xl mb-8 font-light group-hover:scale-110 transition-transform duration-500">support_agent</span>
-              <h4 className="wide-label text-primary mb-4 font-bold">Service</h4>
-              <p className="wide-label !text-[8px] text-on-surface-variant/40 font-bold">Reliable customer care</p>
+              <span className="material-symbols-outlined text-secondary text-4xl mb-2 font-light group-hover:scale-110 transition-transform duration-500">support_agent</span>
+              <h4 className="wide-label text-primary mb-1 font-bold">Support</h4>
+              <p className="wide-label !text-[8px] text-on-surface-variant/40 font-bold leading-tight max-w-[11rem] mx-auto">
+                Before and after purchase.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* WhatsApp CTA (Black) */}
-      <section className="bg-[#0B0B0B] py-64 relative overflow-hidden">
+      {/* Contact CTA (Black) */}
+      <section className="bg-[#0B0B0B] py-16 md:py-24 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <img 
             src="https://images.unsplash.com/photo-1587836374828-cb4387861007?q=80&w=2070&auto=format&fit=crop" 
@@ -231,48 +387,47 @@ export function Home() {
             alt="Movement"
           />
         </div>
-        <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
-          <span className="wide-label text-secondary mb-12 block font-bold tracking-[0.6em]">BESPOKE SERVICES</span>
-          <h2 className="font-headline text-7xl md:text-9xl text-white mb-16 tight-headline">
-            A Bespoke <br />
-            <span className="italic font-light serif opacity-60">Experience</span>
+        <div className="relative z-10 max-w-3xl mx-auto px-4 text-center">
+          <span className="wide-label text-secondary mb-3 md:mb-4 block font-bold tracking-[0.6em]">CONTACT</span>
+          <h2 className="font-headline text-[2.125rem] min-[400px]:text-5xl md:text-6xl lg:text-7xl text-white mb-4 md:mb-5 tight-headline leading-[0.94]">
+            Here when you <br />
+            <span className="italic font-light serif opacity-60">need us</span>
           </h2>
-          <p className="text-white/40 text-xl font-light mb-20 max-w-3xl mx-auto leading-relaxed italic font-serif">
-            "Connect with our horological experts via WhatsApp for personalized consultations, private viewings, and bespoke sourcing requests."
+          <p className="text-white/55 text-[0.9375rem] md:text-[1.0625rem] font-noto mb-6 md:mb-7 max-w-2xl mx-auto leading-[1.55]">
+            Chat with us on WhatsApp for help choosing the right watch, checking availability, or asking questions before you buy. You can also email us anytime.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-8">
+          <div className="flex flex-col sm:flex-row sm:justify-center sm:items-stretch gap-3 sm:gap-4 max-w-md sm:max-w-none mx-auto">
             <a 
               href={whatsappHref()} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center bg-transparent border border-secondary text-secondary px-16 py-7 wide-label !text-[11px] font-bold hover:bg-secondary hover:text-black transition-all duration-500 group"
+              className="inline-flex items-center justify-center bg-transparent border border-secondary text-secondary px-9 md:px-10 py-[1.125rem] wide-label !text-[11px] font-bold hover:bg-secondary hover:text-black transition-all duration-500 group sm:min-w-[13.25rem]"
             >
-              <span className="material-symbols-outlined mr-4 text-xl group-hover:scale-110 transition-transform">chat_bubble</span>
-              WhatsApp us
+              <FaWhatsapp className="mr-3 text-[19px] group-hover:scale-110 transition-transform" aria-hidden />
+              Chat on WhatsApp
             </a>
             <a
               href={`mailto:${EMAIL}`}
-              className="inline-flex items-center justify-center bg-transparent border border-white/10 text-white/60 px-16 py-7 wide-label !text-[11px] font-bold hover:border-white hover:text-white transition-all duration-500"
+              className="inline-flex items-center justify-center bg-transparent border border-white/10 text-white/60 px-9 md:px-10 py-[1.125rem] wide-label !text-[11px] font-bold hover:border-white hover:text-white transition-all duration-500 sm:min-w-[13.25rem]"
             >
-              Email us
+              <HiOutlineEnvelope className="mr-3 text-[19px]" aria-hidden />
+              Email Us
             </a>
           </div>
         </div>
       </section>
 
-      {/* Concierge Section */}
-      <section className="py-64 bg-background">
+      {/* Guidance Section */}
+      <section className="py-36 md:py-44 bg-background">
         <div className="max-w-5xl mx-auto px-4 text-center">
-          <span className="wide-label text-secondary mb-10 block font-bold">PERSONALIZED GUIDANCE</span>
-          <h2 className="font-headline text-6xl md:text-8xl text-primary mb-12 tight-headline">
-            The Digital <span className="italic font-light serif opacity-60">Archivist</span>
+          <span className="wide-label text-secondary mb-8 block font-bold">PERSONALISED GUIDANCE</span>
+          <h2 className="font-headline text-5xl md:text-7xl text-primary mb-5 md:mb-6 tight-headline leading-[0.95]">
+            Support from Selection <br />
+            <span className="italic font-light serif opacity-60">to Delivery</span>
           </h2>
-          <p className="text-on-surface-variant text-xl font-light mb-20 leading-relaxed max-w-3xl mx-auto italic font-serif opacity-70">
-            Our dedicated team is available to assist you with every aspect of your horological journey. From authentication to global delivery logistics.
+          <p className="text-on-surface-variant/85 text-[1.0625rem] md:text-[1.125rem] font-noto leading-relaxed max-w-3xl mx-auto">
+            We help you choose the right watch, confirm what&apos;s available, and guide you through delivery with clear support at every step.
           </p>
-          <div className="flex justify-center">
-            <div className="w-px h-32 bg-secondary/30"></div>
-          </div>
         </div>
       </section>
     </div>

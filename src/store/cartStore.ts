@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Watch } from "../data/watches";
+import { getMaxOrderQuantity, isStorefrontPurchasable } from "../lib/watchOrder";
 
 export interface CartItem {
   watch: Watch;
@@ -21,6 +22,11 @@ export const useCartStore = create<CartState>()(
     (set, get) => ({
       items: [],
       addItem: (watch, quantity = 1) => {
+        if (!isStorefrontPurchasable(watch)) return;
+        const max = getMaxOrderQuantity(watch);
+        const q = Math.min(Math.max(1, quantity), max);
+        if (q === 0) return;
+
         set((state) => {
           const existingItem = state.items.find(
             (item) => item.watch.id === watch.id,
@@ -29,12 +35,15 @@ export const useCartStore = create<CartState>()(
             return {
               items: state.items.map((item) =>
                 item.watch.id === watch.id
-                  ? { ...item, quantity: item.quantity + quantity }
+                  ? {
+                      ...item,
+                      quantity: Math.min(item.quantity + quantity, max),
+                    }
                   : item,
               ),
             };
           }
-          return { items: [...state.items, { watch, quantity }] };
+          return { items: [...state.items, { watch, quantity: q }] };
         });
       },
       removeItem: (watchId) => {
@@ -44,9 +53,12 @@ export const useCartStore = create<CartState>()(
       },
       updateQuantity: (watchId, quantity) => {
         set((state) => ({
-          items: state.items.map((item) =>
-            item.watch.id === watchId ? { ...item, quantity } : item,
-          ),
+          items: state.items.map((item) => {
+            if (item.watch.id !== watchId) return item;
+            const max = getMaxOrderQuantity(item.watch);
+            const next = Math.min(Math.max(1, quantity), max);
+            return { ...item, quantity: next };
+          }),
         }));
       },
       clearCart: () => set({ items: [] }),
@@ -58,8 +70,8 @@ export const useCartStore = create<CartState>()(
       },
     }),
     {
-      // Bumped when cart `watch.id` semantics changed from Sanity `_id` to public slug.
-      name: "hijo-lux-cart-v2",
+      // Bumped: Watch model uses availability + NGN pricing (legacy `stock` optional on hydrated items).
+      name: "hijo-lux-cart-v3",
     },
   ),
 );

@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { FaInstagram, FaTiktok, FaWhatsapp } from "react-icons/fa6";
+import { HiOutlineEnvelope } from "react-icons/hi2";
 import { BRAND_LOGO_SRC } from "../constants/brand";
 import {
   SITE_NAME_FULL,
@@ -7,6 +9,7 @@ import {
   PHONE_AE_DISPLAY,
   LOCATION_LINE,
   INSTAGRAM_URL,
+  TIKTOK_URL,
   whatsappHref,
 } from "../constants/site";
 
@@ -16,48 +19,59 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-20 mb-32">
           <div className="md:col-span-5">
-            <Link to="/" className="inline-block mb-12 group">
+            <Link to="/" className="inline-block mb-9 group">
               <img
                 src={BRAND_LOGO_SRC}
-                alt={`${SITE_NAME_FULL} — brand logo`}
-                className="h-16 sm:h-20 w-auto mb-6 object-contain opacity-95 group-hover:opacity-100 transition-opacity"
+                alt={`${SITE_NAME_FULL} brand logo`}
+                className="h-16 sm:h-20 w-auto mb-4 object-contain opacity-95 group-hover:opacity-100 transition-opacity"
                 width={160}
                 height={160}
               />
-              <span className="font-headline text-3xl sm:text-4xl tracking-[0.12em] tight-headline block mb-2 group-hover:text-secondary transition-colors">
-                {SITE_NAME_FULL}
+              <span className="font-headline text-3xl sm:text-4xl tracking-[0.12em] tight-headline block mb-1 group-hover:text-secondary transition-colors">
+                HIJO Lux Watches
+              </span>
+              <span className="wide-label !text-[8px] text-white/30 block mb-1">
+                Registered as {SITE_NAME_FULL}
               </span>
               <span className="wide-label text-white/40 block">{LOCATION_LINE} · Worldwide</span>
             </Link>
-            <p className="text-white/50 text-base leading-relaxed max-w-sm font-light mb-12">
-              Trusted dealer in authentic luxury, vintage, and modern timepieces. Genuine quality,
-              competitive prices, and professional service — worldwide.
+            <p className="text-white/50 text-base leading-relaxed max-w-sm font-light mb-10">
+              Quality watches, fair pricing, and trusted support for buyers in Nigeria and beyond.
             </p>
-            <div className="flex gap-8">
+            <div className="flex gap-5">
               <a
                 href={INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white/40 hover:text-secondary transition-all hover:-translate-y-1"
+                className="inline-flex h-6 w-6 items-center justify-center text-white/40 hover:text-secondary transition-all hover:-translate-y-1"
                 aria-label="Instagram"
               >
-                <span className="material-symbols-outlined text-2xl font-light">photo_camera</span>
+                <FaInstagram className="text-[20px]" aria-hidden />
               </a>
               <a
                 href={`mailto:${EMAIL}`}
-                className="text-white/40 hover:text-secondary transition-all hover:-translate-y-1"
+                className="inline-flex h-6 w-6 items-center justify-center text-white/40 hover:text-secondary transition-all hover:-translate-y-1"
                 aria-label="Email"
               >
-                <span className="material-symbols-outlined text-2xl font-light">mail</span>
+                <HiOutlineEnvelope className="text-[20px]" aria-hidden />
               </a>
               <a
                 href={whatsappHref()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white/40 hover:text-secondary transition-all hover:-translate-y-1"
+                className="inline-flex h-6 w-6 items-center justify-center text-white/40 hover:text-secondary transition-all hover:-translate-y-1"
                 aria-label="WhatsApp"
               >
-                <span className="material-symbols-outlined text-2xl font-light">chat</span>
+                <FaWhatsapp className="text-[20px]" aria-hidden />
+              </a>
+              <a
+                href={TIKTOK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-6 w-6 items-center justify-center text-white/40 hover:text-secondary transition-all hover:-translate-y-1"
+                aria-label="TikTok"
+              >
+                <FaTiktok className="text-[20px]" aria-hidden />
               </a>
             </div>
           </div>
@@ -72,17 +86,17 @@ export function Footer() {
               </li>
               <li>
                 <Link to="/shop?category=men" className="hover:text-white transition-colors">
-                  Men
+                  Men&apos;s watches
                 </Link>
               </li>
               <li>
                 <Link to="/shop?category=women" className="hover:text-white transition-colors">
-                  Women
+                  Women&apos;s watches
                 </Link>
               </li>
               <li>
                 <Link to="/cart" className="hover:text-white transition-colors">
-                  Your collection
+                  Cart
                 </Link>
               </li>
             </ul>
@@ -93,7 +107,7 @@ export function Footer() {
             <ul className="space-y-6 wide-label !text-[9px] text-white/60 font-light">
               <li>
                 <Link to="/about" className="hover:text-white transition-colors">
-                  About us
+                  About Us
                 </Link>
               </li>
               <li>
@@ -104,6 +118,11 @@ export function Footer() {
               <li>
                 <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
                   Instagram
+                </a>
+              </li>
+              <li>
+                <a href={TIKTOK_URL} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                  TikTok
                 </a>
               </li>
             </ul>
@@ -133,7 +152,7 @@ export function Footer() {
 
         <div className="pt-16 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8">
           <p className="wide-label text-white/20 text-center md:text-left">
-            &copy; {new Date().getFullYear()} {SITE_NAME_FULL.toUpperCase()}.
+            &copy; {new Date().getFullYear()} HIJO LUX WATCHES.
           </p>
           <div className="flex flex-wrap justify-center gap-8 md:space-x-12 md:gap-0">
             <Link to="/privacy" className="text-white/40 hover:text-white transition-colors wide-label">

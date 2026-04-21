@@ -37,17 +37,34 @@ export const watchType = defineType({
     }),
     defineField({
       name: "price",
-      title: "Price (USD)",
+      title: "Price (NGN)",
+      description: "Amount in Nigerian naira (nominal storefront currency).",
       type: "number",
       initialValue: 0,
       validation: (Rule) => Rule.required().min(0),
     }),
     defineField({
-      name: "stock",
-      title: "Stock",
+      name: "availability",
+      title: "Availability",
+      description: "Customer-facing status. The storefront does not derive this from stock counts.",
+      type: "string",
+      options: {
+        list: [
+          { title: "Available", value: "available" },
+          { title: "Out of stock", value: "out-of-stock" },
+          { title: "Pre-order", value: "pre-order" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "available",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "stockQuantity",
+      title: "Stock quantity (internal)",
+      description: "Optional. When set, caps cart quantity for this SKU; not shown on the storefront.",
       type: "number",
-      initialValue: 0,
-      validation: (Rule) => Rule.required().integer().min(0),
+      validation: (Rule) => Rule.min(0).integer(),
     }),
     defineField({
       name: "description",
@@ -78,6 +95,12 @@ export const watchType = defineType({
         defineField({ name: "case", title: "Case", type: "string" }),
         defineField({ name: "powerReserve", title: "Power reserve", type: "string" }),
         defineField({ name: "waterResistance", title: "Water resistance", type: "string" }),
+        defineField({
+          name: "strapOrBracelet",
+          title: "Strap / bracelet",
+          type: "string",
+          description: "e.g. Oyster bracelet, alligator strap.",
+        }),
       ],
     }),
     defineField({

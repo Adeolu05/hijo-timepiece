@@ -1,4 +1,4 @@
-/** Public site & contact — single source of truth for branding and WhatsApp. */
+/** Public site & contact; single source of truth for branding and WhatsApp. */
 
 export const SITE_NAME = "Hijo Multiservice Timepieces";
 export const SITE_NAME_FULL = "Hijo Multiservice Timepieces";
@@ -11,10 +11,17 @@ export const LOCATION_LINE = "Lagos, Nigeria";
 export const EMAIL = "hijoluxwatches@gmail.com";
 export const PHONE_NG_DISPLAY = "+234 813 063 4066";
 export const PHONE_AE_DISPLAY = "+971 52 232 6519";
-/** WhatsApp / checkout (Nigeria) — digits only for wa.me */
+/** WhatsApp / checkout (Nigeria): digits only for wa.me */
 export const WHATSAPP_E164 = "2348130634066";
 export const INSTAGRAM_URL = "https://www.instagram.com/hijoluxwatches/";
+export const TIKTOK_URL = "https://www.tiktok.com/@hijoluxwatches";
 export const INSTAGRAM_HANDLE = "@hijoluxwatches";
+
+/** Registered brand certificate (PDF), served from `public/`. */
+export const BRAND_CERTIFICATE_PDF_URL = "/hijo-lux-brand-certificate.pdf";
+
+/** First-page screenshot of the certificate (PNG), served from `public/`. */
+export const BRAND_CERTIFICATE_PREVIEW_URL = "/hijo-lux-cac-certificate-preview.png";
 
 export function whatsappHref(): string {
   return `https://wa.me/${WHATSAPP_E164}`;

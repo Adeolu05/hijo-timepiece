@@ -26,7 +26,11 @@ export const useProductStore = create<ProductState>((set, get) => ({
     set({ isLoading: true, error: null });
 
     if (isDemoSanity()) {
-      set({ watches: WATCHES, isLoading: false, error: null });
+      set({
+        watches: WATCHES,
+        isLoading: false,
+        error: null,
+      });
       return;
     }
 

@@ -21,12 +21,15 @@ const watchProjection = `{
     movement,
     case,
     powerReserve,
-    waterResistance
+    waterResistance,
+    strapOrBracelet
   },
   "images": coalesce(images[].asset->url, []),
   featured,
   isNewArrival,
   isLimitedEdition,
+  availability,
+  stockQuantity,
   stock
 }`;
 

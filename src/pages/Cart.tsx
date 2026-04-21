@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCartStore } from '../store/cartStore';
 import { WHATSAPP_GREETING_NAME, whatsappHrefWithText } from '../constants/site';
+import { formatNgn } from '../lib/formatNgn';
+import { getMaxOrderQuantity } from '../lib/watchOrder';
 
 export function Cart() {
   const { items, removeItem, updateQuantity, getTotal } = useCartStore();
@@ -21,12 +23,12 @@ export function Cart() {
     }
 
     const orderDetails = items
-      .map((item) => `${item.quantity}x ${item.watch.name} (${item.watch.collection}) - $${(item.watch.price * item.quantity).toLocaleString()}`)
+      .map((item) => `${item.quantity}x ${item.watch.name} (${item.watch.collection}) - ${formatNgn(item.watch.price * item.quantity)}`)
       .join('\n');
     
-    const total = getTotal().toLocaleString();
+    const total = formatNgn(getTotal());
     
-    const message = `Hello ${WHATSAPP_GREETING_NAME}, I would like to purchase the following timepieces:\n\n${orderDetails}\n\nTotal: $${total}\n\nCustomer Details:\nName: ${name}\nPhone: ${phone}${note ? `\nNote: ${note}` : ''}\n\nPlease provide payment and shipping instructions.`;
+    const message = `Hello ${WHATSAPP_GREETING_NAME}, I would like to purchase the following timepieces:\n\n${orderDetails}\n\nTotal: ${total}\n\nCustomer Details:\nName: ${name}\nPhone: ${phone}${note ? `\nNote: ${note}` : ''}\n\nPlease provide payment and shipping instructions.`;
 
     window.open(whatsappHrefWithText(message), '_blank');
   };
@@ -85,7 +87,7 @@ export function Cart() {
                         {item.watch.name}
                       </h3>
                       <span className="text-lg font-light tracking-tight text-primary">
-                        ${(item.watch.price * item.quantity).toLocaleString()}
+                        {formatNgn(item.watch.price * item.quantity)}
                       </span>
                     </div>
                     <p className="text-on-surface-variant text-sm font-light italic font-serif opacity-70 mb-6">
@@ -106,8 +108,8 @@ export function Cart() {
                           {item.quantity.toString().padStart(2, '0')}
                         </span>
                         <button 
-                          onClick={() => updateQuantity(item.watch.id, Math.min(item.watch.stock, item.quantity + 1))}
-                          disabled={item.quantity >= item.watch.stock}
+                          onClick={() => updateQuantity(item.watch.id, Math.min(getMaxOrderQuantity(item.watch), item.quantity + 1))}
+                          disabled={item.quantity >= getMaxOrderQuantity(item.watch)}
                           className="px-3 py-1.5 text-primary hover:bg-surface-container-high transition-colors material-symbols-outlined text-sm font-light disabled:opacity-20"
                         >
                           add
@@ -167,7 +169,7 @@ export function Cart() {
                 <div className="pt-8 space-y-4">
                   <div className="flex justify-between items-baseline border-b border-outline-variant/20 pb-4">
                     <span className="text-[10px] tracking-[0.2em] uppercase text-on-surface-variant/60 font-bold">Collection Subtotal</span>
-                    <span className="font-headline text-3xl text-primary">${getTotal().toLocaleString()}</span>
+                    <span className="font-headline text-3xl text-primary">{formatNgn(getTotal())}</span>
                   </div>
                   <p className="text-[10px] text-on-surface-variant/50 leading-relaxed italic font-serif">
                     Final order confirmation and availability check are completed via our WhatsApp concierge service.

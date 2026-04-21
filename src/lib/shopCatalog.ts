@@ -25,7 +25,7 @@ function matchesLine(watch: Watch, line: string): boolean {
   }
 }
 
-/** Client-side filter + sort. Does not change Sanity — works on loaded `Watch[]`. */
+/** Client-side filter + sort. Does not change Sanity; works on loaded `Watch[]`. */
 export function filterAndSortWatches(watches: Watch[], p: ShopCatalogParams): Watch[] {
   let list = [...watches];
 
