@@ -33,7 +33,7 @@ export function whatsappHrefWithText(text: string): string {
 }
 
 export function productShareUrl(slug: string): string {
-  return `${SITE_ORIGIN}/share/product/${encodeURIComponent(slug)}`;
+  return `${SITE_ORIGIN}/product/${encodeURIComponent(slug)}`;
 }
 
 /** Brand name as used in customer messages */

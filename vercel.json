@@ -6,7 +6,7 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|WhatsApp|LinkedInBot|Slackbot|TelegramBot|Discordbot|Pinterest|Applebot|meta-externalagent|meta-externalfetcher|Bytespider|Embedly|Outbrain|Skype|googlebot|bingbot|yandex|duckduckbot).*"
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|WhatsApp|LinkedInBot|Slackbot|TelegramBot|Discordbot|Pinterest|Applebot|Snapchat|meta-externalagent|meta-externalfetcher|Bytespider|Embedly|Outbrain|Skype|googlebot|Google-InspectionTool|GoogleOther|bingbot|yandex|duckduckbot).*"
         }
       ],
       "destination": "/api/share-product?slug=:slug"

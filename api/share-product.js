@@ -56,12 +56,10 @@ async function fetchWatchBySlug(slug) {
 }
 
 function buildHtml({ slug, title, description, image }) {
-  const shareUrl = `${SITE_URL}/share/product/${encodeURIComponent(slug)}`;
   const productUrl = `${SITE_URL}/product/${encodeURIComponent(slug)}`;
   const safeTitle = escapeHtml(title);
   const safeDescription = escapeHtml(description);
   const safeImage = escapeHtml(image || DEFAULT_IMAGE);
-  const safeShareUrl = escapeHtml(shareUrl);
   const safeProductUrl = escapeHtml(productUrl);
 
   return `<!doctype html>
@@ -74,7 +72,7 @@ function buildHtml({ slug, title, description, image }) {
     <meta name="description" content="${safeDescription}" />
     <meta property="og:type" content="product" />
     <meta property="og:site_name" content="${escapeHtml(SITE_NAME)}" />
-    <meta property="og:url" content="${safeShareUrl}" />
+    <meta property="og:url" content="${safeProductUrl}" />
     <meta property="og:title" content="${safeTitle}" />
     <meta property="og:description" content="${safeDescription}" />
     <meta property="og:image" content="${safeImage}" />
@@ -87,6 +85,7 @@ function buildHtml({ slug, title, description, image }) {
     <meta name="twitter:title" content="${safeTitle}" />
     <meta name="twitter:description" content="${safeDescription}" />
     <meta name="twitter:image" content="${safeImage}" />
+    <meta name="twitter:image:alt" content="${safeTitle}" />
     <meta http-equiv="refresh" content="0;url=${safeProductUrl}" />
   </head>
   <body>
