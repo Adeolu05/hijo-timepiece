@@ -168,7 +168,7 @@ export function ProductDetail() {
             </div>
             
             {/* Main Image */}
-            <div className="relative flex-1 max-w-[16rem] min-[390px]:max-w-[18rem] mx-auto md:max-w-none aspect-[3/4] md:aspect-[4/5] bg-surface-container-low overflow-hidden luxury-shadow group">
+            <div className="relative flex-1 w-full max-w-[16rem] min-[390px]:max-w-[18rem] mx-auto md:max-w-none aspect-[3/4] md:aspect-square lg:max-h-[640px] xl:max-h-[720px] bg-surface-container-low overflow-hidden luxury-shadow group">
               <img
                 src={displayImages[activeImage] || watch.image}
                 alt={watch.name}

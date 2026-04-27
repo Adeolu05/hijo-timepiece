@@ -1,7 +1,23 @@
 {
-  "routes": [
-    { "src": "/share/product/(.*)", "dest": "/api/share-product?slug=$1" },
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "rewrites": [
+    {
+      "source": "/product/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|WhatsApp|LinkedInBot|Slackbot|TelegramBot|Discordbot|Pinterest|Applebot|meta-externalagent|meta-externalfetcher|Bytespider|Embedly|Outbrain|Skype|googlebot|bingbot|yandex|duckduckbot).*"
+        }
+      ],
+      "destination": "/api/share-product?slug=:slug"
+    },
+    {
+      "source": "/share/product/:slug",
+      "destination": "/api/share-product?slug=:slug"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
+    }
   ]
 }

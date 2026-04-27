@@ -133,5 +133,7 @@ export default async function handler(req, res) {
     .status(200)
     .setHeader("Content-Type", "text/html; charset=utf-8")
     .setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=86400")
+    .setHeader("Vary", "User-Agent")
+    .setHeader("X-Robots-Tag", "all")
     .send(html);
 }
