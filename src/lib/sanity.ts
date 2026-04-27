@@ -19,6 +19,7 @@ const watchProjection = `{
   description,
   specs {
     movement,
+    dial,
     case,
     powerReserve,
     waterResistance,

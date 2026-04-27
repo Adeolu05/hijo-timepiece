@@ -14,6 +14,7 @@ export interface Watch {
   description: string;
   specs: {
     movement: string;
+    dial?: string;
     case: string;
     powerReserve: string;
     waterResistance: string;

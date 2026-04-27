@@ -90,7 +90,7 @@ export function Shop() {
   return (
     <div className="min-h-screen bg-background pt-8 pb-24 md:pt-12 md:pb-32">
       <div
-        className={`mx-auto px-4 ${
+        className={`mx-auto px-3 min-[390px]:px-4 ${
           hasSingleResult
             ? "sm:px-8 max-w-[1120px]"
             : "sm:px-12 max-w-[1600px]"
@@ -293,8 +293,8 @@ export function Shop() {
               displayed.length === 1
                 ? "max-w-[720px] mx-auto"
                 : displayed.length === 2
-                  ? "max-w-[1100px] mx-auto grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-24"
-                  : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 xl:gap-x-12 gap-y-24 lg:gap-y-28"
+                  ? "max-w-[1100px] mx-auto grid grid-cols-2 gap-x-3 min-[390px]:gap-x-4 sm:gap-x-8 md:gap-x-10 gap-y-12 min-[390px]:gap-y-14 md:gap-y-20"
+                  : "grid grid-cols-2 lg:grid-cols-3 gap-x-3 min-[390px]:gap-x-4 sm:gap-x-8 lg:gap-x-10 xl:gap-x-12 gap-y-12 min-[390px]:gap-y-14 md:gap-y-20 lg:gap-y-28"
             }
           >
             {displayed.map((watch) => (

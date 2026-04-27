@@ -128,16 +128,16 @@ export function ProductDetail() {
           <span className="text-primary font-bold">{watch.name}</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 xl:gap-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 min-[390px]:gap-12 md:gap-16 xl:gap-24">
           {/* Image Gallery */}
-          <div className="lg:col-span-7 flex flex-col-reverse md:flex-row gap-8 md:gap-9">
+          <div className="lg:col-span-7 flex flex-col-reverse md:flex-row gap-6 md:gap-9">
             {/* Thumbnails */}
-            <div className="flex md:flex-col gap-4 md:gap-5 overflow-x-auto md:overflow-visible scrollbar-hide snap-x snap-mandatory w-full md:w-24 flex-shrink-0">
+            <div className="flex md:flex-col gap-3 min-[390px]:gap-4 md:gap-5 overflow-x-auto md:overflow-visible scrollbar-hide snap-x snap-mandatory w-full md:w-24 flex-shrink-0">
               {displayImages.map((img, idx) => (
                 <button
                   key={idx}
                   onClick={() => setActiveImage(idx)}
-                  className={`relative aspect-[3/4] overflow-hidden border snap-start flex-shrink-0 w-24 md:w-full transition-all duration-500 ${
+                  className={`relative aspect-[3/4] overflow-hidden border snap-start flex-shrink-0 w-20 min-[390px]:w-24 md:w-full transition-all duration-500 ${
                     activeImage === idx
                       ? 'border-secondary/70 opacity-100 scale-[1.03] shadow-sm'
                       : 'border-outline-variant/20 opacity-65 hover:opacity-90'
@@ -151,11 +151,11 @@ export function ProductDetail() {
             </div>
             
             {/* Main Image */}
-            <div className="relative flex-1 aspect-[4/5] bg-surface-container-low overflow-hidden luxury-shadow group">
+            <div className="relative flex-1 max-w-[26rem] min-[390px]:max-w-[30rem] mx-auto md:max-w-none aspect-[3/4] md:aspect-[4/5] bg-surface-container-low overflow-hidden luxury-shadow group">
               <img
                 src={displayImages[activeImage] || watch.image}
                 alt={watch.name}
-                className="w-full h-full object-contain object-center p-3 md:p-4 transition-transform duration-[1600ms] group-hover:scale-[1.02]"
+                className="w-full h-full object-contain object-center p-2 md:p-4 transition-transform duration-[1600ms] group-hover:scale-[1.02]"
               />
               {watch.isLimitedEdition && (
                 <div className="absolute top-10 left-10 bg-primary text-white wide-label !text-[8px] px-6 py-3">
@@ -283,19 +283,21 @@ export function ProductDetail() {
 
         {/* Related Products Section */}
         <div className="mt-24 md:mt-32 border-t border-outline-variant/10 pt-16 md:pt-20">
-          <div className="mb-14 md:mb-16">
+          <div className="mb-10 min-[390px]:mb-12 md:mb-16">
             <span className="wide-label text-secondary mb-6 block font-bold">
               Discovery
             </span>
-            <h2 className="font-headline text-5xl md:text-6xl text-primary tight-headline">
+            <h2 className="font-headline text-[2.3rem] min-[390px]:text-5xl md:text-6xl text-primary tight-headline">
               You may also <br />
               <span className="italic font-serif opacity-60">Appreciate</span>
             </h2>
           </div>
           {relatedWatches.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-28">
+            <div className="flex gap-3 min-[390px]:gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-x-12 sm:gap-y-20 lg:gap-y-28 sm:overflow-visible sm:snap-none">
               {relatedWatches.map((rw) => (
-                <ProductCard key={rw.id} watch={rw} />
+                <div key={rw.id} className="min-w-[78%] min-[390px]:min-w-[72%] min-[440px]:min-w-[62%] snap-start sm:min-w-0">
+                  <ProductCard watch={rw} />
+                </div>
               ))}
             </div>
           ) : (

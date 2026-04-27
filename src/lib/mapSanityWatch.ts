@@ -39,6 +39,7 @@ export function mapSanityDocumentToWatch(doc: SanityWatchDocument): Watch | null
   const s = doc.specs ?? {};
   const specs = {
     movement: (s.movement ?? "").trim(),
+    dial: (s.dial ?? "").trim(),
     case: (s.case ?? "").trim(),
     powerReserve: (s.powerReserve ?? "").trim(),
     waterResistance: (s.waterResistance ?? "").trim(),

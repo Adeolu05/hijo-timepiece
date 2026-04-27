@@ -131,9 +131,9 @@ export function Home() {
       <section className="border-t border-outline-variant/10 bg-gradient-to-b from-background via-background to-surface-container-low/35">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-12 pt-10 pb-14 md:pt-14 md:pb-20">
           {/* Section opener: headline + Browse paired; intro below */}
-          <div className="mb-5 md:mb-6 pb-4 border-b border-outline-variant/20">
-            <div className="flex flex-col lg:flex-row lg:items-baseline lg:justify-between gap-3 lg:gap-5">
-              <h2 className="font-headline text-5xl md:text-6xl lg:text-7xl text-primary leading-[0.88] tight-headline">
+          <div className="mb-4 min-[390px]:mb-5 md:mb-6 pb-4 border-b border-outline-variant/20">
+            <div className="flex flex-col lg:flex-row lg:items-baseline lg:justify-between gap-2.5 min-[390px]:gap-3 lg:gap-5">
+              <h2 className="font-headline text-[2.2rem] min-[360px]:text-[2.35rem] min-[390px]:text-5xl md:text-6xl lg:text-7xl text-primary leading-[0.9] tight-headline">
                 Masterpieces <br />
                 <span className="italic font-light serif opacity-60">of the</span> Season
               </h2>
@@ -144,19 +144,19 @@ export function Home() {
                 Browse collection
               </Link>
             </div>
-            <p className="font-noto text-sm md:text-[0.9375rem] text-on-surface-variant/85 leading-relaxed max-w-md mt-3">
+            <p className="font-noto text-[0.82rem] min-[390px]:text-sm md:text-[0.9375rem] text-on-surface-variant/85 leading-relaxed max-w-md mt-2.5 min-[390px]:mt-3">
               A selection from our current stock, ask if you&apos;re looking for a specific reference.
             </p>
           </div>
 
           {/* Product grid: featured width capped; lighter crop */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-5 lg:gap-6 xl:gap-8 items-start md:pb-5 md:border-b md:border-outline-variant/10">
-            <div className="md:col-span-6 min-w-0 lg:max-w-[min(100%,26rem)] xl:max-w-[min(100%,27rem)]">
+            <div className="md:col-span-6 min-w-0 max-w-[27rem] mx-auto md:mx-0 lg:max-w-[min(100%,26rem)] xl:max-w-[min(100%,27rem)]">
               <Link
                 to={`/product/${heroWatch.id}`}
                 className="group block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary/60"
               >
-                <div className="relative w-full aspect-[4/5] overflow-hidden bg-surface-container-low mb-4 luxury-shadow border border-outline-variant/10 min-h-0">
+                <div className="relative w-full aspect-[7/8] min-[390px]:aspect-[5/6] sm:aspect-[4/5] overflow-hidden bg-surface-container-low mb-3 min-[390px]:mb-4 luxury-shadow border border-outline-variant/10 min-h-0">
                   {heroWatch.isLimitedEdition ? (
                     <div className="absolute top-5 left-5 md:top-6 md:left-6 z-10">
                       <span className="bg-primary text-white px-3 py-2 wide-label !text-[7px] font-bold tracking-[0.32em]">
@@ -167,13 +167,13 @@ export function Home() {
                   <WatchPhoto
                     watch={heroWatch}
                     alt={heroWatch.name}
-                    className="absolute inset-0 h-full w-full object-cover object-[center_22%] transition-transform duration-[2000ms] group-hover:scale-[1.025]"
+                    className="absolute inset-0 h-full w-full object-cover object-[center_28%] min-[390px]:object-[center_24%] md:object-[center_22%] transition-transform duration-[2000ms] group-hover:scale-[1.025]"
                   />
                   <div className="absolute inset-0 bg-black/[0.03] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                 </div>
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 sm:gap-4 pt-2.5 border-t border-outline-variant/10">
-                  <div className="min-w-0 space-y-1.5">
-                    <h3 className="font-headline text-2xl md:text-[1.7rem] text-primary tight-headline leading-[1.1]">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2 sm:gap-4 pt-2 border-t border-outline-variant/10">
+                  <div className="min-w-0 space-y-0.5 min-[390px]:space-y-1">
+                    <h3 className="font-headline text-[1.35rem] min-[390px]:text-2xl md:text-[1.7rem] text-primary tight-headline leading-[1.08]">
                       {heroWatch.name}
                     </h3>
                     {heroCollectionLabel ? (
@@ -182,19 +182,19 @@ export function Home() {
                       </p>
                     ) : null}
                     {heroDetailLine ? (
-                      <p className="font-noto text-[0.8125rem] md:text-sm text-on-surface-variant/72 leading-snug pt-0.5">
+                      <p className="font-noto text-[0.75rem] min-[390px]:text-[0.8125rem] md:text-sm text-on-surface-variant/72 leading-snug pt-0.5">
                         {heroDetailLine}
                       </p>
                     ) : null}
                   </div>
-                  <p className="font-headline text-xl md:text-2xl text-secondary tabular-nums shrink-0 pt-1 sm:pt-0">
+                  <p className="font-headline text-[1.05rem] min-[390px]:text-xl md:text-2xl text-secondary tabular-nums shrink-0 pt-1 sm:pt-0">
                     {formatNgn(heroWatch.price)}
                   </p>
                 </div>
               </Link>
             </div>
 
-            <div className="md:col-span-6 flex flex-col gap-6 lg:gap-7 border-l-0 md:border-l border-outline-variant/10 md:pl-5 lg:pl-7 min-w-0">
+            <div className="md:col-span-6 grid grid-cols-2 md:flex md:flex-col gap-3 min-[390px]:gap-4 sm:gap-6 lg:gap-7 border-l-0 md:border-l border-outline-variant/10 md:pl-5 lg:pl-7 min-w-0">
               {stackedWatches.map((watch) => {
               const stackedDetail = watchDetailLine(watch);
               const collectionLabel = displayMerchandisingLabel(watch.collection);
@@ -204,7 +204,7 @@ export function Home() {
                   to={`/product/${watch.id}`}
                   className="group block cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary/60 transition-colors"
                 >
-                  <div className="relative w-full aspect-[5/4] sm:aspect-square overflow-hidden bg-surface-container-low mb-3 luxury-shadow border border-outline-variant/10 min-h-0 transition-all duration-300 group-hover:border-secondary/35 group-hover:shadow-md">
+                  <div className="relative w-full aspect-square overflow-hidden bg-surface-container-low mb-2 min-[390px]:mb-3 luxury-shadow border border-outline-variant/10 min-h-0 transition-all duration-300 group-hover:border-secondary/35 group-hover:shadow-md">
                     {watch.isNewArrival ? (
                       <div className="absolute top-3 left-3 z-10">
                         <span className="bg-primary/95 text-white px-2.5 py-1.5 wide-label !text-[6px] font-bold tracking-[0.32em]">
@@ -215,27 +215,27 @@ export function Home() {
                     <WatchPhoto
                       watch={watch}
                       alt={watch.name}
-                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-[2000ms] group-hover:scale-[1.03]"
+                      className="absolute inset-0 h-full w-full object-cover object-[center_30%] sm:object-center transition-transform duration-[2000ms] group-hover:scale-[1.03]"
                     />
                     <div className="absolute inset-0 bg-black/[0.03] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                   </div>
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2 sm:gap-4 pt-2 border-t border-outline-variant/10">
-                    <div className="min-w-0 space-y-1.5">
-                      <h3 className="font-headline text-xl md:text-2xl text-primary tight-headline leading-[1.08]">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-1 sm:gap-4 pt-1.5 sm:pt-2 border-t border-outline-variant/10">
+                    <div className="min-w-0 space-y-1">
+                      <h3 className="font-headline text-[1.05rem] min-[390px]:text-[1.2rem] md:text-2xl text-primary tight-headline leading-[1.08]">
                         {watch.name}
                       </h3>
                       {collectionLabel ? (
-                        <p className="text-[10px] tracking-[0.2em] uppercase text-on-surface-variant/50 font-semibold">
+                        <p className="text-[8px] min-[390px]:text-[9px] tracking-[0.16em] min-[390px]:tracking-[0.2em] uppercase text-on-surface-variant/50 font-semibold">
                           {collectionLabel}
                         </p>
                       ) : null}
                       {stackedDetail ? (
-                        <p className="font-noto text-xs text-on-surface-variant/72 line-clamp-2">
+                        <p className="font-noto text-[0.7rem] min-[390px]:text-xs text-on-surface-variant/72 line-clamp-2">
                           {stackedDetail}
                         </p>
                       ) : null}
                     </div>
-                    <p className="font-headline text-lg md:text-xl text-secondary tabular-nums shrink-0">
+                    <p className="font-headline text-sm min-[390px]:text-base md:text-xl text-secondary tabular-nums shrink-0">
                       {formatNgn(watch.price)}
                     </p>
                   </div>

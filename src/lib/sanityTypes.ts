@@ -12,6 +12,7 @@ export interface SanityWatchDocument {
   description?: string | null;
   specs?: {
     movement?: string | null;
+    dial?: string | null;
     case?: string | null;
     powerReserve?: string | null;
     waterResistance?: string | null;

@@ -92,6 +92,7 @@ export const watchType = defineType({
       type: "object",
       fields: [
         defineField({ name: "movement", title: "Movement", type: "string" }),
+        defineField({ name: "dial", title: "Dial", type: "string" }),
         defineField({ name: "case", title: "Case", type: "string" }),
         defineField({ name: "powerReserve", title: "Power reserve", type: "string" }),
         defineField({ name: "waterResistance", title: "Water resistance", type: "string" }),
