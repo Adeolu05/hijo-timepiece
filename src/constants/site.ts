@@ -16,6 +16,7 @@ export const WHATSAPP_E164 = "2348130634066";
 export const INSTAGRAM_URL = "https://www.instagram.com/hijoluxwatches/";
 export const TIKTOK_URL = "https://www.tiktok.com/@hijoluxwatches";
 export const INSTAGRAM_HANDLE = "@hijoluxwatches";
+export const SITE_ORIGIN = "https://www.hijoluxwatches.com";
 
 /** Registered brand certificate (PDF), served from `public/`. */
 export const BRAND_CERTIFICATE_PDF_URL = "/hijo-lux-brand-certificate.pdf";
@@ -29,6 +30,10 @@ export function whatsappHref(): string {
 
 export function whatsappHrefWithText(text: string): string {
   return `${whatsappHref()}?text=${encodeURIComponent(text)}`;
+}
+
+export function productShareUrl(slug: string): string {
+  return `${SITE_ORIGIN}/share/product/${encodeURIComponent(slug)}`;
 }
 
 /** Brand name as used in customer messages */

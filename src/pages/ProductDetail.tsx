@@ -5,7 +5,7 @@ import { useProductStore } from '../store/productStore';
 import { useCartStore } from '../store/cartStore';
 import { Button } from '../components/ui/Button';
 import { ProductCard } from '../components/ProductCard';
-import { WHATSAPP_GREETING_NAME, whatsappHrefWithText } from '../constants/site';
+import { WHATSAPP_GREETING_NAME, productShareUrl, whatsappHrefWithText } from '../constants/site';
 import { formatNgn } from '../lib/formatNgn';
 import { applySeo } from '../lib/seo';
 import { getMaxOrderQuantity, isStorefrontPurchasable, resolveWatchAvailability } from '../lib/watchOrder';
@@ -127,7 +127,8 @@ export function ProductDetail() {
   };
 
   const handleWhatsAppEnquiry = () => {
-    const message = `Hello ${WHATSAPP_GREETING_NAME}, I would like to inquire about the ${watch.name} (${watch.collection}) priced at ${formatNgn(watch.price)}. Is it currently available?`;
+    const shareUrl = productShareUrl(watch.id);
+    const message = `Hello ${WHATSAPP_GREETING_NAME}, I would like to inquire about the ${watch.name} (${watch.collection}) priced at ${formatNgn(watch.price)}. Is it currently available?\n\nProduct link: ${shareUrl}`;
     window.open(whatsappHrefWithText(message), '_blank');
   };
 

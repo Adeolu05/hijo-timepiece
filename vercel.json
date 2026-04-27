@@ -1,5 +1,6 @@
 {
   "routes": [
+    { "src": "/share/product/(.*)", "dest": "/api/share-product?slug=$1" },
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
