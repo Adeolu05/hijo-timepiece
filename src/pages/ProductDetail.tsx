@@ -155,7 +155,7 @@ export function ProductDetail() {
               <img
                 src={displayImages[activeImage] || watch.image}
                 alt={watch.name}
-                className="w-full h-full object-contain object-center p-2 md:p-4 transition-transform duration-[1600ms] group-hover:scale-[1.02]"
+                className="w-full h-full object-contain object-center transition-transform duration-[1600ms] group-hover:scale-[1.02]"
               />
               {watch.isLimitedEdition && (
                 <div className="absolute top-10 left-10 bg-primary text-white wide-label !text-[8px] px-6 py-3">
