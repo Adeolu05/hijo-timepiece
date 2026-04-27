@@ -43,6 +43,21 @@ export function ProductDetail() {
     }
   }, [activeImage, allImages]);
 
+  useEffect(() => {
+    if (!watch) return;
+    const description = (watch.description || '').trim().slice(0, 160);
+    applySeo({
+      title: `${watch.name} | ${watch.collection} | Hijo Multiservice Timepieces`,
+      description:
+        description.length > 0
+          ? description
+          : `Explore ${watch.name} from the ${watch.collection} at Hijo Multiservice Timepieces.`,
+      path: `/product/${watch.id}`,
+      image: watch.image,
+      type: 'product',
+    });
+  }, [watch]);
+
   if (isLoading) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center bg-background px-4">
@@ -115,21 +130,6 @@ export function ProductDetail() {
     const message = `Hello ${WHATSAPP_GREETING_NAME}, I would like to inquire about the ${watch.name} (${watch.collection}) priced at ${formatNgn(watch.price)}. Is it currently available?`;
     window.open(whatsappHrefWithText(message), '_blank');
   };
-
-  useEffect(() => {
-    if (!watch) return;
-    const description = (watch.description || '').trim().slice(0, 160);
-    applySeo({
-      title: `${watch.name} | ${watch.collection} | Hijo Multiservice Timepieces`,
-      description:
-        description.length > 0
-          ? description
-          : `Explore ${watch.name} from the ${watch.collection} at Hijo Multiservice Timepieces.`,
-      path: `/product/${watch.id}`,
-      image: watch.image,
-      type: 'product',
-    });
-  }, [watch]);
 
   return (
     <div className="min-h-screen bg-background pt-8 pb-24 md:pt-12 md:pb-32">
