@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import { Layout } from './components/Layout';
 import { ScrollToTop } from './components/ScrollToTop';
 import { Home } from './pages/Home';
@@ -24,6 +25,7 @@ export default function App() {
           <Route path="/cart" element={<Cart />} />
         </Routes>
       </Layout>
+      <Analytics />
     </Router>
   );
 }
