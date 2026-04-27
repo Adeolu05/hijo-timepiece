@@ -173,7 +173,7 @@ export function Home() {
                 </div>
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2 sm:gap-4 pt-2 border-t border-outline-variant/10">
                   <div className="min-w-0 space-y-0.5 min-[390px]:space-y-1">
-                    <h3 className="font-headline text-[1.35rem] min-[390px]:text-2xl md:text-[1.7rem] text-primary tight-headline leading-[1.08]">
+                    <h3 className="font-headline text-[1.35rem] min-[390px]:text-2xl md:text-[1.7rem] text-primary leading-[1.14] md:leading-[1.08] break-words">
                       {heroWatch.name}
                     </h3>
                     {heroCollectionLabel ? (
@@ -221,7 +221,7 @@ export function Home() {
                   </div>
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-1 sm:gap-4 pt-1.5 sm:pt-2 border-t border-outline-variant/10">
                     <div className="min-w-0 space-y-1">
-                      <h3 className="font-headline text-[1.05rem] min-[390px]:text-[1.2rem] md:text-2xl text-primary tight-headline leading-[1.08]">
+                      <h3 className="font-headline text-[1.05rem] min-[390px]:text-[1.2rem] md:text-2xl text-primary leading-[1.16] md:leading-[1.08] line-clamp-2 break-words">
                         {watch.name}
                       </h3>
                       {collectionLabel ? (

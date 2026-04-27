@@ -39,7 +39,7 @@ export function ProductCard({ watch }: ProductCardProps) {
       </div>
       <div className="border-t border-outline-variant/20 pt-2 md:pt-3.5 flex flex-col items-center text-center">
         <span className="wide-label !text-[8px] text-on-surface-variant/55 mb-1.5">{statusLabel}</span>
-        <h3 className="font-headline text-[1.18rem] min-[360px]:text-[1.24rem] min-[390px]:text-[1.34rem] md:text-[1.95rem] text-primary tight-headline mb-1 group-hover:text-secondary transition-colors duration-500">
+        <h3 className="font-headline text-[1.18rem] min-[360px]:text-[1.24rem] min-[390px]:text-[1.34rem] md:text-[1.95rem] text-primary leading-[1.14] md:leading-[1.04] line-clamp-2 break-words mb-1 group-hover:text-secondary transition-colors duration-500">
           {watch.name}
         </h3>
         <span className="block wide-label !text-[7px] min-[390px]:!text-[8px] md:!text-[9px] tracking-[0.12em] min-[390px]:tracking-[0.14em] md:tracking-[0.16em] text-on-surface-variant/82 mb-1.5 italic px-1.5 min-[390px]:px-2">

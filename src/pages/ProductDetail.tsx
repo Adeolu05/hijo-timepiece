@@ -293,9 +293,9 @@ export function ProductDetail() {
             </h2>
           </div>
           {relatedWatches.length > 0 ? (
-            <div className="flex gap-3 min-[390px]:gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-x-12 sm:gap-y-20 lg:gap-y-28 sm:overflow-visible sm:snap-none">
+            <div className="flex gap-3 min-[390px]:gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-x-10 sm:gap-y-18 lg:gap-y-24 sm:overflow-visible sm:snap-none">
               {relatedWatches.map((rw) => (
-                <div key={rw.id} className="min-w-[78%] min-[390px]:min-w-[72%] min-[440px]:min-w-[62%] snap-start sm:min-w-0">
+                <div key={rw.id} className="min-w-[68%] min-[390px]:min-w-[64%] min-[440px]:min-w-[56%] max-w-[14.5rem] min-[390px]:max-w-[15.5rem] snap-start sm:min-w-0 sm:max-w-none">
                   <ProductCard watch={rw} />
                 </div>
               ))}
