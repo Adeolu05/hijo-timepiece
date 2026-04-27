@@ -7,6 +7,7 @@ import { Button } from '../components/ui/Button';
 import { ProductCard } from '../components/ProductCard';
 import { WHATSAPP_GREETING_NAME, whatsappHrefWithText } from '../constants/site';
 import { formatNgn } from '../lib/formatNgn';
+import { applySeo } from '../lib/seo';
 import { getMaxOrderQuantity, isStorefrontPurchasable, resolveWatchAvailability } from '../lib/watchOrder';
 
 export function ProductDetail() {
@@ -115,6 +116,21 @@ export function ProductDetail() {
     window.open(whatsappHrefWithText(message), '_blank');
   };
 
+  useEffect(() => {
+    if (!watch) return;
+    const description = (watch.description || '').trim().slice(0, 160);
+    applySeo({
+      title: `${watch.name} | ${watch.collection} | Hijo Multiservice Timepieces`,
+      description:
+        description.length > 0
+          ? description
+          : `Explore ${watch.name} from the ${watch.collection} at Hijo Multiservice Timepieces.`,
+      path: `/product/${watch.id}`,
+      image: watch.image,
+      type: 'product',
+    });
+  }, [watch]);
+
   return (
     <div className="min-h-screen bg-background pt-8 pb-24 md:pt-12 md:pb-32">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-12">
@@ -151,7 +167,7 @@ export function ProductDetail() {
             </div>
             
             {/* Main Image */}
-            <div className="relative flex-1 max-w-[26rem] min-[390px]:max-w-[30rem] mx-auto md:max-w-none aspect-[3/4] md:aspect-[4/5] bg-surface-container-low overflow-hidden luxury-shadow group">
+            <div className="relative flex-1 max-w-[16rem] min-[390px]:max-w-[18rem] mx-auto md:max-w-none aspect-[3/4] md:aspect-[4/5] bg-surface-container-low overflow-hidden luxury-shadow group">
               <img
                 src={displayImages[activeImage] || watch.image}
                 alt={watch.name}
