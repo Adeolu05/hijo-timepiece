@@ -17,6 +17,17 @@ function truncate(value, max = 180) {
   return s.length > max ? `${s.slice(0, max - 1)}...` : s;
 }
 
+function toSocialImageUrl(rawImage) {
+  const s = String(rawImage ?? "").trim();
+  if (!s) return DEFAULT_IMAGE;
+  // Sanity images need explicit format conversion for cross-platform OG previews.
+  // HEIF is unsupported by most scrapers (Twitter, LinkedIn, older WhatsApp builds).
+  // Force JPEG, cap width at 1200, and crop to OG-recommended 1.91:1 ratio.
+  if (!s.startsWith("https://cdn.sanity.io/")) return s;
+  const separator = s.includes("?") ? "&" : "?";
+  return `${s}${separator}fm=jpg&w=1200&h=630&fit=crop&crop=center&q=82`;
+}
+
 function resolveProjectId() {
   return process.env.SANITY_PROJECT_ID || process.env.VITE_SANITY_PROJECT_ID || "";
 }
@@ -67,6 +78,11 @@ function buildHtml({ slug, title, description, image }) {
     <meta property="og:title" content="${safeTitle}" />
     <meta property="og:description" content="${safeDescription}" />
     <meta property="og:image" content="${safeImage}" />
+    <meta property="og:image:secure_url" content="${safeImage}" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="${safeTitle}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${safeTitle}" />
     <meta name="twitter:description" content="${safeDescription}" />
@@ -106,7 +122,7 @@ export default async function handler(req, res) {
       }
       const watchDescription = truncate(watch.description || "", 180);
       if (watchDescription) description = watchDescription;
-      if (watch.image && String(watch.image).trim()) image = String(watch.image).trim();
+      if (watch.image && String(watch.image).trim()) image = toSocialImageUrl(watch.image);
     }
   } catch (_error) {
     // Fallback metadata remains available if Sanity fetch fails.
