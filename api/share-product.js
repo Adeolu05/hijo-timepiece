@@ -30,10 +30,13 @@ async function fetchWatchBySlug(slug) {
   const dataset = resolveDataset();
   if (!projectId || !dataset || !slug) return null;
 
-  const query = '*[_type == "watch" && slug.current == $slug][0]{name,collection,description,"image": image.asset->url}';
+  const query =
+    '*[_type == "watch" && slug.current == $slug][0]{name,collection,description,"image": image.asset->url}';
+  // Sanity GROQ params: name must be URL-encoded ($ → %24) and string values must be JSON-quoted.
   const url =
     `https://${projectId}.apicdn.sanity.io/v2023-05-03/data/query/${encodeURIComponent(dataset)}` +
-    `?query=${encodeURIComponent(query)}&$slug=${encodeURIComponent(slug)}`;
+    `?query=${encodeURIComponent(query)}` +
+    `&%24slug=${encodeURIComponent(JSON.stringify(slug))}`;
 
   const res = await fetch(url, { method: "GET" });
   if (!res.ok) return null;
