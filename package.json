@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "vite build && cross-env PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1 npx playwright install chromium && cross-env PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1 node scripts/prerender.mjs",
+    "build": "node scripts/build.mjs",
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit"
@@ -15,12 +15,12 @@
     "@tailwindcss/vite": "^4.1.14",
     "@vitejs/plugin-react": "^5.0.4",
     "clsx": "^2.1.1",
+    "playwright": "^1.52.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.6.0",
     "react-router-dom": "^7.13.1",
     "tailwind-merge": "^3.5.0",
-    "playwright": "^1.52.0",
     "zustand": "^5.0.12"
   },
   "devDependencies": {
@@ -28,7 +28,6 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.21",
-    "cross-env": "^7.0.3",
     "sanity": "^3.68.0",
     "tailwindcss": "^4.1.14",
     "tsx": "^4.21.0",
