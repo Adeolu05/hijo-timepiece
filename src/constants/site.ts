@@ -2,9 +2,19 @@
 
 export const SITE_NAME = "Hijo Multiservice Timepieces";
 export const SITE_NAME_FULL = "Hijo Multiservice Timepieces";
+/**
+ * Trading / customer-facing brand (domain hijoluxwatches.com, IG @hijoluxwatches).
+ * Use in page titles, Open Graph, and copy where searches use "Hijo Lux" rather than the legal entity name.
+ */
+export const SITE_PUBLIC_BRAND = "Hijo Lux Watches";
 export const SITE_TAGLINE = "Authentic luxury, vintage & modern timepieces";
 export const SITE_DESCRIPTION =
   "Trusted watch dealer specializing in authentic luxury, vintage, and modern timepieces. Genuine quality, competitive prices, worldwide shipping, and secure transactions. Based in Lagos, Nigeria.";
+
+/** Homepage meta (keep `index.html` & JSON-LD in sync with these strings when editing). */
+export const HOME_PAGE_META_TITLE = `${SITE_PUBLIC_BRAND} | Official website | Authentic luxury timepieces`;
+export const HOME_PAGE_META_DESCRIPTION =
+  "Official website for Hijo Lux Watches — authentic luxury, vintage, and modern watches. Hijo Multiservice Timepieces, based in Lagos, Nigeria. Browse the shop, enquire on WhatsApp, worldwide shipping.";
 
 export const LOCATION_LINE = "Lagos, Nigeria";
 

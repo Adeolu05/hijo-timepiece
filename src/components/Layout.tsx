@@ -1,6 +1,11 @@
 import { ReactNode, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { SITE_NAME_FULL } from '../constants/site';
+import {
+  HOME_PAGE_META_DESCRIPTION,
+  HOME_PAGE_META_TITLE,
+  SITE_NAME_FULL,
+  SITE_PUBLIC_BRAND,
+} from '../constants/site';
 import { applySeo } from '../lib/seo';
 import { Header } from './Header';
 import { Footer } from './Footer';
@@ -14,24 +19,27 @@ export function Layout({ children }: LayoutProps) {
 
   useEffect(() => {
     const path = location.pathname;
-    let title = SITE_NAME_FULL;
-    let description =
-      "Hijo Multiservice Timepieces, trusted dealer in authentic luxury, vintage, and modern timepieces. Worldwide shipping, secure transactions. Lagos, Nigeria.";
-    if (path === '/about') title = `About Us | ${SITE_NAME_FULL}`;
-    else if (path === '/shop') {
-      title = `Shop | ${SITE_NAME_FULL}`;
-      description = "Browse authentic luxury, vintage, and modern watches with transparent pricing and trusted support from Hijo Multiservice Timepieces.";
+    let title = HOME_PAGE_META_TITLE;
+    let description = HOME_PAGE_META_DESCRIPTION;
+    if (path === '/about') {
+      title = `About Us | ${SITE_PUBLIC_BRAND}`;
+      description = `About ${SITE_PUBLIC_BRAND} (${SITE_NAME_FULL}): trusted luxury, vintage & modern watches, Lagos — official site.`;
+    } else if (path === '/shop') {
+      title = `Shop | ${SITE_PUBLIC_BRAND}`;
+      description =
+        "Browse authentic luxury, vintage, and modern watches online at the official Hijo Lux Watches store. Transparent pricing, trusted support from Hijo Multiservice Timepieces.";
     } else if (path === '/cart') {
-      title = `Your Collection | ${SITE_NAME_FULL}`;
-      description = "Review selected watches and proceed with your enquiry or checkout with Hijo Multiservice Timepieces.";
+      title = `Your collection | ${SITE_PUBLIC_BRAND}`;
+      description = `Review your selected watches and checkout — ${SITE_PUBLIC_BRAND} (${SITE_NAME_FULL}).`;
     } else if (path === '/privacy') {
-      title = `Privacy | ${SITE_NAME_FULL}`;
-      description = "Read the privacy policy for Hijo Multiservice Timepieces.";
+      title = `Privacy | ${SITE_PUBLIC_BRAND}`;
+      description = `Privacy policy for ${SITE_PUBLIC_BRAND} / ${SITE_NAME_FULL}.`;
     } else if (path === '/terms') {
-      title = `Terms of Sale | ${SITE_NAME_FULL}`;
-      description = "Read the terms of sale for Hijo Multiservice Timepieces.";
+      title = `Terms of sale | ${SITE_PUBLIC_BRAND}`;
+      description = `Terms of sale for ${SITE_PUBLIC_BRAND} / ${SITE_NAME_FULL}.`;
+    } else if (path.startsWith('/product/')) {
+      title = `Watch | ${SITE_PUBLIC_BRAND}`;
     }
-    else if (path.startsWith('/product/')) title = `Product | ${SITE_NAME_FULL}`;
     applySeo({
       title,
       description,

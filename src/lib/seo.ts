@@ -1,3 +1,5 @@
+import { SITE_PUBLIC_BRAND } from "../constants/site";
+
 const SITE_URL = "https://www.hijoluxwatches.com";
 const DEFAULT_OG_IMAGE = `${SITE_URL}/hijo-lux-logo.png`;
 
@@ -63,7 +65,7 @@ export function applySeo(payload: SeoPayload): void {
   ensureMetaByProperty("og:description").setAttribute("content", payload.description);
   ensureMetaByProperty("og:url").setAttribute("content", url);
   ensureMetaByProperty("og:image").setAttribute("content", image);
-  ensureMetaByProperty("og:site_name").setAttribute("content", "Hijo Multiservice Timepieces");
+  ensureMetaByProperty("og:site_name").setAttribute("content", SITE_PUBLIC_BRAND);
 }
 
 export { SITE_URL };

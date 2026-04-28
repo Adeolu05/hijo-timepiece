@@ -5,7 +5,7 @@ import { useProductStore } from '../store/productStore';
 import { useCartStore } from '../store/cartStore';
 import { Button } from '../components/ui/Button';
 import { ProductCard } from '../components/ProductCard';
-import { WHATSAPP_GREETING_NAME, productShareUrl, whatsappHrefWithText } from '../constants/site';
+import { SITE_PUBLIC_BRAND, WHATSAPP_GREETING_NAME, productShareUrl, whatsappHrefWithText } from '../constants/site';
 import { formatNgn } from '../lib/formatNgn';
 import { applySeo } from '../lib/seo';
 import { getMaxOrderQuantity, isStorefrontPurchasable, resolveWatchAvailability } from '../lib/watchOrder';
@@ -47,11 +47,11 @@ export function ProductDetail() {
     if (!watch) return;
     const description = (watch.description || '').trim().slice(0, 160);
     applySeo({
-      title: `${watch.name} | ${watch.collection} | Hijo Multiservice Timepieces`,
+      title: `${watch.name} | ${watch.collection} | ${SITE_PUBLIC_BRAND}`,
       description:
         description.length > 0
           ? description
-          : `Explore ${watch.name} from the ${watch.collection} at Hijo Multiservice Timepieces.`,
+          : `Explore ${watch.name} from the ${watch.collection} — ${SITE_PUBLIC_BRAND} official store.`,
       path: `/product/${watch.id}`,
       image: watch.image,
       type: 'product',
