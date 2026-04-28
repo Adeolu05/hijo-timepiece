@@ -14,7 +14,14 @@ export const SITE_DESCRIPTION =
 /** Homepage meta (keep `index.html` & JSON-LD in sync with these strings when editing). */
 export const HOME_PAGE_META_TITLE = `${SITE_PUBLIC_BRAND} | Official website | Authentic luxury timepieces`;
 export const HOME_PAGE_META_DESCRIPTION =
-  "Official website for Hijo Lux Watches — authentic luxury, vintage, and modern watches. Hijo Multiservice Timepieces, based in Lagos, Nigeria. Browse the shop, enquire on WhatsApp, worldwide shipping.";
+  "Official Hijo Lux Watches website: luxury wristwatches, vintage & authentic timepieces. Hijo watches & Hijo Lux — Lagos, Nigeria. Shop online, WhatsApp enquiries, UAE & worldwide shipping.";
+
+/** Shop catalogue page — covers generic “watches Nigeria” / wristwatch shopping intent without stuffing. */
+export const SHOP_PAGE_META_DESCRIPTION =
+  "Buy luxury wristwatches & watches online — curated vintage, skeleton, complication & precious-metal models from Hijo Lux Watches. Official store, Lagos. Prices in NGN; worldwide shipping.";
+
+export const FAQ_PAGE_META_DESCRIPTION =
+  "FAQ for Hijo Lux Watches / Hijo Multiservice Timepieces: authentic luxury wristwatches, shipping Nigeria & international, WhatsApp ordering, authenticity, and Lagos-based support.";
 
 export const LOCATION_LINE = "Lagos, Nigeria";
 

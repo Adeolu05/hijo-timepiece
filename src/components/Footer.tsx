@@ -111,6 +111,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/faq" className="hover:text-white transition-colors">
+                  FAQ
+                </Link>
+              </li>
+              <li>
                 <a href={whatsappHref()} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
                   WhatsApp
                 </a>

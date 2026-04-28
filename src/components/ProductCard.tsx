@@ -28,7 +28,7 @@ export function ProductCard({ watch }: ProductCardProps) {
       <div className="relative aspect-[5/6] sm:aspect-[4/5] overflow-hidden bg-surface-container-low mb-2.5 sm:mb-4 luxury-shadow ring-1 ring-transparent group-hover:ring-outline-variant/35 transition-[transform,box-shadow,ring-color] duration-500">
         <img
           src={watch.image}
-          alt={watch.name}
+          alt={`${watch.name} — luxury wristwatch, ${watch.collection}. Hijo Lux Watches`}
           className="w-full h-full object-cover object-[center_28%] sm:object-center group-hover:scale-105 transition-transform duration-1000 ease-out grayscale-[0.2] group-hover:grayscale-0"
         />
         {watch.isLimitedEdition && (

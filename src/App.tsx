@@ -8,6 +8,7 @@ import { Cart } from './pages/Cart';
 import { About } from './pages/About';
 import { Privacy } from './pages/Privacy';
 import { Terms } from './pages/Terms';
+import { Faq } from './pages/Faq';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/faq" element={<Faq />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />

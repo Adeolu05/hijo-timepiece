@@ -11,6 +11,7 @@ import {
 } from "../constants/site";
 
 const offerItems = [
+  "Luxury wristwatches for men and women",
   "Authentic luxury and designer watches",
   "Pre-owned and brand-new timepieces",
   "Trade-in and resale options",
@@ -46,9 +47,11 @@ export function About() {
 
         <section className="mb-20">
           <p className="text-on-surface-variant text-lg md:text-xl leading-relaxed font-light">
-            We are a trusted watch dealer specializing in authentic luxury, vintage, and modern
-            timepieces. Our mission is to provide customers with genuine, high-quality watches at
-            competitive prices, backed by honesty and professionalism.
+            We are <strong className="font-medium text-primary">{SITE_NAME_FULL}</strong>, trading as{' '}
+            <strong className="font-medium text-primary">Hijo Lux Watches</strong> — trusted watch dealers
+            specializing in authentic luxury wristwatches, vintage and modern timepieces. Our mission is to
+            provide genuine, high-quality watches at competitive prices, backed by honesty and
+            professionalism across Nigeria and internationally.
           </p>
         </section>
 

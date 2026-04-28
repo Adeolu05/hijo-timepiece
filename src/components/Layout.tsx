@@ -5,6 +5,8 @@ import {
   HOME_PAGE_META_TITLE,
   SITE_NAME_FULL,
   SITE_PUBLIC_BRAND,
+  SHOP_PAGE_META_DESCRIPTION,
+  FAQ_PAGE_META_DESCRIPTION,
 } from '../constants/site';
 import { applySeo } from '../lib/seo';
 import { Header } from './Header';
@@ -25,9 +27,11 @@ export function Layout({ children }: LayoutProps) {
       title = `About Us | ${SITE_PUBLIC_BRAND}`;
       description = `About ${SITE_PUBLIC_BRAND} (${SITE_NAME_FULL}): trusted luxury, vintage & modern watches, Lagos — official site.`;
     } else if (path === '/shop') {
-      title = `Shop | ${SITE_PUBLIC_BRAND}`;
-      description =
-        "Browse authentic luxury, vintage, and modern watches online at the official Hijo Lux Watches store. Transparent pricing, trusted support from Hijo Multiservice Timepieces.";
+      title = `Shop luxury wristwatches | ${SITE_PUBLIC_BRAND}`;
+      description = SHOP_PAGE_META_DESCRIPTION;
+    } else if (path === '/faq') {
+      title = `FAQ | ${SITE_PUBLIC_BRAND} — watches, shipping & orders`;
+      description = FAQ_PAGE_META_DESCRIPTION;
     } else if (path === '/cart') {
       title = `Your collection | ${SITE_PUBLIC_BRAND}`;
       description = `Review your selected watches and checkout — ${SITE_PUBLIC_BRAND} (${SITE_NAME_FULL}).`;

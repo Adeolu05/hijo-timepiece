@@ -3,6 +3,8 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useProductStore } from "../store/productStore";
 import { ProductCard } from "../components/ProductCard";
 import { filterAndSortWatches, type ShopSort } from "../lib/shopCatalog";
+import { JsonLd } from "../components/JsonLd";
+import { breadcrumbJsonLd, shopItemListJsonLd } from "../lib/structuredData";
 
 function useShopParams() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -88,6 +90,9 @@ export function Shop() {
   const hasSingleResult = displayed.length === 1;
   const isAllActive = !category && !line && !newOnly && !q;
   return (
+    <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Shop wristwatches", path: "/shop" }])} />
+      {watches.length > 0 ? <JsonLd data={shopItemListJsonLd(watches)} /> : null}
     <div className="min-h-screen bg-background pt-8 pb-24 md:pt-12 md:pb-32">
       <div
         className={`mx-auto px-3 min-[390px]:px-4 ${
@@ -124,7 +129,8 @@ export function Shop() {
                 <span className="italic font-serif opacity-60">of Horology</span>
               </h1>
               <p className="text-on-surface-variant max-w-2xl text-base md:text-lg font-light leading-relaxed italic font-serif opacity-75">
-                Browse luxury, vintage, and modern watches with transparent pricing and trusted support.
+                Browse luxury wristwatches, vintage & modern timepieces — authentic watches with transparent pricing
+                and trusted support from our Lagos team. Search by name, collection, or line.
               </p>
             </div>
             <div className="md:col-span-4 md:col-start-9 flex flex-col items-stretch gap-2.5 w-full max-w-[420px] md:ml-auto">
@@ -304,5 +310,6 @@ export function Shop() {
         )}
       </div>
     </div>
+    </>
   );
 }

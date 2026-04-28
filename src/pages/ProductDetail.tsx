@@ -9,6 +9,8 @@ import { SITE_PUBLIC_BRAND, WHATSAPP_GREETING_NAME, productShareUrl, whatsappHre
 import { formatNgn } from '../lib/formatNgn';
 import { applySeo } from '../lib/seo';
 import { getMaxOrderQuantity, isStorefrontPurchasable, resolveWatchAvailability } from '../lib/watchOrder';
+import { JsonLd } from '../components/JsonLd';
+import { breadcrumbJsonLd, productJsonLd } from '../lib/structuredData';
 
 export function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -133,11 +135,20 @@ export function ProductDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-background pt-8 pb-24 md:pt-12 md:pb-32">
+    <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: 'Home', path: '/' },
+          { name: 'Shop wristwatches', path: '/shop' },
+          { name: watch.name, path: `/product/${watch.id}` },
+        ])}
+      />
+      <JsonLd data={productJsonLd(watch)} />
+      <div className="min-h-screen bg-background pt-8 pb-24 md:pt-12 md:pb-32">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-12">
         
         {/* Breadcrumbs */}
-        <nav className="flex wide-label !text-[8px] text-on-surface-variant/40 mb-8 md:mb-10">
+        <nav className="flex wide-label !text-[8px] text-on-surface-variant/40 mb-8 md:mb-10" aria-label="Breadcrumb">
           <Link to="/" className="hover:text-primary transition-colors">Home</Link>
           <span className="mx-4 opacity-30">/</span>
           <Link to="/shop" className="hover:text-primary transition-colors">Collection</Link>
@@ -171,7 +182,7 @@ export function ProductDetail() {
             <div className="relative flex-1 w-full max-w-[16rem] min-[390px]:max-w-[18rem] mx-auto md:max-w-none aspect-[3/4] md:aspect-square lg:max-h-[640px] xl:max-h-[720px] bg-surface-container-low overflow-hidden luxury-shadow group">
               <img
                 src={displayImages[activeImage] || watch.image}
-                alt={watch.name}
+                alt={`${watch.name} luxury wristwatch — ${watch.collection}. ${SITE_PUBLIC_BRAND}`}
                 className="w-full h-full object-contain object-center p-2 md:p-4 transition-transform duration-[1600ms] group-hover:scale-[1.02]"
               />
               {watch.isLimitedEdition && (
@@ -334,5 +345,6 @@ export function ProductDetail() {
 
       </div>
     </div>
+    </>
   );
 }
