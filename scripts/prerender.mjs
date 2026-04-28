@@ -65,11 +65,24 @@ async function main() {
     process.exit(1);
   }
 
-  const shell = process.platform === "win32";
+  const viteCli = path.join(root, "node_modules", "vite", "bin", "vite.js");
+  if (!fs.existsSync(viteCli)) {
+    console.error("[prerender] vite CLI not found at", viteCli);
+    process.exit(1);
+  }
+
   const proc = spawn(
-    "npx",
-    ["vite", "preview", "--port", String(PREVIEW_PORT), "--strictPort", "--host", "127.0.0.1"],
-    { cwd: root, shell, stdio: "pipe", env: { ...process.env } },
+    process.execPath,
+    [
+      viteCli,
+      "preview",
+      "--port",
+      String(PREVIEW_PORT),
+      "--strictPort",
+      "--host",
+      "127.0.0.1",
+    ],
+    { cwd: root, stdio: "pipe", env: { ...process.env } },
   );
 
   let stderr = "";
