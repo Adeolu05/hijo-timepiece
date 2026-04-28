@@ -3,8 +3,9 @@
  * Post-build: capture fully rendered HTML for key SPA routes so crawlers (and GSC)
  * receive real titles, meta, and body content — not an empty shell before JS.
  *
- * Requires Chromium: run `npx playwright install chromium` (once per env; CI/Vercel: add same before build).
- * Skip: SKIP_PRERENDER=1
+ * Requires Chromium: the npm `build` script runs `npx playwright install chromium` before this step.
+ * Local one-off: `npx playwright install chromium` (browsers land under your user cache).
+ * Skip prerender only if needed: SKIP_PRERENDER=1 npm run build
  */
 import { spawn } from "node:child_process";
 import fs from "node:fs";
