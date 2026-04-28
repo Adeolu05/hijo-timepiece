@@ -54,6 +54,11 @@ async function main() {
     process.exit(1);
   }
 
+  /** Vercel / Docker: Linux build images often fail Playwright’s apt-based host-deps check without this. */
+  if (!process.env.PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS) {
+    process.env.PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "1";
+  }
+
   let chromium;
   try {
     ({ chromium } = await import("playwright"));
