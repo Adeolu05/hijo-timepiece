@@ -44,6 +44,7 @@ export function Header() {
   const activeCatalog =
     pathname === "/shop" && category !== "men" && category !== "women" && sort !== "newest";
   const activeAbout = pathname === "/about";
+  const activeFaq = pathname === "/faq";
   const activeMen = pathname === "/shop" && category === "men";
   const activeWomen = pathname === "/shop" && category === "women";
   const activeNew = pathname === "/shop" && sort === "newest";
@@ -117,6 +118,9 @@ export function Header() {
               </Link>
               <Link to="/about" className={navText(activeAbout)}>
                 About
+              </Link>
+              <Link to="/faq" className={navText(activeFaq)}>
+                FAQ
               </Link>
               <Link to="/shop?category=men" className={navText(activeMen)}>
                 Men
@@ -204,6 +208,7 @@ export function Header() {
         <nav className="flex flex-col px-6 py-12 space-y-8">
           <Link to="/shop" className="font-headline text-4xl text-primary hover:text-secondary transition-colors tight-headline">Shop</Link>
           <Link to="/about" className="font-headline text-4xl text-primary hover:text-secondary transition-colors tight-headline">About</Link>
+          <Link to="/faq" className="font-headline text-4xl text-primary hover:text-secondary transition-colors tight-headline">FAQ</Link>
           <Link to="/shop?category=men" className="font-headline text-4xl text-primary hover:text-secondary transition-colors tight-headline">Men</Link>
           <Link to="/shop?category=women" className="font-headline text-4xl text-primary hover:text-secondary transition-colors tight-headline">Women</Link>
           <Link to="/shop?sort=newest" className="font-headline text-4xl text-primary hover:text-secondary transition-colors tight-headline">New Arrivals</Link>
