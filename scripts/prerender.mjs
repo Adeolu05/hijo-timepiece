@@ -3,12 +3,12 @@
  * Post-build: capture fully rendered HTML for key SPA routes so crawlers (and GSC)
  * receive real titles, meta, and body content — not an empty shell before JS.
  *
- * Requires Chromium: the npm `build` script runs `npx playwright install chromium` before this step.
- * Local one-off: `npx playwright install chromium` (browsers land under your user cache).
- * Skip prerender only if needed: SKIP_PRERENDER=1 npm run build
+ * Requires Chromium: `scripts/build.mjs` runs `playwright install chromium` first.
+ * Skip: SKIP_PRERENDER=1
  */
 import { spawn } from "node:child_process";
 import fs from "node:fs";
+import net from "node:net";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -16,8 +16,20 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
 const dist = path.join(root, "dist");
 
-const PREVIEW_PORT = 4179;
-const BASE = `http://127.0.0.1:${PREVIEW_PORT}`;
+function getFreePort() {
+  return new Promise((resolve, reject) => {
+    const srv = net.createServer();
+    srv.once("error", reject);
+    srv.listen(0, "127.0.0.1", () => {
+      const addr = srv.address();
+      const p = typeof addr === "object" && addr ? addr.port : 4179;
+      srv.close(() => resolve(p));
+    });
+  });
+}
+
+let PREVIEW_PORT = 4179;
+let BASE = `http://127.0.0.1:${PREVIEW_PORT}`;
 
 const ROUTES = [
   { path: "/", out: "index.html" },
@@ -43,18 +55,20 @@ async function sleep(ms) {
   await new Promise((r) => setTimeout(r, ms));
 }
 
-async function main() {
+export async function runPrerender() {
   if (process.env.SKIP_PRERENDER === "1") {
     console.log("[prerender] SKIP_PRERENDER=1 — skipping.");
     return;
   }
 
+  PREVIEW_PORT = await getFreePort();
+  BASE = `http://127.0.0.1:${PREVIEW_PORT}`;
+  console.log("[prerender] preview port", PREVIEW_PORT);
+
   if (!fs.existsSync(path.join(dist, "index.html"))) {
-    console.error("[prerender] dist/index.html missing. Run vite build first.");
-    process.exit(1);
+    throw new Error("[prerender] dist/index.html missing. Run vite build first.");
   }
 
-  /** Vercel / Docker: Linux build images often fail Playwright’s apt-based host-deps check without this. */
   if (!process.env.PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS) {
     process.env.PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "1";
   }
@@ -63,19 +77,21 @@ async function main() {
   try {
     ({ chromium } = await import("playwright"));
   } catch (e) {
-    console.warn(
-      "[prerender] Playwright not installed: npm i -D playwright && npx playwright install chromium",
+    console.error(
+      "[prerender] Playwright not installed: npm i playwright && npx playwright install chromium",
     );
-    console.warn(e);
-    process.exit(1);
+    throw e;
   }
 
   const viteCli = path.join(root, "node_modules", "vite", "bin", "vite.js");
   if (!fs.existsSync(viteCli)) {
-    console.error("[prerender] vite CLI not found at", viteCli);
-    process.exit(1);
+    throw new Error(`[prerender] vite CLI not found at ${viteCli}`);
   }
 
+  /**
+   * Must not leave stdout on "pipe" without draining — Vite can log enough to block the
+   * child when the buffer fills (~64KB), which breaks prerender on CI (e.g. Vercel).
+   */
   const proc = spawn(
     process.execPath,
     [
@@ -87,25 +103,28 @@ async function main() {
       "--host",
       "127.0.0.1",
     ],
-    { cwd: root, stdio: "pipe", env: { ...process.env } },
+    { cwd: root, stdio: "inherit", env: { ...process.env } },
   );
-
-  let stderr = "";
-  proc.stderr?.on("data", (d) => {
-    stderr += String(d);
-  });
 
   try {
     await waitForHttpOk(`${BASE}/`);
   } catch (e) {
-    proc.kill("SIGTERM");
-    console.error("[prerender] Preview server failed to start.\n", stderr);
+    try {
+      proc.kill("SIGTERM");
+    } catch {
+      /* ignore */
+    }
     throw e;
   }
 
   const browser = await chromium.launch({
     headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-gpu",
+    ],
   });
   const context = await browser.newContext({
     userAgent:
@@ -116,7 +135,10 @@ async function main() {
     for (const { path: routePath, out } of ROUTES) {
       const page = await context.newPage();
       const url = `${BASE}${routePath === "/" ? "/" : routePath}`;
-      await page.goto(url, { waitUntil: "networkidle", timeout: 90_000 });
+      /**
+       * Do not use "networkidle" — SPAs + Sanity often keep connections open, so it never settles.
+       */
+      await page.goto(url, { waitUntil: "load", timeout: 90_000 });
       await page.waitForSelector("main h1", { timeout: 60_000 });
       await sleep(600);
       const html = await page.content();
@@ -137,7 +159,15 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error("[prerender] failed:", err);
-  process.exit(1);
-});
+function isPrimaryScript() {
+  const a = process.argv[1];
+  if (!a) return false;
+  return path.resolve(a) === path.resolve(fileURLToPath(import.meta.url));
+}
+
+if (isPrimaryScript()) {
+  runPrerender().catch((err) => {
+    console.error("[prerender] failed:", err);
+    process.exit(1);
+  });
+}
