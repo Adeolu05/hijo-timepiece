@@ -138,6 +138,7 @@ export function Shop() {
 
   const rangeStart = totalFiltered === 0 ? 0 : (page - 1) * SHOP_PAGE_SIZE + 1;
   const rangeEnd = Math.min(page * SHOP_PAGE_SIZE, totalFiltered);
+  const showCatalogFootnote = totalFiltered !== watches.length;
 
   const hasSingleResult = displayedPage.length === 1;
   const isAllActive = !category && !line && !newOnly && !q;
@@ -203,24 +204,32 @@ export function Shop() {
                   autoComplete="off"
                 />
               </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 border-t border-outline-variant/20 pt-2 min-w-0">
-                <span className="text-on-surface-variant/55 whitespace-normal sm:whitespace-nowrap max-sm:text-[10px] min-w-0">
-                  <span className="wide-label !text-[8px] mr-1.5">Showing</span>
-                  <span className="wide-label !text-[9px] text-primary/85 font-bold tabular-nums">
-                    {rangeStart > 0 ? `${rangeStart}–${rangeEnd}` : "0"}
+              <div className="mt-0.5 flex flex-col gap-3 border-t border-outline-variant/20 pt-3 min-w-0 sm:pt-3.5 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
+                <p className="text-on-surface-variant/60 min-w-0 w-full max-w-full m-0 text-[11px] sm:text-xs font-light leading-snug flex flex-wrap items-baseline gap-x-1.5 gap-y-1">
+                  <span className="wide-label !text-[8px] shrink-0 font-bold">Showing</span>
+                  <span className="whitespace-nowrap tabular-nums font-semibold tracking-normal text-primary/90">
+                    {rangeStart > 0 ? `${rangeStart}\u2013${rangeEnd}` : "0"}
                   </span>
-                  <span className="wide-label !text-[8px] mx-1 text-on-surface-variant/45">of</span>
-                  <span className="wide-label !text-[9px] text-on-surface-variant/70 font-bold tabular-nums">
+                  <span className="wide-label !text-[8px] shrink-0 text-on-surface-variant/50 font-bold">of</span>
+                  <span className="whitespace-nowrap tabular-nums font-semibold tracking-normal text-on-surface-variant/80">
                     {totalFiltered}
                   </span>
-                  <span className="wide-label !text-[8px] mx-1 text-on-surface-variant/45">matches ·</span>
-                  <span className="wide-label !text-[9px] text-on-surface-variant/60 font-bold tabular-nums">
-                    {watches.length}
-                  </span>
-                  <span className="wide-label !text-[8px] ml-1 text-on-surface-variant/45">in catalog</span>
-                </span>
-                <div className="flex items-center gap-2.5 w-full sm:w-auto min-w-0">
-                  <label htmlFor="shop-sort" className="wide-label !text-[9px] text-on-surface-variant/50 font-bold whitespace-nowrap shrink-0">
+                  {showCatalogFootnote ? (
+                    <>
+                      <span className="wide-label !text-[8px] shrink-0 text-on-surface-variant/50 font-bold">matches</span>
+                      <span className="text-on-surface-variant/35" aria-hidden>
+                        {" "}
+                        ·{" "}
+                      </span>
+                      <span className="whitespace-nowrap tabular-nums font-medium tracking-normal text-on-surface-variant/70">
+                        {watches.length}
+                      </span>
+                      <span className="wide-label !text-[8px] shrink-0 text-on-surface-variant/50 font-bold">in catalog</span>
+                    </>
+                  ) : null}
+                </p>
+                <div className="flex flex-row flex-wrap items-center gap-x-2 gap-y-2 w-full min-w-0 lg:w-auto lg:max-w-[min(100%,20rem)] lg:shrink-0 lg:justify-end">
+                  <label htmlFor="shop-sort" className="wide-label !text-[9px] text-on-surface-variant/50 font-bold whitespace-nowrap shrink-0 leading-none">
                     Sort
                   </label>
                   <select
@@ -238,7 +247,7 @@ export function Shop() {
                         { replace: true },
                       );
                     }}
-                    className="w-full min-w-0 flex-1 sm:flex-initial sm:min-w-[172px] max-w-full bg-surface-container-low border border-outline-variant/20 px-3 py-2 text-xs font-medium text-primary focus:outline-none focus:border-secondary cursor-pointer wide-label !tracking-[0.15em]"
+                    className="w-full min-w-0 min-h-[2.5rem] flex-1 rounded-sm bg-surface-container-low border border-outline-variant/25 px-3 py-2 text-xs font-medium text-primary focus:outline-none focus:border-secondary cursor-pointer wide-label !tracking-[0.15em] sm:min-w-[12.5rem] sm:flex-initial sm:max-w-full"
                   >
                     <option value="name">Name A–Z</option>
                     <option value="newest">New arrivals first</option>

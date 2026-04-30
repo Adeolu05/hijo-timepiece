@@ -220,15 +220,19 @@ export function Header() {
         } md:hidden flex flex-col`}
       >
         <div className="min-h-[5rem] py-3 px-6 flex items-center justify-between border-b border-outline-variant/20">
-          <div className="flex items-center">
+          <Link
+            to="/"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="flex items-center group leading-none py-1 -ml-1"
+          >
             <img
               alt={`${SITE_NAME} brand logo`}
-              className="h-14 w-auto object-contain"
+              className="h-14 w-auto max-w-[min(62vw,13rem)] object-contain object-center mix-blend-multiply opacity-[0.97] transition-all duration-700 group-hover:scale-[1.02]"
               src={BRAND_LOGO_SRC}
-              width={160}
-              height={160}
+              width={220}
+              height={220}
             />
-          </div>
+          </Link>
           <button
             className="p-2 -mr-2 text-primary hover:text-secondary transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}
