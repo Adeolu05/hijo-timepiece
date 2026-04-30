@@ -13,6 +13,7 @@ import {
 import { applySeo } from '../lib/seo';
 import { Header } from './Header';
 import { Footer } from './Footer';
+import { BackToTopButton } from './BackToTopButton';
 
 interface LayoutProps {
   children: ReactNode;
@@ -67,6 +68,7 @@ export function Layout({ children }: LayoutProps) {
         {children}
       </main>
       <Footer />
+      <BackToTopButton />
     </div>
   );
 }
