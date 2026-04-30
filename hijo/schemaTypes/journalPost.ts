@@ -23,8 +23,33 @@ export const journalPostType = defineType({
     defineField({
       name: 'publishedAt',
       title: 'Published at',
-      type: 'datetime',
-      validation: (Rule) => Rule.required(),
+      type: 'string',
+      description:
+        'Any of: year (2024), year-month (2024-06), or full date (2024-06-15). Legacy datetime values still work.',
+      placeholder: '2024 or 2024-06 or 2024-06-15',
+      validation: (Rule) =>
+        Rule.required().custom((val) => {
+          if (val == null || typeof val !== 'string') return 'Required'
+          const v = val.trim()
+          if (!v) return 'Required'
+          if (/^\d{4}$/.test(v)) return true
+          if (/^\d{4}-\d{2}$/.test(v)) {
+            const [, m] = v.split('-')
+            const mo = parseInt(m, 10)
+            if (mo >= 1 && mo <= 12) return true
+            return 'Month must be 01–12 (e.g. 2024-03)'
+          }
+          if (/^\d{4}-\d{2}-\d{2}$/.test(v)) {
+            const d = new Date(`${v}T12:00:00`)
+            if (Number.isNaN(d.getTime())) return 'Invalid calendar date'
+            return true
+          }
+          if (v.includes('T')) {
+            const d = new Date(v)
+            if (!Number.isNaN(d.getTime())) return true
+          }
+          return 'Use YYYY, YYYY-MM, or YYYY-MM-DD'
+        }),
     }),
     defineField({
       name: 'excerpt',

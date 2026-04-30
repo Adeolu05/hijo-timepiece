@@ -145,9 +145,9 @@ export function Shop() {
     <>
       <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Shop wristwatches", path: "/shop" }])} />
       {watches.length > 0 ? <JsonLd data={shopItemListJsonLd(watches)} /> : null}
-    <div className="min-h-screen bg-background pt-8 pb-24 md:pt-12 md:pb-32">
+    <div className="min-h-screen bg-background pt-8 pb-24 md:pt-12 md:pb-32 overflow-x-hidden">
       <div
-        className={`mx-auto px-3 min-[390px]:px-4 ${
+        className={`mx-auto w-full max-w-full min-w-0 px-3 min-[390px]:px-4 ${
           hasSingleResult
             ? "sm:px-8 max-w-[1120px]"
             : "sm:px-12 max-w-[1600px]"
@@ -203,8 +203,8 @@ export function Shop() {
                   autoComplete="off"
                 />
               </div>
-              <div className="flex items-center justify-between gap-4 border-t border-outline-variant/20 pt-2">
-                <span className="text-on-surface-variant/55 whitespace-nowrap max-sm:text-[10px]">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 border-t border-outline-variant/20 pt-2 min-w-0">
+                <span className="text-on-surface-variant/55 whitespace-normal sm:whitespace-nowrap max-sm:text-[10px] min-w-0">
                   <span className="wide-label !text-[8px] mr-1.5">Showing</span>
                   <span className="wide-label !text-[9px] text-primary/85 font-bold tabular-nums">
                     {rangeStart > 0 ? `${rangeStart}–${rangeEnd}` : "0"}
@@ -219,8 +219,8 @@ export function Shop() {
                   </span>
                   <span className="wide-label !text-[8px] ml-1 text-on-surface-variant/45">in catalog</span>
                 </span>
-                <div className="flex items-center gap-2.5 w-auto">
-                  <label htmlFor="shop-sort" className="wide-label !text-[9px] text-on-surface-variant/50 font-bold whitespace-nowrap">
+                <div className="flex items-center gap-2.5 w-full sm:w-auto min-w-0">
+                  <label htmlFor="shop-sort" className="wide-label !text-[9px] text-on-surface-variant/50 font-bold whitespace-nowrap shrink-0">
                     Sort
                   </label>
                   <select
@@ -238,7 +238,7 @@ export function Shop() {
                         { replace: true },
                       );
                     }}
-                    className="min-w-[172px] bg-surface-container-low border border-outline-variant/20 px-3 py-2 text-xs font-medium text-primary focus:outline-none focus:border-secondary cursor-pointer wide-label !tracking-[0.15em]"
+                    className="w-full min-w-0 flex-1 sm:flex-initial sm:min-w-[172px] max-w-full bg-surface-container-low border border-outline-variant/20 px-3 py-2 text-xs font-medium text-primary focus:outline-none focus:border-secondary cursor-pointer wide-label !tracking-[0.15em]"
                   >
                     <option value="name">Name A–Z</option>
                     <option value="newest">New arrivals first</option>
@@ -361,7 +361,7 @@ export function Shop() {
                   ? "max-w-[720px] mx-auto"
                   : displayedPage.length === 2
                     ? "max-w-[1100px] mx-auto grid grid-cols-2 gap-x-3 min-[390px]:gap-x-4 sm:gap-x-8 md:gap-x-10 gap-y-12 min-[390px]:gap-y-14 md:gap-y-20"
-                    : "grid grid-cols-2 lg:grid-cols-3 gap-x-3 min-[390px]:gap-x-4 sm:gap-x-8 lg:gap-x-10 xl:gap-x-12 gap-y-12 min-[390px]:gap-y-14 md:gap-y-20 lg:gap-y-28"
+                    : "grid grid-cols-2 lg:grid-cols-3 gap-x-3 min-[390px]:gap-x-4 sm:gap-x-8 lg:gap-x-10 xl:gap-x-12 gap-y-12 min-[390px]:gap-y-14 md:gap-y-20 lg:gap-y-28 w-full max-w-full min-w-0"
               }
             >
               {displayedPage.map((watch) => (

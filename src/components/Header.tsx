@@ -86,39 +86,49 @@ export function Header() {
       <header className="w-full bg-background border-b border-outline-variant/10">
         <nav className="max-w-[1600px] mx-auto px-4 sm:px-10 md:px-10 py-3 md:py-4">
           {/* Mobile */}
-          <div className="flex md:hidden items-center justify-between">
-            <button
-              onClick={() => setIsMobileMenuOpen(true)}
-              className="p-2 -ml-2 text-primary hover:text-secondary transition-colors"
-              aria-label="Open menu"
-            >
-              <span className="material-symbols-outlined font-light text-[28px]">menu</span>
-            </button>
-            <Link to="/" className="flex flex-col items-center group py-1">
-              <img
-                alt={`${SITE_NAME} brand logo`}
-                className="h-[4.75rem] w-auto max-w-[min(52vw,13rem)] object-contain object-center transition-all duration-700 group-hover:scale-[1.02] mix-blend-multiply opacity-[0.97]"
-                src={BRAND_LOGO_SRC}
-                width={220}
-                height={220}
-              />
-            </Link>
-            <Link to="/wishlist" className="relative text-primary hover:text-secondary transition-colors p-2" aria-label="Wishlist">
-              <span className="material-symbols-outlined text-[24px] font-light">favorite</span>
-              {wishlistCount > 0 && (
-                <span className="absolute top-1 right-1 bg-secondary text-white text-[8px] font-bold h-3.5 min-w-3.5 px-0.5 rounded-full flex items-center justify-center tabular-nums">
-                  {wishlistCount > 9 ? "9+" : wishlistCount}
-                </span>
-              )}
-            </Link>
-            <Link to="/cart" className="relative text-primary hover:text-secondary transition-colors p-2">
-              <span className="material-symbols-outlined text-[24px] font-light">shopping_bag</span>
-              {cartItemCount > 0 && (
-                <span className="absolute top-1 right-1 bg-secondary text-white text-[8px] font-bold h-3.5 w-3.5 rounded-full flex items-center justify-center">
-                  {cartItemCount}
-                </span>
-              )}
-            </Link>
+          <div className="flex md:hidden items-stretch w-full min-w-0 gap-1">
+            <div className="flex w-11 shrink-0 items-center justify-start">
+              <button
+                onClick={() => setIsMobileMenuOpen(true)}
+                className="p-2 -ml-2 text-primary hover:text-secondary transition-colors"
+                aria-label="Open menu"
+              >
+                <span className="material-symbols-outlined font-light text-[28px]">menu</span>
+              </button>
+            </div>
+            <div className="flex-1 flex justify-center items-center min-w-0 px-0.5">
+              <Link to="/" className="flex flex-col items-center group py-1 max-w-full">
+                <img
+                  alt={`${SITE_NAME} brand logo`}
+                  className="h-[4.75rem] w-auto max-w-[min(52vw,13rem)] object-contain object-center transition-all duration-700 group-hover:scale-[1.02] mix-blend-multiply opacity-[0.97]"
+                  src={BRAND_LOGO_SRC}
+                  width={220}
+                  height={220}
+                />
+              </Link>
+            </div>
+            <div className="flex shrink-0 items-center justify-end gap-0 -mr-1">
+              <Link
+                to="/wishlist"
+                className="relative text-primary hover:text-secondary transition-colors p-1.5 -mr-0.5"
+                aria-label="Wishlist"
+              >
+                <span className="material-symbols-outlined text-[24px] font-light">favorite</span>
+                {wishlistCount > 0 && (
+                  <span className="absolute top-0.5 right-0.5 bg-secondary text-white text-[8px] font-bold h-3.5 min-w-3.5 px-0.5 rounded-full flex items-center justify-center tabular-nums">
+                    {wishlistCount > 9 ? "9+" : wishlistCount}
+                  </span>
+                )}
+              </Link>
+              <Link to="/cart" className="relative text-primary hover:text-secondary transition-colors p-1.5" aria-label="Cart">
+                <span className="material-symbols-outlined text-[24px] font-light">shopping_bag</span>
+                {cartItemCount > 0 && (
+                  <span className="absolute top-0.5 right-0.5 bg-secondary text-white text-[8px] font-bold h-3.5 w-3.5 rounded-full flex items-center justify-center">
+                    {cartItemCount}
+                  </span>
+                )}
+              </Link>
+            </div>
           </div>
 
           {/* Desktop: logo anchored center, nav pulled inward */}

@@ -5,6 +5,7 @@
 import type { Watch, WatchAvailability } from "../data/watches";
 import { SITE_NAME_FULL, SITE_ORIGIN, SITE_PUBLIC_BRAND } from "../constants/site";
 import { resolveWatchAvailability } from "./watchOrder";
+import { journalPublishedAtForJsonLd } from "./journalPublishedAt";
 
 const ORG_ID = `${SITE_ORIGIN}/#organization`;
 
@@ -108,7 +109,7 @@ export function blogPostingJsonLd(post: {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
-    datePublished: post.publishedAt,
+    datePublished: journalPublishedAtForJsonLd(post.publishedAt),
     description: post.description.trim().slice(0, 5000),
     author: {
       "@type": "Organization",

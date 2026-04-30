@@ -7,12 +7,7 @@ import type { JournalPost, SanityJournalListItem } from "../lib/journalTypes";
 import { mapSanityJournalListItem } from "../lib/mapJournalPost";
 import { applySeo } from "../lib/seo";
 import { JOURNAL_PAGE_META_DESCRIPTION, JOURNAL_PAGE_META_TITLE, SITE_PUBLIC_BRAND } from "../constants/site";
-
-function formatJournalDate(iso: string): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString("en-NG", { year: "numeric", month: "long", day: "numeric" });
-}
+import { formatJournalPublishedDisplay, journalPublishedAtForJsonLd } from "../lib/journalPublishedAt";
 
 export function Journal() {
   const [posts, setPosts] = useState<JournalPost[]>([]);
@@ -128,10 +123,10 @@ export function Journal() {
                     </Link>
                     <div className="md:col-span-7 flex flex-col pt-1 md:pt-3">
                       <time
-                        dateTime={post.publishedAt}
+                        dateTime={journalPublishedAtForJsonLd(post.publishedAt)}
                         className="wide-label !text-[9px] text-on-surface-variant/50 font-bold mb-4"
                       >
-                        {formatJournalDate(post.publishedAt)}
+                        {formatJournalPublishedDisplay(post.publishedAt)}
                       </time>
                       <h2 className="font-headline text-3xl sm:text-4xl md:text-5xl text-primary tight-headline mb-5 group-hover:text-secondary transition-colors">
                         <Link to={`/journal/${encodeURIComponent(post.slug)}`}>{post.title}</Link>

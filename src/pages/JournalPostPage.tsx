@@ -8,12 +8,7 @@ import type { JournalPost, SanityJournalDetail } from "../lib/journalTypes";
 import { mapSanityJournalDetail } from "../lib/mapJournalPost";
 import { applySeo } from "../lib/seo";
 import { SITE_PUBLIC_BRAND } from "../constants/site";
-
-function formatJournalDate(iso: string): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString("en-NG", { year: "numeric", month: "long", day: "numeric" });
-}
+import { formatJournalPublishedDisplay, journalPublishedAtForJsonLd } from "../lib/journalPublishedAt";
 
 export function JournalPostPage() {
   const { slug: slugParam } = useParams<{ slug: string }>();
@@ -120,8 +115,11 @@ export function JournalPostPage() {
           >
             <span aria-hidden>←</span> Journal
           </Link>
-          <time dateTime={post.publishedAt} className="wide-label !text-[9px] text-on-surface-variant/50 font-bold block mb-5">
-            {formatJournalDate(post.publishedAt)}
+          <time
+            dateTime={journalPublishedAtForJsonLd(post.publishedAt)}
+            className="wide-label !text-[9px] text-on-surface-variant/50 font-bold block mb-5"
+          >
+            {formatJournalPublishedDisplay(post.publishedAt)}
           </time>
           <h1 className="font-headline text-4xl sm:text-5xl md:text-6xl lg:text-[3.5rem] text-primary tight-headline leading-[1.05] mb-8">
             {post.title}

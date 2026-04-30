@@ -5,6 +5,7 @@ import type {
   SanityJournalDetail,
   SanityJournalListItem,
 } from "./journalTypes";
+import { normalizeJournalPublishedAt } from "./journalPublishedAt";
 
 function mapBodyBlock(row: SanityJournalBlockWire | null | undefined): JournalBlock | null {
   if (!row || !row._type) return null;
@@ -37,7 +38,7 @@ export function mapSanityJournalListItem(row: SanityJournalListItem | null | und
   const slug = row.slug?.trim();
   if (!slug) return null;
   const title = (row.title ?? "").trim() || "Untitled";
-  const publishedAt = row.publishedAt?.trim() ?? "";
+  const publishedAt = normalizeJournalPublishedAt(row.publishedAt);
   if (!publishedAt) return null;
   const excerpt = (row.excerpt ?? "").trim();
   const cover =
