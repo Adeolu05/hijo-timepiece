@@ -2,18 +2,12 @@ import { Link } from "react-router-dom";
 import {
   SITE_NAME_FULL,
   EMAIL,
-  LOCATION_LINE,
   whatsappHref,
   SITE_PUBLIC_BRAND,
 } from "../constants/site";
 import { JsonLd } from "../components/JsonLd";
 
 export const FAQ_ENTRIES: { question: string; answer: string }[] = [
-  {
-    question: "What is Hijo Lux Watches and how is it related to Hijo Multiservice Timepieces?",
-    answer:
-      "Hijo Lux Watches is the customer-facing brand and online store at hijoluxwatches.com. Hijo Multiservice Timepieces is our registered business name. They are the same company: trusted sellers of luxury, vintage, and modern wristwatches from Lagos with worldwide shipping.",
-  },
   {
     question: "Do you sell authentic luxury watches and wristwatches?",
     answer:
@@ -22,7 +16,7 @@ export const FAQ_ENTRIES: { question: string; answer: string }[] = [
   {
     question: "Where are you located and do you ship outside Nigeria?",
     answer:
-      `We are based in ${LOCATION_LINE}. We work with collectors and buyers domestically and ship internationally wherever logistics allow; enquire for your country.`,
+      "We are based in Dubai and our partnered service center in Lagos, Nigeria. We work with collectors and buyers domestically and ship internationally wherever logistics allow; enquire for your country.",
   },
   {
     question: "How do I contact Hijo for a watch enquiry or purchase?",
