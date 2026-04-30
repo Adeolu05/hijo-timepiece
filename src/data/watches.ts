@@ -1,6 +1,9 @@
 /** Customer-facing availability; drives storefront badges and cart eligibility. */
 export type WatchAvailability = "available" | "out-of-stock" | "pre-order";
 
+/** Pre-owned / inventory condition from Sanity. */
+export type WatchCondition = "unworn" | "excellent" | "very-good" | "good" | "fair";
+
 /** Domain model for catalog + cart. `id` is always the public slug (URL segment), never Sanity `_id`. */
 export interface Watch {
   id: string;
@@ -10,6 +13,14 @@ export interface Watch {
   category?: string;
   /** Nominal amount in NGN (Nigerian naira). */
   price: number;
+  /** Original list price (NGN) when on sale; shown struck through when greater than `price`. */
+  compareAtPrice?: number;
+  /** Display discount 0–100; may be derived from compare-at vs price when not set in CMS. */
+  discountPercent?: number;
+  /** Optional model or manufacture year. */
+  modelYear?: number;
+  /** Optional condition grade. */
+  condition?: WatchCondition;
   image: string;
   description: string;
   specs: {

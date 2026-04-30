@@ -10,7 +10,11 @@
 | `name` | `string` | Required for sensible UI; mapper falls back to `"Untitled"`. |
 | `collection` | `string` | Mapper fallback `"Collection"`. |
 | `category` | `string` (optional) | |
-| `price` | `number` | USD; mapper defaults `0`. |
+| `price` | `number` | **Selling price** in NGN; cart & JSON-LD use this amount. |
+| `compareAtPrice` | `number` (optional) | Original list price when on sale; must be &gt; `price` to display struck through. |
+| `discountPercent` | `number` (optional) | 0–100 badge; derived from compare-at vs price when omitted. |
+| `modelYear` | `number` (optional) | Model or manufacture year. |
+| `condition` | `string` (optional) | One of `unworn`, `excellent`, `very-good`, `good`, `fair`. |
 | `description` | `string` | Mapper default `""`. |
 | `image` | `string` | Main image URL; uses primary image or first gallery URL; may be `""` if missing (avoid—set **Primary image** in Studio). |
 | `images` | `string[]` | Gallery URLs after GROQ resolves assets. |
@@ -22,7 +26,7 @@
 
 ### GROQ projection (`src/lib/sanity.ts`)
 
-Documents must have `_type == "watch"` and `defined(slug.current)`. Fetched fields: `slug` (as `slug.current`), `name`, `collection`, `category`, `price`, `image` (asset URL), `description`, `specs` subfields, `images` (URLs), `featured`, `isNewArrival`, `isLimitedEdition`, `stock`.
+Documents must have `_type == "watch"` and `defined(slug.current)`. Fetched fields include: `slug` (as `slug.current`), `name`, `collection`, `category`, `price`, `compareAtPrice`, `discountPercent`, `modelYear`, `condition`, `image` (asset URL), `description`, `specs` subfields, `images` (URLs), `featured`, `isNewArrival`, `isLimitedEdition`, `availability`, `stockQuantity`, `stock`.
 
 ### When local `WATCHES` is used (`src/store/productStore.ts`)
 

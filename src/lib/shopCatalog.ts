@@ -1,5 +1,8 @@
 import type { Watch } from "../data/watches";
 
+/** Items per page on `/shop` (URL `?page=`). */
+export const SHOP_PAGE_SIZE = 20;
+
 export type ShopSort = "name" | "price-asc" | "price-desc" | "newest";
 
 export interface ShopCatalogParams {

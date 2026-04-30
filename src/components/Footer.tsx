@@ -95,6 +95,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/wishlist" className="hover:text-white transition-colors">
+                  Wishlist
+                </Link>
+              </li>
+              <li>
                 <Link to="/cart" className="hover:text-white transition-colors">
                   Cart
                 </Link>
@@ -108,6 +113,11 @@ export function Footer() {
               <li>
                 <Link to="/about" className="hover:text-white transition-colors">
                   About Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/journal" className="hover:text-white transition-colors">
+                  Journal
                 </Link>
               </li>
               <li>

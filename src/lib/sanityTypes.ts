@@ -1,13 +1,27 @@
 /**
  * Raw rows returned by GROQ before mapping to {@link Watch}.
  * All fields optional/nullable at the wire; normalize in mapSanityDocumentToWatch.
+ *
+ * Sanity `condition` list values; mapped to labels in UI.
  */
+export type SanityWatchCondition =
+  | "unworn"
+  | "excellent"
+  | "very-good"
+  | "good"
+  | "fair"
+  | string;
+
 export interface SanityWatchDocument {
   slug?: string | null;
   name?: string | null;
   collection?: string | null;
   category?: string | null;
   price?: number | null;
+  compareAtPrice?: number | null;
+  discountPercent?: number | null;
+  modelYear?: number | null;
+  condition?: SanityWatchCondition | null;
   image?: string | null;
   description?: string | null;
   specs?: {

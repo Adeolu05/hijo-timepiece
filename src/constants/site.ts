@@ -1,7 +1,7 @@
 /** Public site & contact; single source of truth for branding and WhatsApp. */
 
 export const SITE_NAME = "Hijo Multiservice Timepieces";
-export const SITE_NAME_FULL = "Hijo Multiservice Timepieces";
+export const SITE_NAME_FULL = "Hijo LuxWatches Multiservice";
 /**
  * Trading / customer-facing brand (domain hijoluxwatches.com, IG @hijoluxwatches).
  * Use in page titles, Open Graph, and copy where searches use "Hijo Lux" rather than the legal entity name.
@@ -14,11 +14,15 @@ export const SITE_DESCRIPTION =
 /** Homepage meta (keep `index.html` & JSON-LD in sync with these strings when editing). */
 export const HOME_PAGE_META_TITLE = `${SITE_PUBLIC_BRAND} | Official website | Authentic luxury timepieces`;
 export const HOME_PAGE_META_DESCRIPTION =
-  "Official Hijo Lux Watches website: luxury wristwatches, vintage & authentic timepieces. Hijo watches & Hijo Lux — Lagos, Nigeria. Shop online, WhatsApp enquiries, UAE & worldwide shipping.";
+  "Official Hijo Lux Watches website: luxury wristwatches, vintage & authentic timepieces. Hijo watches & Hijo Lux · Lagos, Nigeria. Shop online, WhatsApp enquiries, UAE & worldwide shipping.";
 
-/** Shop catalogue page — covers generic “watches Nigeria” / wristwatch shopping intent without stuffing. */
+/** Shop catalogue page. Covers generic “watches Nigeria” / wristwatch shopping intent without stuffing. */
 export const SHOP_PAGE_META_DESCRIPTION =
-  "Buy luxury wristwatches & watches online — curated vintage, skeleton, complication & precious-metal models from Hijo Lux Watches. Official store, Lagos. Prices in NGN; worldwide shipping.";
+  "Buy luxury wristwatches & watches online · curated vintage, skeleton, complication & precious-metal models from Hijo Lux Watches. Official store, Lagos. Prices in NGN; worldwide shipping.";
+
+export const JOURNAL_PAGE_META_TITLE = `Journal & events | ${SITE_PUBLIC_BRAND}`;
+export const JOURNAL_PAGE_META_DESCRIPTION =
+  "News, watch fairs, and behind-the-scenes stories from Hijo Lux Watches · events, photography, and film from our team in Lagos and abroad.";
 
 export const FAQ_PAGE_META_DESCRIPTION =
   "FAQ for Hijo Lux Watches / Hijo Multiservice Timepieces: authentic luxury wristwatches, shipping Nigeria & international, WhatsApp ordering, authenticity, and Lagos-based support.";

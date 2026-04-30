@@ -2,6 +2,21 @@ import type { Watch, WatchAvailability } from "../data/watches";
 import type { SanityWatchDocument } from "./sanityTypes";
 import { resolvePrimaryImageFromWire } from "./watchImages";
 
+const WATCH_CONDITIONS = new Set<string>(["unworn", "excellent", "very-good", "good", "fair"]);
+
+function mapCondition(raw: string | null | undefined): Watch["condition"] | undefined {
+  const v = raw?.trim().toLowerCase();
+  if (v && WATCH_CONDITIONS.has(v)) return v as Watch["condition"];
+  return undefined;
+}
+
+function deriveDiscountPercent(price: number, compareAt: number): number | undefined {
+  if (!(compareAt > price) || compareAt <= 0) return undefined;
+  const pct = Math.round((1 - price / compareAt) * 100);
+  if (pct <= 0 || pct > 100) return undefined;
+  return pct;
+}
+
 function nonEmptyStrings(urls: (string | null | undefined)[] | null | undefined): string[] {
   if (!urls?.length) return [];
   return urls.filter((u): u is string => typeof u === "string" && u.length > 0);
@@ -47,6 +62,28 @@ export function mapSanityDocumentToWatch(doc: SanityWatchDocument): Watch | null
   };
 
   const price = typeof doc.price === "number" && Number.isFinite(doc.price) ? doc.price : 0;
+  const compareRaw =
+    typeof doc.compareAtPrice === "number" && Number.isFinite(doc.compareAtPrice)
+      ? doc.compareAtPrice
+      : undefined;
+  const compareAtPrice = compareRaw != null && compareRaw > price ? compareRaw : undefined;
+
+  let discountPercent: number | undefined =
+    typeof doc.discountPercent === "number" &&
+    Number.isFinite(doc.discountPercent) &&
+    doc.discountPercent > 0 &&
+    doc.discountPercent <= 100
+      ? Math.round(doc.discountPercent)
+      : undefined;
+  if (discountPercent == null && compareAtPrice != null) {
+    discountPercent = deriveDiscountPercent(price, compareAtPrice);
+  }
+
+  const modelYear =
+    typeof doc.modelYear === "number" && Number.isFinite(doc.modelYear)
+      ? Math.floor(doc.modelYear)
+      : undefined;
+
   const availability = mapAvailability(doc);
   const stockQuantity = mapStockQuantity(doc);
 
@@ -70,6 +107,12 @@ export function mapSanityDocumentToWatch(doc: SanityWatchDocument): Watch | null
   if (doc.featured === true) watch.featured = true;
   if (doc.isNewArrival === true) watch.isNewArrival = true;
   if (doc.isLimitedEdition === true) watch.isLimitedEdition = true;
+
+  if (compareAtPrice != null) watch.compareAtPrice = compareAtPrice;
+  if (discountPercent != null) watch.discountPercent = discountPercent;
+  if (modelYear != null) watch.modelYear = modelYear;
+  const condition = mapCondition(doc.condition ?? undefined);
+  if (condition) watch.condition = condition;
 
   return watch;
 }

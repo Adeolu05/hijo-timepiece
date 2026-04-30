@@ -5,8 +5,10 @@ import { useProductStore } from '../store/productStore';
 import { useCartStore } from '../store/cartStore';
 import { Button } from '../components/ui/Button';
 import { ProductCard } from '../components/ProductCard';
+import { WishlistHeartButton } from '../components/WishlistHeartButton';
 import { SITE_PUBLIC_BRAND, WHATSAPP_GREETING_NAME, productShareUrl, whatsappHrefWithText } from '../constants/site';
 import { formatNgn } from '../lib/formatNgn';
+import { formatWatchCondition } from '../lib/watchConditionLabels';
 import { applySeo } from '../lib/seo';
 import { getMaxOrderQuantity, isStorefrontPurchasable, resolveWatchAvailability } from '../lib/watchOrder';
 import { JsonLd } from '../components/JsonLd';
@@ -53,7 +55,7 @@ export function ProductDetail() {
       description:
         description.length > 0
           ? description
-          : `Explore ${watch.name} from the ${watch.collection} — ${SITE_PUBLIC_BRAND} official store.`,
+          : `Explore ${watch.name} from the ${watch.collection} · ${SITE_PUBLIC_BRAND} official store.`,
       path: `/product/${watch.id}`,
       image: watch.image,
       type: 'product',
@@ -110,13 +112,21 @@ export function ProductDetail() {
   const powerReserveValue = normalizeSpec(watch.specs.powerReserve);
   const waterResistanceValue = normalizeSpec(watch.specs.waterResistance);
   const strapValue = normalizeSpec(watch.specs.strapOrBracelet);
+  const yearValue =
+    watch.modelYear != null && Number.isFinite(watch.modelYear) ? String(watch.modelYear) : '';
+  const conditionValue = watch.condition ? formatWatchCondition(watch.condition) : '';
+
   const specsToDisplay = [
+    { label: 'Model year', value: yearValue },
+    { label: 'Condition', value: conditionValue },
     { label: 'Movement', value: movementValue },
     { label: 'Case', value: caseValue },
     { label: 'Power Reserve', value: powerReserveValue },
     { label: 'Water Resistance', value: waterResistanceValue },
     { label: 'Strap / Bracelet', value: strapValue },
   ].filter((spec) => spec.value.length > 0);
+
+  const onSale = typeof watch.compareAtPrice === 'number' && watch.compareAtPrice > watch.price;
   const cleanedDescription = watch.description
     .trim()
     .replace(/^["'`]+|["'`]+$/g, '')
@@ -130,7 +140,12 @@ export function ProductDetail() {
 
   const handleWhatsAppEnquiry = () => {
     const shareUrl = productShareUrl(watch.id);
-    const message = `Hello ${WHATSAPP_GREETING_NAME}, I would like to inquire about the ${watch.name} (${watch.collection}) priced at ${formatNgn(watch.price)}. Is it currently available?\n\nProduct link: ${shareUrl}`;
+    const list = watch.compareAtPrice;
+    const priceNote =
+      typeof list === 'number' && list > watch.price
+        ? `listed at ${formatNgn(list)} NGN, now ${formatNgn(watch.price)} NGN`
+        : `priced at ${formatNgn(watch.price)} NGN`;
+    const message = `Hello ${WHATSAPP_GREETING_NAME}, I would like to inquire about the ${watch.name} (${watch.collection}) ${priceNote}. Is it currently available?\n\nProduct link: ${shareUrl}`;
     window.open(whatsappHrefWithText(message), '_blank');
   };
 
@@ -182,7 +197,7 @@ export function ProductDetail() {
             <div className="relative flex-1 w-full max-w-[16rem] min-[390px]:max-w-[18rem] mx-auto md:max-w-none aspect-[3/4] md:aspect-square lg:max-h-[640px] xl:max-h-[720px] bg-surface-container-low overflow-hidden luxury-shadow group">
               <img
                 src={displayImages[activeImage] || watch.image}
-                alt={`${watch.name} luxury wristwatch — ${watch.collection}. ${SITE_PUBLIC_BRAND}`}
+                alt={`${watch.name} luxury wristwatch · ${watch.collection}. ${SITE_PUBLIC_BRAND}`}
                 className="w-full h-full object-contain object-center p-2 md:p-4 transition-transform duration-[1600ms] group-hover:scale-[1.02]"
               />
               {watch.isLimitedEdition && (
@@ -199,14 +214,27 @@ export function ProductDetail() {
               <span className="wide-label text-secondary mb-4 block font-bold">
                 {watch.collection}
               </span>
-              <h1 className="font-headline text-5xl md:text-6xl xl:text-7xl text-primary tight-headline mb-5">
-                {watch.name}
-              </h1>
-              <div className="flex items-baseline gap-4 md:gap-6">
-                <span className="text-3xl md:text-4xl text-primary font-light tracking-tight">
+              <div className="flex flex-wrap items-start justify-between gap-4 mb-5">
+                <h1 className="font-headline text-5xl md:text-6xl xl:text-7xl text-primary tight-headline flex-1 min-w-0">
+                  {watch.name}
+                </h1>
+                <WishlistHeartButton watchId={watch.id} size="lg" className="shrink-0 mt-1" />
+              </div>
+              <div className="flex flex-wrap items-baseline gap-4 md:gap-6">
+                {onSale && (
+                  <span className="text-lg md:text-xl text-on-surface-variant line-through font-light tabular-nums">
+                    {formatNgn(watch.compareAtPrice!)}
+                  </span>
+                )}
+                <span className="text-3xl md:text-4xl text-primary font-light tracking-tight tabular-nums">
                   {formatNgn(watch.price)}
                 </span>
                 <span className="wide-label !text-[10px] text-on-surface-variant/60">NGN</span>
+                {onSale && watch.discountPercent != null && watch.discountPercent > 0 && (
+                  <span className="wide-label !text-[9px] text-secondary border border-secondary/30 px-4 py-2 bg-secondary/5">
+                    −{watch.discountPercent}% off
+                  </span>
+                )}
               </div>
             </div>
             
@@ -324,7 +352,7 @@ export function ProductDetail() {
             <div className="flex gap-3 min-[390px]:gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-x-10 sm:gap-y-18 lg:gap-y-24 sm:overflow-visible sm:snap-none">
               {relatedWatches.map((rw) => (
                 <div key={rw.id} className="min-w-[68%] min-[390px]:min-w-[64%] min-[440px]:min-w-[56%] max-w-[14.5rem] min-[390px]:max-w-[15.5rem] snap-start sm:min-w-0 sm:max-w-none">
-                  <ProductCard watch={rw} />
+                  <ProductCard watch={rw} overlayEnd={<WishlistHeartButton watchId={rw.id} />} />
                 </div>
               ))}
             </div>

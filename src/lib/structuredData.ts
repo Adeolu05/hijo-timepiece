@@ -38,7 +38,7 @@ export function productJsonLd(watch: Watch): object {
   return {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: `${watch.name} — ${watch.collection}`,
+    name: `${watch.name} · ${watch.collection}`,
     description: desc.length > 0 ? desc : `${watch.name} luxury wristwatch from ${SITE_PUBLIC_BRAND}.`,
     image: images,
     sku: watch.id,
@@ -47,6 +47,7 @@ export function productJsonLd(watch: Watch): object {
       name: SITE_PUBLIC_BRAND,
     },
     category: watch.collection,
+    // `price` is the current selling price (after any discount).
     offers: {
       "@type": "Offer",
       url,
@@ -76,7 +77,7 @@ export function shopItemListJsonLd(watches: Watch[]): object {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: `Luxury wristwatches & timepieces — ${SITE_PUBLIC_BRAND}`,
+    name: `Luxury wristwatches & timepieces · ${SITE_PUBLIC_BRAND}`,
     description: `${SITE_PUBLIC_BRAND} (${SITE_NAME_FULL}) curated shop: vintage, luxury, and modern wristwatches. Nigeria & worldwide.`,
     numberOfItems: watches.length,
     itemListElement: watches.map((w, index) => ({
@@ -86,4 +87,43 @@ export function shopItemListJsonLd(watches: Watch[]): object {
       name: w.name,
     })),
   };
+}
+
+export function blogPostingJsonLd(post: {
+  title: string;
+  description: string;
+  slug: string;
+  publishedAt: string;
+  image?: string;
+}): object {
+  const pageUrl = `${SITE_ORIGIN}/journal/${encodeURIComponent(post.slug)}`;
+  const img = post.image?.trim();
+  const imageUrl = img
+    ? img.startsWith("http")
+      ? img
+      : `${SITE_ORIGIN}${img.startsWith("/") ? img : `/${img}`}`
+    : undefined;
+
+  const payload: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    datePublished: post.publishedAt,
+    description: post.description.trim().slice(0, 5000),
+    author: {
+      "@type": "Organization",
+      name: SITE_PUBLIC_BRAND,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_PUBLIC_BRAND,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": pageUrl,
+    },
+    url: pageUrl,
+  };
+  if (imageUrl) payload.image = imageUrl;
+  return payload;
 }

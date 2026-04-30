@@ -12,7 +12,7 @@ export const FAQ_ENTRIES: { question: string; answer: string }[] = [
   {
     question: "What is Hijo Lux Watches and how is it related to Hijo Multiservice Timepieces?",
     answer:
-      "Hijo Lux Watches is the customer-facing brand and online store at hijoluxwatches.com. Hijo Multiservice Timepieces is our registered business name — they are the same company: trusted sellers of luxury, vintage, and modern wristwatches from Lagos with worldwide shipping.",
+      "Hijo Lux Watches is the customer-facing brand and online store at hijoluxwatches.com. Hijo Multiservice Timepieces is our registered business name. They are the same company: trusted sellers of luxury, vintage, and modern wristwatches from Lagos with worldwide shipping.",
   },
   {
     question: "Do you sell authentic luxury watches and wristwatches?",
@@ -22,7 +22,7 @@ export const FAQ_ENTRIES: { question: string; answer: string }[] = [
   {
     question: "Where are you located and do you ship outside Nigeria?",
     answer:
-      `We are based in ${LOCATION_LINE}. We work with collectors and buyers domestically and ship internationally wherever logistics allow — enquire for your country.`,
+      `We are based in ${LOCATION_LINE}. We work with collectors and buyers domestically and ship internationally wherever logistics allow; enquire for your country.`,
   },
   {
     question: "How do I contact Hijo for a watch enquiry or purchase?",
@@ -32,7 +32,7 @@ export const FAQ_ENTRIES: { question: string; answer: string }[] = [
   {
     question: "Can I browse wristwatches and prices on your website?",
     answer:
-      "Yes — use the curated shop to browse collections, filters, search by name or line, and see transparent pricing in NGN. Add items to your collection and continue on WhatsApp for payment and delivery.",
+      "Yes. Use the curated shop to browse collections, filters, search by name or line, and see transparent pricing in NGN. Add items to your collection and continue on WhatsApp for payment and delivery.",
   },
   {
     question: "Do you accept trade-ins or pre-owned watches?",

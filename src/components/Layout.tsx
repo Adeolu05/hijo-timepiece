@@ -7,6 +7,8 @@ import {
   SITE_PUBLIC_BRAND,
   SHOP_PAGE_META_DESCRIPTION,
   FAQ_PAGE_META_DESCRIPTION,
+  JOURNAL_PAGE_META_DESCRIPTION,
+  JOURNAL_PAGE_META_TITLE,
 } from '../constants/site';
 import { applySeo } from '../lib/seo';
 import { Header } from './Header';
@@ -25,16 +27,22 @@ export function Layout({ children }: LayoutProps) {
     let description = HOME_PAGE_META_DESCRIPTION;
     if (path === '/about') {
       title = `About Us | ${SITE_PUBLIC_BRAND}`;
-      description = `About ${SITE_PUBLIC_BRAND} (${SITE_NAME_FULL}): trusted luxury, vintage & modern watches, Lagos — official site.`;
+      description = `About ${SITE_PUBLIC_BRAND} (${SITE_NAME_FULL}): trusted luxury, vintage & modern watches, Lagos · official site.`;
     } else if (path === '/shop') {
       title = `Shop luxury wristwatches | ${SITE_PUBLIC_BRAND}`;
       description = SHOP_PAGE_META_DESCRIPTION;
     } else if (path === '/faq') {
-      title = `FAQ | ${SITE_PUBLIC_BRAND} — watches, shipping & orders`;
+      title = `FAQ | ${SITE_PUBLIC_BRAND} · watches, shipping & orders`;
       description = FAQ_PAGE_META_DESCRIPTION;
     } else if (path === '/cart') {
       title = `Your collection | ${SITE_PUBLIC_BRAND}`;
-      description = `Review your selected watches and checkout — ${SITE_PUBLIC_BRAND} (${SITE_NAME_FULL}).`;
+      description = `Review your selected watches and checkout · ${SITE_PUBLIC_BRAND} (${SITE_NAME_FULL}).`;
+    } else if (path === "/wishlist") {
+      title = `Wishlist | ${SITE_PUBLIC_BRAND}`;
+      description = `Saved timepieces · ${SITE_PUBLIC_BRAND} (${SITE_NAME_FULL}).`;
+    } else if (path === '/journal' || path.startsWith('/journal/')) {
+      title = JOURNAL_PAGE_META_TITLE;
+      description = JOURNAL_PAGE_META_DESCRIPTION;
     } else if (path === '/privacy') {
       title = `Privacy | ${SITE_PUBLIC_BRAND}`;
       description = `Privacy policy for ${SITE_PUBLIC_BRAND} / ${SITE_NAME_FULL}.`;

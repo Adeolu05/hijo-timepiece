@@ -79,10 +79,10 @@ export function Home() {
               </h1>
               <p className="mt-8 md:mt-9 max-w-md lg:max-w-lg mx-auto lg:mx-0 font-noto text-base md:text-[1.0625rem] leading-relaxed text-on-surface-variant/85 italic">
                 <span className="not-italic text-on-surface-variant/90">
-                  Hijo Lux Watches — our official online store for
+                  Hijo Lux Watches · our official online store for
                 </span>{' '}
                 authentic luxury and vintage watches from sources we trust around the world. We&apos;re based
-                in Lagos and work with buyers across Nigeria, clear advice when you&apos;re deciding, and
+                in Dubai but registered in Lagos, Nigeria and work with buyers across Nigeria, clear advice when you&apos;re deciding, and
                 support you can count on after the sale.
               </p>
               <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center lg:justify-start gap-5 sm:gap-6 mt-8 md:mt-9">

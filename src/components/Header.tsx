@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { RiWhatsappLine } from "react-icons/ri";
 import { useCartStore } from "../store/cartStore";
+import { useWishlistStore } from "../store/wishlistStore";
 import { BRAND_LOGO_SRC } from "../constants/brand";
 import { SITE_NAME, whatsappHref } from "../constants/site";
 
 export function Header() {
   const cartItems = useCartStore((state) => state.items);
   const cartItemCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const wishlistCount = useWishlistStore((state) => state.ids.length);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -45,6 +47,7 @@ export function Header() {
     pathname === "/shop" && category !== "men" && category !== "women" && sort !== "newest";
   const activeAbout = pathname === "/about";
   const activeFaq = pathname === "/faq";
+  const activeJournal = pathname === "/journal" || pathname.startsWith("/journal/");
   const activeMen = pathname === "/shop" && category === "men";
   const activeWomen = pathname === "/shop" && category === "women";
   const activeNew = pathname === "/shop" && sort === "newest";
@@ -100,6 +103,14 @@ export function Header() {
                 height={220}
               />
             </Link>
+            <Link to="/wishlist" className="relative text-primary hover:text-secondary transition-colors p-2" aria-label="Wishlist">
+              <span className="material-symbols-outlined text-[24px] font-light">favorite</span>
+              {wishlistCount > 0 && (
+                <span className="absolute top-1 right-1 bg-secondary text-white text-[8px] font-bold h-3.5 min-w-3.5 px-0.5 rounded-full flex items-center justify-center tabular-nums">
+                  {wishlistCount > 9 ? "9+" : wishlistCount}
+                </span>
+              )}
+            </Link>
             <Link to="/cart" className="relative text-primary hover:text-secondary transition-colors p-2">
               <span className="material-symbols-outlined text-[24px] font-light">shopping_bag</span>
               {cartItemCount > 0 && (
@@ -118,6 +129,9 @@ export function Header() {
               </Link>
               <Link to="/about" className={navText(activeAbout)}>
                 About
+              </Link>
+              <Link to="/journal" className={navText(activeJournal)}>
+                Journal
               </Link>
               <Link to="/faq" className={navText(activeFaq)}>
                 FAQ
@@ -166,6 +180,14 @@ export function Header() {
                 >
                   <RiWhatsappLine className="block text-[21px] -translate-y-px" aria-hidden />
                 </a>
+                <Link to="/wishlist" className={`${iconBtn} relative`} aria-label="Wishlist">
+                  <span className="material-symbols-outlined text-[21px] font-light">favorite</span>
+                  {wishlistCount > 0 && (
+                    <span className="absolute top-0 right-0 bg-secondary text-white text-[8px] font-bold h-3.5 min-w-3.5 px-0.5 rounded-full flex items-center justify-center tabular-nums">
+                      {wishlistCount > 9 ? "9+" : wishlistCount}
+                    </span>
+                  )}
+                </Link>
                 <Link to="/cart" className={`${iconBtn} relative`}>
                   <span className="material-symbols-outlined text-[21px] font-light">shopping_bag</span>
                   {cartItemCount > 0 && (
@@ -208,6 +230,7 @@ export function Header() {
         <nav className="flex flex-col px-6 py-12 space-y-8">
           <Link to="/shop" className="font-headline text-4xl text-primary hover:text-secondary transition-colors tight-headline">Shop</Link>
           <Link to="/about" className="font-headline text-4xl text-primary hover:text-secondary transition-colors tight-headline">About</Link>
+          <Link to="/journal" className="font-headline text-4xl text-primary hover:text-secondary transition-colors tight-headline">Journal</Link>
           <Link to="/faq" className="font-headline text-4xl text-primary hover:text-secondary transition-colors tight-headline">FAQ</Link>
           <Link to="/shop?category=men" className="font-headline text-4xl text-primary hover:text-secondary transition-colors tight-headline">Men</Link>
           <Link to="/shop?category=women" className="font-headline text-4xl text-primary hover:text-secondary transition-colors tight-headline">Women</Link>
@@ -221,6 +244,10 @@ export function Header() {
             Search collection
           </Link>
           <div className="h-px w-full bg-outline-variant/30 my-4"></div>
+          <Link to="/wishlist" className="wide-label text-on-surface-variant flex items-center hover:text-primary transition-colors">
+            <span className="material-symbols-outlined mr-4">favorite</span>
+            Wishlist ({wishlistCount})
+          </Link>
           <Link to="/cart" className="wide-label text-on-surface-variant flex items-center hover:text-primary transition-colors">
             <span className="material-symbols-outlined mr-4">shopping_bag</span>
             Your Selection ({cartItemCount})

@@ -37,10 +37,49 @@ export const watchType = defineType({
     defineField({
       name: 'price',
       title: 'Price (NGN)',
-      description: 'Amount in Nigerian naira (nominal storefront currency).',
+      description:
+        'Current selling price in naira (cart & checkout). For sales, set this to the discounted amount.',
       type: 'number',
       initialValue: 0,
       validation: (Rule) => Rule.required().min(0),
+    }),
+    defineField({
+      name: 'compareAtPrice',
+      title: 'Compare-at price (NGN)',
+      description: 'Optional original list price; storefront shows it struck through when higher than Price.',
+      type: 'number',
+      validation: (Rule) => Rule.min(0),
+    }),
+    defineField({
+      name: 'discountPercent',
+      title: 'Discount (%)',
+      description:
+        'Optional badge 0–100. If empty and compare-at price is set, the storefront derives % from compare-at vs Price.',
+      type: 'number',
+      validation: (Rule) => Rule.min(0).max(100),
+    }),
+    defineField({
+      name: 'modelYear',
+      title: 'Model year',
+      description: 'Optional year of manufacture or model year.',
+      type: 'number',
+      validation: (Rule) => Rule.min(1800).max(2100).integer(),
+    }),
+    defineField({
+      name: 'condition',
+      title: 'Condition',
+      description: 'Optional pre-owned / wear condition.',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Unworn', value: 'unworn'},
+          {title: 'Excellent', value: 'excellent'},
+          {title: 'Very good', value: 'very-good'},
+          {title: 'Good', value: 'good'},
+          {title: 'Fair', value: 'fair'},
+        ],
+        layout: 'radio',
+      },
     }),
     defineField({
       name: 'availability',

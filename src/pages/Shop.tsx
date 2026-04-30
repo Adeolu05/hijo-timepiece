@@ -1,8 +1,9 @@
-import { useMemo, useEffect, useCallback } from "react";
+import { useMemo, useEffect, useCallback, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useProductStore } from "../store/productStore";
 import { ProductCard } from "../components/ProductCard";
-import { filterAndSortWatches, type ShopSort } from "../lib/shopCatalog";
+import { WishlistHeartButton } from "../components/WishlistHeartButton";
+import { filterAndSortWatches, SHOP_PAGE_SIZE, type ShopSort } from "../lib/shopCatalog";
 import { JsonLd } from "../components/JsonLd";
 import { breadcrumbJsonLd, shopItemListJsonLd } from "../lib/structuredData";
 
@@ -49,6 +50,24 @@ function useShopParams() {
     [setSearchParams],
   );
 
+  const pageParam = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
+
+  const setPage = useCallback(
+    (n: number) => {
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev);
+          const clamped = Math.max(1, n);
+          if (clamped <= 1) next.delete("page");
+          else next.set("page", String(clamped));
+          return next;
+        },
+        { replace: true },
+      );
+    },
+    [setSearchParams],
+  );
+
   const clearFilters = useCallback(() => {
     setSearchParams({}, { replace: true });
   }, [setSearchParams]);
@@ -63,12 +82,14 @@ function useShopParams() {
     setParam,
     clearFilters,
     toggleLine,
+    pageParam,
+    setPage,
   };
 }
 
 export function Shop() {
   const { watches, fetchWatches, isLoading, error, clearCatalogError } = useProductStore();
-  const { q, category, line, newOnly, sort, setParam, clearFilters, toggleLine, setSearchParams } =
+  const { q, category, line, newOnly, sort, setParam, clearFilters, toggleLine, setSearchParams, pageParam, setPage } =
     useShopParams();
 
   useEffect(() => {
@@ -87,7 +108,38 @@ export function Shop() {
     [watches, q, category, line, newOnly, sort],
   );
 
-  const hasSingleResult = displayed.length === 1;
+  const totalFiltered = displayed.length;
+  const totalPages = Math.max(1, Math.ceil(totalFiltered / SHOP_PAGE_SIZE));
+  const page = Math.min(pageParam, totalPages);
+
+  useEffect(() => {
+    if (pageParam > totalPages) {
+      setPage(totalPages);
+    }
+  }, [pageParam, totalPages, setPage]);
+
+  const filterKey = `${q}|${category ?? ""}|${line ?? ""}|${newOnly}|${sort}`;
+  const prevFilterKey = useRef<string | null>(null);
+  useEffect(() => {
+    if (prevFilterKey.current === null) {
+      prevFilterKey.current = filterKey;
+      return;
+    }
+    if (prevFilterKey.current !== filterKey) {
+      prevFilterKey.current = filterKey;
+      setParam("page", null);
+    }
+  }, [filterKey, setParam]);
+
+  const displayedPage = useMemo(
+    () => displayed.slice((page - 1) * SHOP_PAGE_SIZE, page * SHOP_PAGE_SIZE),
+    [displayed, page],
+  );
+
+  const rangeStart = totalFiltered === 0 ? 0 : (page - 1) * SHOP_PAGE_SIZE + 1;
+  const rangeEnd = Math.min(page * SHOP_PAGE_SIZE, totalFiltered);
+
+  const hasSingleResult = displayedPage.length === 1;
   const isAllActive = !category && !line && !newOnly && !q;
   return (
     <>
@@ -129,7 +181,7 @@ export function Shop() {
                 <span className="italic font-serif opacity-60">of Horology</span>
               </h1>
               <p className="text-on-surface-variant max-w-2xl text-base md:text-lg font-light leading-relaxed italic font-serif opacity-75">
-                Browse luxury wristwatches, vintage & modern timepieces — authentic watches with transparent pricing
+                Browse luxury wristwatches, vintage & modern timepieces · authentic watches with transparent pricing
                 and trusted support from our Lagos team. Search by name, collection, or line.
               </p>
             </div>
@@ -152,12 +204,20 @@ export function Shop() {
                 />
               </div>
               <div className="flex items-center justify-between gap-4 border-t border-outline-variant/20 pt-2">
-                <span className="text-on-surface-variant/55 whitespace-nowrap">
+                <span className="text-on-surface-variant/55 whitespace-nowrap max-sm:text-[10px]">
                   <span className="wide-label !text-[8px] mr-1.5">Showing</span>
-                  <span className="wide-label !text-[9px] text-primary/85 font-bold">{displayed.length}</span>
+                  <span className="wide-label !text-[9px] text-primary/85 font-bold tabular-nums">
+                    {rangeStart > 0 ? `${rangeStart}–${rangeEnd}` : "0"}
+                  </span>
                   <span className="wide-label !text-[8px] mx-1 text-on-surface-variant/45">of</span>
-                  <span className="wide-label !text-[9px] text-on-surface-variant/70 font-bold">{watches.length}</span>
-                  <span className="wide-label !text-[8px] ml-1 text-on-surface-variant/45">models</span>
+                  <span className="wide-label !text-[9px] text-on-surface-variant/70 font-bold tabular-nums">
+                    {totalFiltered}
+                  </span>
+                  <span className="wide-label !text-[8px] mx-1 text-on-surface-variant/45">matches ·</span>
+                  <span className="wide-label !text-[9px] text-on-surface-variant/60 font-bold tabular-nums">
+                    {watches.length}
+                  </span>
+                  <span className="wide-label !text-[8px] ml-1 text-on-surface-variant/45">in catalog</span>
                 </span>
                 <div className="flex items-center gap-2.5 w-auto">
                   <label htmlFor="shop-sort" className="wide-label !text-[9px] text-on-surface-variant/50 font-bold whitespace-nowrap">
@@ -294,19 +354,51 @@ export function Shop() {
         )}
 
         {displayed.length > 0 && (
-          <div
-            className={
-              displayed.length === 1
-                ? "max-w-[720px] mx-auto"
-                : displayed.length === 2
-                  ? "max-w-[1100px] mx-auto grid grid-cols-2 gap-x-3 min-[390px]:gap-x-4 sm:gap-x-8 md:gap-x-10 gap-y-12 min-[390px]:gap-y-14 md:gap-y-20"
-                  : "grid grid-cols-2 lg:grid-cols-3 gap-x-3 min-[390px]:gap-x-4 sm:gap-x-8 lg:gap-x-10 xl:gap-x-12 gap-y-12 min-[390px]:gap-y-14 md:gap-y-20 lg:gap-y-28"
-            }
-          >
-            {displayed.map((watch) => (
-              <ProductCard key={watch.id} watch={watch} />
-            ))}
-          </div>
+          <>
+            <div
+              className={
+                displayedPage.length === 1
+                  ? "max-w-[720px] mx-auto"
+                  : displayedPage.length === 2
+                    ? "max-w-[1100px] mx-auto grid grid-cols-2 gap-x-3 min-[390px]:gap-x-4 sm:gap-x-8 md:gap-x-10 gap-y-12 min-[390px]:gap-y-14 md:gap-y-20"
+                    : "grid grid-cols-2 lg:grid-cols-3 gap-x-3 min-[390px]:gap-x-4 sm:gap-x-8 lg:gap-x-10 xl:gap-x-12 gap-y-12 min-[390px]:gap-y-14 md:gap-y-20 lg:gap-y-28"
+              }
+            >
+              {displayedPage.map((watch) => (
+                <ProductCard
+                  key={watch.id}
+                  watch={watch}
+                  overlayEnd={<WishlistHeartButton watchId={watch.id} />}
+                />
+              ))}
+            </div>
+            {totalPages > 1 && (
+              <nav
+                className="mt-16 md:mt-20 flex flex-wrap items-center justify-center gap-6 md:gap-10"
+                aria-label="Catalog pages"
+              >
+                <button
+                  type="button"
+                  disabled={page <= 1}
+                  onClick={() => setPage(page - 1)}
+                  className="wide-label !text-[10px] font-bold text-primary border border-outline-variant/30 px-6 py-3 hover:border-secondary disabled:opacity-25 disabled:cursor-not-allowed transition-colors"
+                >
+                  Previous
+                </button>
+                <span className="wide-label !text-[9px] text-on-surface-variant/65 font-bold tabular-nums">
+                  Page {page} of {totalPages}
+                </span>
+                <button
+                  type="button"
+                  disabled={page >= totalPages}
+                  onClick={() => setPage(page + 1)}
+                  className="wide-label !text-[10px] font-bold text-primary border border-outline-variant/30 px-6 py-3 hover:border-secondary disabled:opacity-25 disabled:cursor-not-allowed transition-colors"
+                >
+                  Next
+                </button>
+              </nav>
+            )}
+          </>
         )}
       </div>
     </div>
