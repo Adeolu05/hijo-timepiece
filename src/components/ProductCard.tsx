@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import type { ReactNode } from "react";
 import type { Watch } from "../data/watches";
-import { formatNgn } from "../lib/formatNgn";
+import { usePriceDisplay } from "../hooks/usePriceDisplay";
+import { PriceCurrencyPicker } from "./CurrencySelector";
 import { formatWatchCondition } from "../lib/watchConditionLabels";
 
 interface ProductCardProps {
@@ -11,6 +12,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ watch, overlayEnd }: ProductCardProps) {
+  const { formatPrice } = usePriceDisplay();
   const statusLabel = watch.isLimitedEdition
     ? "Limited Edition"
     : watch.availability === "pre-order"
@@ -74,14 +76,14 @@ export function ProductCard({ watch, overlayEnd }: ProductCardProps) {
               {onSale ? (
                 <>
                   <span className="text-on-surface-variant line-through text-xs font-light tabular-nums">
-                    {formatNgn(compareAt!)}
+                    {formatPrice(compareAt!)}
                   </span>
-                  <span className="text-secondary tabular-nums">{formatNgn(watch.price)}</span>
+                  <span className="text-secondary tabular-nums">{formatPrice(watch.price)}</span>
                 </>
               ) : (
-                <span className="tabular-nums">{formatNgn(watch.price)}</span>
+                <span className="tabular-nums">{formatPrice(watch.price)}</span>
               )}
-              <span className="text-[10px] text-on-surface-variant/70 font-light">NGN</span>
+              <PriceCurrencyPicker variant="inline" />
             </p>
             <div className="h-px w-5 bg-outline-variant/25 hidden sm:block" />
           </div>

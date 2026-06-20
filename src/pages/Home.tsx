@@ -6,7 +6,8 @@ import { useProductStore } from '../store/productStore';
 import type { Watch } from '../data/watches';
 import { WATCHES } from '../data/watches';
 import { EMAIL, whatsappHref, whatsappHrefWithText, WHATSAPP_GREETING_NAME } from '../constants/site';
-import { formatNgn } from '../lib/formatNgn';
+import { usePriceDisplay } from '../hooks/usePriceDisplay';
+import { PriceCurrencyPicker } from '../components/CurrencySelector';
 import { FALLBACK_WATCH_IMAGE_URL, resolveWatchImageUrl } from '../lib/watchImages';
 import { displayMerchandisingLabel } from '../lib/merchandisingLabels';
 import { BrandCertificateTrust } from '../components/BrandCertificateTrust';
@@ -49,6 +50,7 @@ function watchDetailLine(watch: Watch): string | null {
 
 export function Home() {
   const { watches, fetchWatches } = useProductStore();
+  const { formatPrice } = usePriceDisplay();
 
   useEffect(() => {
     fetchWatches();
@@ -190,9 +192,12 @@ export function Home() {
                       </p>
                     ) : null}
                   </div>
-                  <p className="font-headline text-[1.05rem] min-[390px]:text-xl md:text-2xl text-secondary tabular-nums shrink-0 pt-1 sm:pt-0">
-                    {formatNgn(heroWatch.price)}
-                  </p>
+                  <div className="flex items-baseline gap-2 shrink-0 pt-1 sm:pt-0">
+                    <p className="font-headline text-[1.05rem] min-[390px]:text-xl md:text-2xl text-secondary tabular-nums">
+                      {formatPrice(heroWatch.price)}
+                    </p>
+                    <PriceCurrencyPicker variant="subtle" />
+                  </div>
                 </div>
               </Link>
             </div>
@@ -238,9 +243,12 @@ export function Home() {
                         </p>
                       ) : null}
                     </div>
-                    <p className="font-headline text-sm min-[390px]:text-base md:text-xl text-secondary tabular-nums shrink-0">
-                      {formatNgn(watch.price)}
-                    </p>
+                    <div className="flex items-baseline gap-1.5 shrink-0">
+                      <p className="font-headline text-sm min-[390px]:text-base md:text-xl text-secondary tabular-nums">
+                        {formatPrice(watch.price)}
+                      </p>
+                      <PriceCurrencyPicker variant="subtle" />
+                    </div>
                   </div>
                 </Link>
               );
@@ -360,7 +368,7 @@ export function Home() {
               <span className="material-symbols-outlined text-secondary text-4xl mb-2 font-light group-hover:scale-110 transition-transform duration-500">payments</span>
               <h4 className="wide-label text-primary mb-1 font-bold">Fair pricing</h4>
               <p className="wide-label !text-[8px] text-on-surface-variant/40 font-bold leading-tight max-w-[11rem] mx-auto">
-                Clear NGN, no surprises.
+                Clear pricing, no surprises.
               </p>
             </div>
             <div className="group">

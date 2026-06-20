@@ -26,7 +26,7 @@ export const FAQ_ENTRIES: { question: string; answer: string }[] = [
   {
     question: "Can I browse wristwatches and prices on your website?",
     answer:
-      "Yes. Use the curated shop to browse collections, filters, search by name or line, and see transparent pricing in NGN. Add items to your collection and continue on WhatsApp for payment and delivery.",
+      "Yes. Use the curated shop to browse collections, filters, search by name or line, and see transparent pricing in your preferred currency. Amounts are converted from NGN at live exchange rates; payment is settled in NGN. Add items to your collection and continue on WhatsApp for payment and delivery.",
   },
   {
     question: "Do you accept trade-ins or pre-owned watches?",

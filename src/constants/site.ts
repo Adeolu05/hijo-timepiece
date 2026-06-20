@@ -18,7 +18,7 @@ export const HOME_PAGE_META_DESCRIPTION =
 
 /** Shop catalogue page. Covers generic “watches Nigeria” / wristwatch shopping intent without stuffing. */
 export const SHOP_PAGE_META_DESCRIPTION =
-  "Buy luxury wristwatches & watches online · curated vintage, skeleton, complication & precious-metal models from Hijo Lux Watches. Official store, Lagos. Prices in NGN; worldwide shipping.";
+  "Buy luxury wristwatches & watches online · curated vintage, skeleton, complication & precious-metal models from Hijo Lux Watches. Official store, Lagos. Prices shown in your currency; charged in NGN. Worldwide shipping.";
 
 export const JOURNAL_PAGE_META_TITLE = `Journal & events | ${SITE_PUBLIC_BRAND}`;
 export const JOURNAL_PAGE_META_DESCRIPTION =

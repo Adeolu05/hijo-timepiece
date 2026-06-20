@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCartStore } from '../store/cartStore';
 import { WHATSAPP_GREETING_NAME, whatsappHrefWithText } from '../constants/site';
-import { formatNgn } from '../lib/formatNgn';
+import { usePriceDisplay } from '../hooks/usePriceDisplay';
+import { PriceCurrencyPicker } from '../components/CurrencySelector';
 import { getMaxOrderQuantity } from '../lib/watchOrder';
 
 export function Cart() {
   const { items, removeItem, updateQuantity, getTotal } = useCartStore();
+  const { formatPrice, formatCheckoutLine } = usePriceDisplay();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [note, setNote] = useState('');
@@ -23,10 +25,10 @@ export function Cart() {
     }
 
     const orderDetails = items
-      .map((item) => `${item.quantity}x ${item.watch.name} (${item.watch.collection}) - ${formatNgn(item.watch.price * item.quantity)}`)
+      .map((item) => `${item.quantity}x ${item.watch.name} (${item.watch.collection}) - ${formatCheckoutLine(item.watch.price * item.quantity)}`)
       .join('\n');
     
-    const total = formatNgn(getTotal());
+    const total = formatCheckoutLine(getTotal());
     
     const message = `Hello ${WHATSAPP_GREETING_NAME}, I would like to purchase the following timepieces:\n\n${orderDetails}\n\nTotal: ${total}\n\nCustomer Details:\nName: ${name}\nPhone: ${phone}${note ? `\nNote: ${note}` : ''}\n\nPlease provide payment and shipping instructions.`;
 
@@ -86,9 +88,12 @@ export function Cart() {
                       <h3 className="font-headline text-2xl font-medium tracking-tight text-primary">
                         {item.watch.name}
                       </h3>
-                      <span className="text-lg font-light tracking-tight text-primary">
-                        {formatNgn(item.watch.price * item.quantity)}
-                      </span>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-lg font-light tracking-tight text-primary tabular-nums">
+                          {formatPrice(item.watch.price * item.quantity)}
+                        </span>
+                        <PriceCurrencyPicker variant="subtle" />
+                      </div>
                     </div>
                     <p className="text-on-surface-variant text-sm font-light italic font-serif opacity-70 mb-6">
                       {item.watch.collection} · {item.watch.specs.case} · {item.watch.specs.movement}
@@ -169,7 +174,10 @@ export function Cart() {
                 <div className="pt-8 space-y-4">
                   <div className="flex justify-between items-baseline border-b border-outline-variant/20 pb-4">
                     <span className="text-[10px] tracking-[0.2em] uppercase text-on-surface-variant/60 font-bold">Collection Subtotal</span>
-                    <span className="font-headline text-3xl text-primary">{formatNgn(getTotal())}</span>
+                    <div className="flex items-baseline gap-2">
+                      <span className="font-headline text-3xl text-primary tabular-nums">{formatPrice(getTotal())}</span>
+                      <PriceCurrencyPicker variant="inline" />
+                    </div>
                   </div>
                   <p className="text-[10px] text-on-surface-variant/50 leading-relaxed italic font-serif">
                     Final order confirmation and availability check are completed via our WhatsApp concierge service.

@@ -11,9 +11,11 @@ import {
   JOURNAL_PAGE_META_TITLE,
 } from '../constants/site';
 import { applySeo } from '../lib/seo';
+import { RatesUnavailableNotice } from './CurrencySelector';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { BackToTopButton } from './BackToTopButton';
+import { useCurrencyStore } from '../store/currencyStore';
 
 interface LayoutProps {
   children: ReactNode;
@@ -21,6 +23,11 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const location = useLocation();
+  const initCurrency = useCurrencyStore((state) => state.initCurrency);
+
+  useEffect(() => {
+    void initCurrency();
+  }, [initCurrency]);
 
   useEffect(() => {
     const path = location.pathname;
@@ -64,6 +71,7 @@ export function Layout({ children }: LayoutProps) {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
+      <RatesUnavailableNotice />
       <main className="flex-grow">
         {children}
       </main>

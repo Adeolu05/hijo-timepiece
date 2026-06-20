@@ -4,6 +4,7 @@ import { RiWhatsappLine } from "react-icons/ri";
 import { useCartStore } from "../store/cartStore";
 import { useWishlistStore } from "../store/wishlistStore";
 import { BRAND_LOGO_SRC } from "../constants/brand";
+import { CurrencySelector } from "./CurrencySelector";
 import { SITE_NAME, whatsappHref } from "../constants/site";
 
 export function Header() {
@@ -62,6 +63,10 @@ export function Header() {
       <div className="bg-[#0B0B0B] text-secondary/88 border-b border-white/[0.05]">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-8 py-1.5 flex justify-center">
           <div className="inline-flex flex-wrap justify-center items-baseline gap-x-4 sm:gap-x-5 gap-y-1 text-[9px] sm:text-[10px] tracking-[0.18em] uppercase font-medium">
+            <CurrencySelector className="text-white/80" />
+            <span className="text-white/30 hidden sm:inline translate-y-px" aria-hidden>
+              ·
+            </span>
             <span className="text-white/80 whitespace-nowrap">Worldwide shipping</span>
             <span className="text-white/30 hidden sm:inline translate-y-px" aria-hidden>
               ·
@@ -258,6 +263,10 @@ export function Header() {
             Search collection
           </Link>
           <div className="h-px w-full bg-outline-variant/30 my-4"></div>
+          <div className="wide-label text-on-surface-variant flex items-center">
+            <span className="material-symbols-outlined mr-4">payments</span>
+            <CurrencySelector className="text-primary" />
+          </div>
           <Link to="/wishlist" className="wide-label text-on-surface-variant flex items-center hover:text-primary transition-colors">
             <span className="material-symbols-outlined mr-4">favorite</span>
             Wishlist ({wishlistCount})

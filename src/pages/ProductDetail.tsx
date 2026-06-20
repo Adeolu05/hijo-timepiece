@@ -7,7 +7,8 @@ import { Button } from '../components/ui/Button';
 import { ProductCard } from '../components/ProductCard';
 import { WishlistHeartButton } from '../components/WishlistHeartButton';
 import { SITE_PUBLIC_BRAND, WHATSAPP_GREETING_NAME, productShareUrl, whatsappHrefWithText } from '../constants/site';
-import { formatNgn } from '../lib/formatNgn';
+import { usePriceDisplay } from '../hooks/usePriceDisplay';
+import { PriceCurrencyPicker } from '../components/CurrencySelector';
 import { formatWatchCondition } from '../lib/watchConditionLabels';
 import { applySeo } from '../lib/seo';
 import { getMaxOrderQuantity, isStorefrontPurchasable, resolveWatchAvailability } from '../lib/watchOrder';
@@ -20,6 +21,7 @@ export function ProductDetail() {
   const { watches, fetchWatches, isLoading } = useProductStore();
   const watch = watches.find((w) => w.id === id);
   const addItem = useCartStore((state) => state.addItem);
+  const { formatPrice, formatCheckoutLine } = usePriceDisplay();
   const [activeImage, setActiveImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
@@ -143,8 +145,8 @@ export function ProductDetail() {
     const list = watch.compareAtPrice;
     const priceNote =
       typeof list === 'number' && list > watch.price
-        ? `listed at ${formatNgn(list)} NGN, now ${formatNgn(watch.price)} NGN`
-        : `priced at ${formatNgn(watch.price)} NGN`;
+        ? `listed at ${formatCheckoutLine(list)}, now ${formatCheckoutLine(watch.price)}`
+        : `priced at ${formatCheckoutLine(watch.price)}`;
     const message = `Hello ${WHATSAPP_GREETING_NAME}, I would like to inquire about the ${watch.name} (${watch.collection}) ${priceNote}. Is it currently available?\n\nProduct link: ${shareUrl}`;
     window.open(whatsappHrefWithText(message), '_blank');
   };
@@ -223,13 +225,13 @@ export function ProductDetail() {
               <div className="flex flex-wrap items-baseline gap-4 md:gap-6">
                 {onSale && (
                   <span className="text-lg md:text-xl text-on-surface-variant line-through font-light tabular-nums">
-                    {formatNgn(watch.compareAtPrice!)}
+                    {formatPrice(watch.compareAtPrice!)}
                   </span>
                 )}
                 <span className="text-3xl md:text-4xl text-primary font-light tracking-tight tabular-nums">
-                  {formatNgn(watch.price)}
+                  {formatPrice(watch.price)}
                 </span>
-                <span className="wide-label !text-[10px] text-on-surface-variant/60">NGN</span>
+                <PriceCurrencyPicker variant="inline" className="wide-label !text-[10px]" />
                 {onSale && watch.discountPercent != null && watch.discountPercent > 0 && (
                   <span className="wide-label !text-[9px] text-secondary border border-secondary/30 px-4 py-2 bg-secondary/5">
                     −{watch.discountPercent}% off
