@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import type { ReactNode } from "react";
 import type { Watch } from "../data/watches";
 import { usePriceDisplay } from "../hooks/usePriceDisplay";
-import { PriceCurrencyPicker } from "./CurrencySelector";
 import { formatWatchCondition } from "../lib/watchConditionLabels";
 
 interface ProductCardProps {
@@ -83,7 +82,6 @@ export function ProductCard({ watch, overlayEnd }: ProductCardProps) {
               ) : (
                 <span className="tabular-nums">{formatPrice(watch.price)}</span>
               )}
-              <PriceCurrencyPicker variant="inline" />
             </p>
             <div className="h-px w-5 bg-outline-variant/25 hidden sm:block" />
           </div>
