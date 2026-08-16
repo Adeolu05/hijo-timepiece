@@ -373,9 +373,9 @@ export function Home() {
             </div>
             <div className="group">
               <span className="material-symbols-outlined text-secondary text-4xl mb-2 font-light group-hover:scale-110 transition-transform duration-500">public</span>
-              <h4 className="wide-label text-primary mb-1 font-bold">Nigeria &amp; worldwide</h4>
+              <h4 className="wide-label text-primary mb-1 font-bold">UAE, Nigeria &amp; worldwide</h4>
               <p className="wide-label !text-[8px] text-on-surface-variant/40 font-bold leading-tight max-w-[11rem] mx-auto">
-                Local care, global shipping.
+                Free delivery in UAE &amp; Nigeria.
               </p>
             </div>
             <div className="group">

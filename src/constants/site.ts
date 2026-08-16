@@ -29,6 +29,13 @@ export const FAQ_PAGE_META_DESCRIPTION =
 
 export const LOCATION_LINE = "Lagos, Nigeria";
 
+/** Customer-facing shipping policy (UAE & Nigeria complimentary; others charged). */
+export const SHIPPING_FREE_REGIONS =
+  "Shipping and delivery is free to anywhere in UAE & Nigeria.";
+export const SHIPPING_INTERNATIONAL_FEE =
+  "For international countries, a standard shipping fee applies.";
+export const SHIPPING_POLICY = `${SHIPPING_FREE_REGIONS} ${SHIPPING_INTERNATIONAL_FEE}`;
+
 export const EMAIL = "hijoluxwatches@gmail.com";
 export const PHONE_NG_DISPLAY = "+234 813 063 4066";
 export const PHONE_AE_DISPLAY = "+971 52 232 6519";

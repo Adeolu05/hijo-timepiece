@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { SITE_NAME_FULL } from "../constants/site";
+import { SITE_NAME_FULL, SHIPPING_POLICY } from "../constants/site";
 
 export function Terms() {
   return (
@@ -31,7 +31,7 @@ export function Terms() {
           </p>
           <h2 className="font-headline text-2xl text-primary mt-10 mb-4">Shipping &amp; risk</h2>
           <p>
-            Shipping terms, insurance, and transfer of risk are agreed per transaction. International
+            {SHIPPING_POLICY} Insurance and transfer of risk are agreed per transaction. International
             shipments may be subject to customs duties and import regulations in your country.
           </p>
           <h2 className="font-headline text-2xl text-primary mt-10 mb-4">Limitation</h2>

@@ -329,7 +329,7 @@ export function ProductDetail() {
             <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 wide-label !text-[8px] text-on-surface-variant/40 font-bold border-t border-outline-variant/10 pt-5">
               <span className="flex items-center">
                 <span className="material-symbols-outlined text-lg mr-4 opacity-40">local_shipping</span>
-                Worldwide delivery available
+                Free delivery in UAE &amp; Nigeria
               </span>
               <span className="flex items-center">
                 <span className="material-symbols-outlined text-lg mr-4 opacity-40">verified</span>

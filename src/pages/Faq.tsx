@@ -4,6 +4,7 @@ import {
   EMAIL,
   whatsappHref,
   SITE_PUBLIC_BRAND,
+  SHIPPING_POLICY,
 } from "../constants/site";
 import { JsonLd } from "../components/JsonLd";
 
@@ -16,7 +17,12 @@ export const FAQ_ENTRIES: { question: string; answer: string }[] = [
   {
     question: "Where are you located and do you ship outside Nigeria?",
     answer:
-      "We are based in Dubai and our partnered service center in Lagos, Nigeria. We work with collectors and buyers domestically and ship internationally wherever logistics allow; enquire for your country.",
+      `We are based in Dubai and our partnered service center in Lagos, Nigeria. ${SHIPPING_POLICY}`,
+  },
+  {
+    question: "How much is shipping?",
+    answer:
+      `${SHIPPING_POLICY} Final delivery details are confirmed on WhatsApp before payment.`,
   },
   {
     question: "How do I contact Hijo for a watch enquiry or purchase?",

@@ -15,7 +15,7 @@ const offerItems = [
   "Authentic luxury and designer watches",
   "Pre-owned and brand-new timepieces",
   "Trade-in and resale options",
-  "Worldwide shipping",
+  "Free shipping to UAE & Nigeria",
   "Secure transactions and buyer protection",
 ];
 

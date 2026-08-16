@@ -67,7 +67,7 @@ export function Header() {
             <span className="text-white/30 hidden sm:inline translate-y-px" aria-hidden>
               ·
             </span>
-            <span className="text-white/80 whitespace-nowrap">Worldwide shipping</span>
+            <span className="text-white/80 whitespace-nowrap">Free shipping UAE &amp; Nigeria</span>
             <span className="text-white/30 hidden sm:inline translate-y-px" aria-hidden>
               ·
             </span>

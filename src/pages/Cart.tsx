@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useCartStore } from '../store/cartStore';
 import { useDiscountStore } from '../store/discountStore';
 import { useProductStore } from '../store/productStore';
-import { WHATSAPP_GREETING_NAME, whatsappHrefWithText } from '../constants/site';
+import { WHATSAPP_GREETING_NAME, whatsappHrefWithText, SHIPPING_POLICY } from '../constants/site';
 import { usePriceDisplay } from '../hooks/usePriceDisplay';
 import { useCartQuote } from '../hooks/useCartQuote';
 import { PriceCurrencyPicker } from '../components/CurrencySelector';
@@ -382,7 +382,7 @@ export function Cart() {
                     </div>
                   </div>
                   <p className="text-[10px] text-on-surface-variant/50 leading-relaxed italic font-serif">
-                    Final order confirmation and availability check are completed via our WhatsApp concierge service.
+                    {SHIPPING_POLICY} Final order confirmation is completed via WhatsApp.
                   </p>
                   <button 
                     onClick={handleCheckout}
