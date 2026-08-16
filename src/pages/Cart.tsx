@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCartStore } from '../store/cartStore';
 import { useDiscountStore } from '../store/discountStore';
 import { useProductStore } from '../store/productStore';
-import { WHATSAPP_GREETING_NAME, whatsappHrefWithText, SHIPPING_POLICY } from '../constants/site';
+import { WHATSAPP_GREETING_NAME, openWhatsAppWithText, SHIPPING_POLICY } from '../constants/site';
 import { usePriceDisplay } from '../hooks/usePriceDisplay';
 import { useCartQuote } from '../hooks/useCartQuote';
 import { PriceCurrencyPicker } from '../components/CurrencySelector';
@@ -384,6 +384,11 @@ export function Cart() {
                   <p className="text-[10px] text-on-surface-variant/50 leading-relaxed italic font-serif">
                     {SHIPPING_POLICY} Final order confirmation is completed via WhatsApp.
                   </p>
+                  {(errors.name || errors.phone) && (
+                    <span className="text-error text-[9px] wide-label block">
+                      Name and phone are required above before we can open WhatsApp.
+                    </span>
+                  )}
                   <button 
                     onClick={handleCheckout}
                     className="w-full bg-primary text-white py-5 px-8 flex items-center justify-center gap-3 hover:bg-secondary transition-all duration-500 group mt-6" 
