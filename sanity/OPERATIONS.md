@@ -9,6 +9,7 @@
 | `id` | `string` | **Always** `slug.current` from Sanity (public URL segment). Never `_id`. |
 | `name` | `string` | Required for sensible UI; mapper falls back to `"Untitled"`. |
 | `collection` | `string` | Mapper fallback `"Collection"`. |
+| `brand` | `string` (optional on storefront) | Manufacturer: `casio`, `citizen`, `orient`, `seiko`, `other`. Required in Studio. Needed for brand-scoped promo codes. |
 | `category` | `string` (optional) | |
 | `price` | `number` | **Selling price** in NGN; cart & JSON-LD use this amount. |
 | `compareAtPrice` | `number` (optional) | Original list price when on sale; must be &gt; `price` to display struck through. |
@@ -26,7 +27,7 @@
 
 ### GROQ projection (`src/lib/sanity.ts`)
 
-Documents must have `_type == "watch"` and `defined(slug.current)`. Fetched fields include: `slug` (as `slug.current`), `name`, `collection`, `category`, `price`, `compareAtPrice`, `discountPercent`, `modelYear`, `condition`, `image` (asset URL), `description`, `specs` subfields, `images` (URLs), `featured`, `isNewArrival`, `isLimitedEdition`, `availability`, `stockQuantity`, `stock`.
+Documents must have `_type == "watch"` and `defined(slug.current)`. Fetched fields include: `slug` (as `slug.current`), `name`, `collection`, `brand`, `category`, `price`, `compareAtPrice`, `discountPercent`, `modelYear`, `condition`, `image` (asset URL), `description`, `specs` subfields, `images` (URLs), `featured`, `isNewArrival`, `isLimitedEdition`, `availability`, `stockQuantity`, `stock`.
 
 ### When local `WATCHES` is used (`src/store/productStore.ts`)
 
@@ -105,7 +106,7 @@ VITE_SANITY_DATASET=production
 1. `npm install`
 2. Create `.env.local` with `VITE_SANITY_*` as above.
 3. `npm run dev` (default port in this project: **3000** per `package.json` script).
-4. Hard-refresh or clear site data if you switched from fallback to Sanity (product store caches after first successful load; cart uses `hijo-lux-cart-v2`).
+4. Hard-refresh or clear site data if you switched from fallback to Sanity (product store caches after first successful load; cart uses `hijo-lux-cart-v4`).
 
 ---
 
@@ -136,18 +137,34 @@ VITE_SANITY_DATASET=production
 ### Cart
 
 - Add to cart from PDP; open `/cart`; quantity and line totals update.
-- **Confirm:** Refresh page — cart persists (Zustand persist).
+- **Confirm:** Refresh page — cart persists (Zustand persist, `hijo-lux-cart-v4`).
+- Enter a published **Discount code** (e.g. `MPDL10`); eligible lines drop, ineligible lines stay full price.
+- Flyer links: `/shop?code=MPDL10` or `/cart?code=MPDL10` auto-apply once the cart has eligible items.
 
 ### WhatsApp checkout
 
 - On `/cart`, fill name + phone, **Proceed to WhatsApp**; WhatsApp opens with order text.
-- **Confirm:** Message lists items and totals (unchanged flow).
+- **Confirm:** Message lists items, subtotal, promo code + savings when applied, and payable total.
 
 ### Fallback no longer used
 
 - With valid env and ≥1 valid published watch, you should **not** see the console warning: `Sanity returned no valid watches... using local WATCHES fallback` or `Failed to fetch from Sanity`.
 - **Confirm:** In DevTools → Console: no fallback warnings; Network shows successful Sanity fetch.
 - **Extra:** Temporarily set wrong `VITE_SANITY_PROJECT_ID` — app should warn and show mock catalog (proves fallback path still works).
+
+---
+
+## Discount codes
+
+**Schema:** `hijo/schemaTypes/discountCode.ts` (Studio) — keep in sync with `sanity/schemaTypes/discountCode.ts`.
+
+Each campaign is its own published `discountCode` document (`code`, percent or NGN amount, `status`, `validFrom` / `validUntil`, scope by all / brands / watches). The storefront fetches published codes and **evaluates dates in the browser**; pausing or unpublishing is the kill switch.
+
+**Editor setup for MPDL10**
+
+1. Set **Brand** on every Casio / Citizen / Orient / Seiko watch (required field).
+2. Create **Discount code** from `sanity/examples/sample-discount-codes.json`, set the real validity window, **Publish**.
+3. Smoke-test: eligible watch in cart → code applies; mixed cart → partial; after `validUntil` → “This offer has ended.”
 
 ---
 

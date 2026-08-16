@@ -1,0 +1,17 @@
+{
+  "description": "Reference field values for creating Discount code documents in Sanity Studio. Publish the document for it to reach the storefront. Dates are ISO-8601; the website evaluates them at apply time.",
+  "discountCodes": [
+    {
+      "title": "August social 10%",
+      "code": "MPDL10",
+      "discountType": "percent",
+      "percentOff": 10,
+      "status": "active",
+      "validFrom": "2026-08-16T00:00:00.000Z",
+      "validUntil": "2026-09-30T23:59:00.000Z",
+      "scope": "brands",
+      "eligibleBrands": ["casio", "citizen", "orient", "seiko"],
+      "storefrontNote": "10% off Casio, Citizen, Orient & Seiko"
+    }
+  ]
+}

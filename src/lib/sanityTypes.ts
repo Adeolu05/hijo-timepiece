@@ -16,6 +16,7 @@ export interface SanityWatchDocument {
   slug?: string | null;
   name?: string | null;
   collection?: string | null;
+  brand?: string | null;
   category?: string | null;
   price?: number | null;
   compareAtPrice?: number | null;

@@ -32,8 +32,10 @@ export const LOCATION_LINE = "Lagos, Nigeria";
 export const EMAIL = "hijoluxwatches@gmail.com";
 export const PHONE_NG_DISPLAY = "+234 813 063 4066";
 export const PHONE_AE_DISPLAY = "+971 52 232 6519";
-/** WhatsApp / checkout (Nigeria): digits only for wa.me */
+/** General enquiries (header, footer, PDP). Digits only for wa.me */
 export const WHATSAPP_E164 = "2348130634066";
+/** Cart / checkout order messages. Digits only for wa.me */
+export const WHATSAPP_ORDERS_E164 = "971522326519";
 export const INSTAGRAM_URL = "https://www.instagram.com/hijoluxwatches/";
 export const TIKTOK_URL = "https://www.tiktok.com/@hijoluxwatches";
 export const INSTAGRAM_HANDLE = "@hijoluxwatches";
@@ -51,6 +53,10 @@ export function whatsappHref(): string {
 
 export function whatsappHrefWithText(text: string): string {
   return `${whatsappHref()}?text=${encodeURIComponent(text)}`;
+}
+
+export function whatsappOrderHrefWithText(text: string): string {
+  return `https://wa.me/${WHATSAPP_ORDERS_E164}?text=${encodeURIComponent(text)}`;
 }
 
 export function productShareUrl(slug: string): string {

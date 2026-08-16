@@ -1,3 +1,5 @@
+import type { WatchBrand } from "../constants/watchBrands";
+
 /** Customer-facing availability; drives storefront badges and cart eligibility. */
 export type WatchAvailability = "available" | "out-of-stock" | "pre-order";
 
@@ -9,6 +11,8 @@ export interface Watch {
   id: string;
   name: string;
   collection: string;
+  /** Manufacturer brand from Sanity; required for brand-scoped promo codes. */
+  brand?: WatchBrand;
   /** Optional merchandising tag (e.g. men / women) for future filters; not required by current UI. */
   category?: string;
   /** Nominal amount in NGN (Nigerian naira). */

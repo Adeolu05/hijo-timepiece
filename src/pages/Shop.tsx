@@ -69,7 +69,15 @@ function useShopParams() {
   );
 
   const clearFilters = useCallback(() => {
-    setSearchParams({}, { replace: true });
+    setSearchParams(
+      (prev) => {
+        const code = prev.get("code");
+        const next = new URLSearchParams();
+        if (code) next.set("code", code);
+        return next;
+      },
+      { replace: true },
+    );
   }, [setSearchParams]);
 
   return {

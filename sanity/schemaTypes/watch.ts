@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { WATCH_BRAND_OPTIONS } from "./watchBrands";
 
 /**
  * Studio-ready `watch` document. Matches GROQ in `src/lib/sanity.ts` and mapping in `src/lib/mapSanityWatch.ts`.
@@ -27,6 +28,15 @@ export const watchType = defineType({
       name: "collection",
       title: "Collection",
       type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "brand",
+      title: "Brand",
+      type: "string",
+      description:
+        "Manufacturer brand. Required for promo codes that target Casio, Citizen, Orient, and Seiko.",
+      options: { list: [...WATCH_BRAND_OPTIONS], layout: "dropdown" },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -164,6 +174,14 @@ export const watchType = defineType({
     }),
   ],
   preview: {
-    select: { title: "name", subtitle: "collection", media: "image" },
+    select: { title: "name", brand: "brand", collection: "collection", media: "image" },
+    prepare({ title, brand, collection, media }) {
+      const brandLabel = WATCH_BRAND_OPTIONS.find((item) => item.value === brand)?.title;
+      return {
+        title,
+        subtitle: [brandLabel, collection].filter(Boolean).join(" · "),
+        media,
+      };
+    },
   },
 });

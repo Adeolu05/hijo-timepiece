@@ -10,9 +10,12 @@ export interface CartItem {
 
 interface CartState {
   items: CartItem[];
+  /** Normalized uppercase code; totals are recomputed from live catalog + codes. */
+  appliedCode: string | null;
   addItem: (watch: Watch, quantity?: number) => void;
   removeItem: (watchId: string) => void;
   updateQuantity: (watchId: string, quantity: number) => void;
+  setAppliedCode: (code: string | null) => void;
   clearCart: () => void;
   getTotal: () => number;
 }
@@ -21,6 +24,7 @@ export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
+      appliedCode: null,
       addItem: (watch, quantity = 1) => {
         if (!isStorefrontPurchasable(watch)) return;
         const max = getMaxOrderQuantity(watch);
@@ -61,7 +65,8 @@ export const useCartStore = create<CartState>()(
           }),
         }));
       },
-      clearCart: () => set({ items: [] }),
+      clearCart: () => set({ items: [], appliedCode: null }),
+      setAppliedCode: (code) => set({ appliedCode: code }),
       getTotal: () => {
         return get().items.reduce(
           (total, item) => total + item.watch.price * item.quantity,
@@ -70,8 +75,8 @@ export const useCartStore = create<CartState>()(
       },
     }),
     {
-      // Bumped: Watch model uses availability + NGN pricing (legacy `stock` optional on hydrated items).
-      name: "hijo-lux-cart-v3",
+      // Bumped: persist applied promo code; recompute savings from live catalog + codes.
+      name: "hijo-lux-cart-v4",
     },
   ),
 );

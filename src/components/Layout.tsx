@@ -15,6 +15,7 @@ import { RatesUnavailableNotice } from './CurrencySelector';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { BackToTopButton } from './BackToTopButton';
+import { PromoCodeFromUrl } from './PromoCodeFromUrl';
 import { useCurrencyStore } from '../store/currencyStore';
 
 interface LayoutProps {
@@ -70,6 +71,7 @@ export function Layout({ children }: LayoutProps) {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <PromoCodeFromUrl />
       <Header />
       <RatesUnavailableNotice />
       <main className="flex-grow">

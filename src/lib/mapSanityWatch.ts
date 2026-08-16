@@ -1,4 +1,5 @@
 import type { Watch, WatchAvailability } from "../data/watches";
+import { isWatchBrand } from "../constants/watchBrands";
 import type { SanityWatchDocument } from "./sanityTypes";
 import { resolvePrimaryImageFromWire } from "./watchImages";
 
@@ -104,6 +105,8 @@ export function mapSanityDocumentToWatch(doc: SanityWatchDocument): Watch | null
   if (doc.category != null && String(doc.category).trim()) {
     watch.category = String(doc.category).trim();
   }
+  const brandRaw = doc.brand?.trim().toLowerCase();
+  if (brandRaw && isWatchBrand(brandRaw)) watch.brand = brandRaw;
   if (doc.featured === true) watch.featured = true;
   if (doc.isNewArrival === true) watch.isNewArrival = true;
   if (doc.isLimitedEdition === true) watch.isLimitedEdition = true;
