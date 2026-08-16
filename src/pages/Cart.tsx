@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useCartStore } from '../store/cartStore';
 import { useDiscountStore } from '../store/discountStore';
 import { useProductStore } from '../store/productStore';
-import { WHATSAPP_GREETING_NAME, whatsappOrderHrefWithText } from '../constants/site';
+import { WHATSAPP_GREETING_NAME, whatsappHrefWithText } from '../constants/site';
 import { usePriceDisplay } from '../hooks/usePriceDisplay';
 import { useCartQuote } from '../hooks/useCartQuote';
 import { PriceCurrencyPicker } from '../components/CurrencySelector';
@@ -143,7 +143,7 @@ export function Cart() {
 
     const message = `Hello ${WHATSAPP_GREETING_NAME}, I would like to purchase the following timepieces:\n\n${orderDetails}\n\n${totals}\n\nCustomer Details:\nName: ${name}\nPhone: ${phone}${note ? `\nNote: ${note}` : ''}\n\nPlease provide payment and shipping instructions.`;
 
-    window.open(whatsappOrderHrefWithText(message), '_blank');
+    window.open(whatsappHrefWithText(message), '_blank');
   };
 
   if (items.length === 0) {
