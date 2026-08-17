@@ -1,0 +1,26 @@
+{
+  "name": "Hijo Timepiece",
+  "install": "npm ci && npm install --prefix hijo",
+  "terminals": [
+    {
+      "name": "storefront",
+      "command": "npm run dev",
+      "description": "Vite dev server for the storefront at http://localhost:3000 (uses the bundled demo catalog unless VITE_SANITY_PROJECT_ID is set)."
+    },
+    {
+      "name": "sanity-studio",
+      "command": "cd hijo && npm run dev",
+      "description": "Sanity Studio dev server at http://localhost:3333. Sign in through the browser to manage live content."
+    }
+  ],
+  "ports": [
+    {
+      "name": "storefront",
+      "port": 3000
+    },
+    {
+      "name": "sanity-studio",
+      "port": 3333
+    }
+  ]
+}
