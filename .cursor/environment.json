@@ -1,0 +1,17 @@
+{
+  "name": "Hijo Timepiece storefront",
+  "install": "npm ci",
+  "terminals": [
+    {
+      "name": "dev server",
+      "command": "npm run dev",
+      "description": "Vite dev server for the storefront on http://localhost:3000 (uses bundled demo catalog data unless VITE_SANITY_PROJECT_ID / VITE_SANITY_DATASET are set)."
+    }
+  ],
+  "ports": [
+    {
+      "name": "storefront",
+      "port": 3000
+    }
+  ]
+}
