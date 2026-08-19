@@ -60,6 +60,11 @@ export function whatsappHrefWithText(text: string): string {
   return `${whatsappHref()}?text=${encodeURIComponent(text)}`;
 }
 
+/** Opens WhatsApp in the same tab so mobile browsers cannot block it as a popup. */
+export function openWhatsAppWithText(text: string) {
+  window.location.assign(whatsappHrefWithText(text));
+}
+
 export function productShareUrl(slug: string): string {
   return `${SITE_ORIGIN}/product/${encodeURIComponent(slug)}`;
 }

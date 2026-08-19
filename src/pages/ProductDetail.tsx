@@ -6,7 +6,7 @@ import { useCartStore } from '../store/cartStore';
 import { Button } from '../components/ui/Button';
 import { ProductCard } from '../components/ProductCard';
 import { WishlistHeartButton } from '../components/WishlistHeartButton';
-import { SITE_PUBLIC_BRAND, WHATSAPP_GREETING_NAME, productShareUrl, whatsappHrefWithText } from '../constants/site';
+import { SITE_PUBLIC_BRAND, WHATSAPP_GREETING_NAME, openWhatsAppWithText, productShareUrl } from '../constants/site';
 import { usePriceDisplay } from '../hooks/usePriceDisplay';
 import { PriceCurrencyPicker } from '../components/CurrencySelector';
 import { formatWatchCondition } from '../lib/watchConditionLabels';
@@ -148,7 +148,7 @@ export function ProductDetail() {
         ? `listed at ${formatCheckoutLine(list)}, now ${formatCheckoutLine(watch.price)}`
         : `priced at ${formatCheckoutLine(watch.price)}`;
     const message = `Hello ${WHATSAPP_GREETING_NAME}, I would like to inquire about the ${watch.name} (${watch.collection}) ${priceNote}. Is it currently available?\n\nProduct link: ${shareUrl}`;
-    window.open(whatsappHrefWithText(message), '_blank');
+    openWhatsAppWithText(message);
   };
 
   return (

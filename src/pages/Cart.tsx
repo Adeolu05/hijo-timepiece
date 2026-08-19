@@ -3,12 +3,18 @@ import { Link } from 'react-router-dom';
 import { useCartStore } from '../store/cartStore';
 import { useDiscountStore } from '../store/discountStore';
 import { useProductStore } from '../store/productStore';
-import { WHATSAPP_GREETING_NAME, openWhatsAppWithText, SHIPPING_POLICY } from '../constants/site';
+import { WHATSAPP_GREETING_NAME, openWhatsAppWithText, SHIPPING_POLICY, whatsappHrefWithText } from '../constants/site';
 import { usePriceDisplay } from '../hooks/usePriceDisplay';
 import { useCartQuote } from '../hooks/useCartQuote';
 import { PriceCurrencyPicker } from '../components/CurrencySelector';
 import { getMaxOrderQuantity } from '../lib/watchOrder';
 import { applyDiscountCode, isFailedApply } from '../lib/discountCodes';
+
+function shortenWatchLabel(name: string, max = 64) {
+  const trimmed = name.trim();
+  if (trimmed.length <= max) return trimmed;
+  return `${trimmed.slice(0, max - 1)}…`;
+}
 
 export function Cart() {
   const { items, removeItem, updateQuantity, appliedCode, setAppliedCode } = useCartStore();
@@ -30,6 +36,8 @@ export function Cart() {
   const [promoInput, setPromoInput] = useState('');
   const [promoError, setPromoError] = useState<string | null>(null);
   const [promoNotice, setPromoNotice] = useState<string | null>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const phoneInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     void fetchCodes();
@@ -111,23 +119,15 @@ export function Cart() {
     setPromoError(null);
   };
 
-  const handleCheckout = () => {
-    if (items.length === 0) return;
-
-    const newErrors = { name: !name.trim(), phone: !phone.trim() };
-    setErrors(newErrors);
-
-    if (newErrors.name || newErrors.phone) {
-      return;
-    }
-
+  const checkoutMessage = (() => {
     const orderDetails = quote.lines
       .map((line) => {
+        const label = shortenWatchLabel(line.name);
         const price = formatCheckoutLine(line.discountedLineTotal);
         if (line.eligible && line.discountedLineTotal < line.lineTotal) {
-          return `${line.quantity}x ${line.name} (${line.collection}) - ${price} (was ${formatCheckoutLine(line.lineTotal)})`;
+          return `${line.quantity}x ${label} - ${price} (was ${formatCheckoutLine(line.lineTotal)})`;
         }
-        return `${line.quantity}x ${line.name} (${line.collection}) - ${price}`;
+        return `${line.quantity}x ${label} - ${price}`;
       })
       .join('\n');
 
@@ -141,9 +141,29 @@ export function Cart() {
       .filter(Boolean)
       .join('\n');
 
-    const message = `Hello ${WHATSAPP_GREETING_NAME}, I would like to purchase the following timepieces:\n\n${orderDetails}\n\n${totals}\n\nCustomer Details:\nName: ${name}\nPhone: ${phone}${note ? `\nNote: ${note}` : ''}\n\nPlease provide payment and shipping instructions.`;
+    return `Hello ${WHATSAPP_GREETING_NAME}, I would like to purchase the following timepieces:\n\n${orderDetails}\n\n${totals}\n\nCustomer Details:\nName: ${name.trim()}\nPhone: ${phone.trim()}${note.trim() ? `\nNote: ${note.trim()}` : ''}\n\nPlease provide payment and shipping instructions.`;
+  })();
 
-    window.open(whatsappHrefWithText(message), '_blank');
+  const checkoutHref =
+    name.trim() && phone.trim() ? whatsappHrefWithText(checkoutMessage) : undefined;
+
+  const handleCheckout = (event?: FormEvent) => {
+    event?.preventDefault();
+    if (items.length === 0) return;
+
+    const newErrors = { name: !name.trim(), phone: !phone.trim() };
+    setErrors(newErrors);
+
+    if (newErrors.name) {
+      nameInputRef.current?.focus();
+      return;
+    }
+    if (newErrors.phone) {
+      phoneInputRef.current?.focus();
+      return;
+    }
+
+    openWhatsAppWithText(checkoutMessage);
   };
 
   if (items.length === 0) {
@@ -263,13 +283,15 @@ export function Cart() {
           <aside className="lg:col-span-5">
             <div className="bg-surface-container-low/50 backdrop-blur-xl p-8 md:p-12 sticky top-32 border border-outline-variant/20">
               <h2 className="font-headline text-3xl font-light mb-10 text-primary">Inquiry Details</h2>
-              <form className="space-y-8">
+              <form className="space-y-8" onSubmit={handleCheckout} noValidate>
                 <div className="group">
                   <input 
                     className="w-full bg-transparent border-b border-outline-variant/30 py-3 focus:outline-none focus:border-secondary transition-all placeholder:text-on-surface-variant/30 text-sm font-light" 
                     id="name" 
                     placeholder="Full Name" 
                     type="text"
+                    autoComplete="name"
+                    ref={nameInputRef}
                     value={name}
                     onChange={(e) => { setName(e.target.value); setErrors(prev => ({ ...prev, name: false })); }}
                   />
@@ -281,6 +303,8 @@ export function Cart() {
                     id="phone" 
                     placeholder="Phone Number" 
                     type="tel"
+                    autoComplete="tel"
+                    ref={phoneInputRef}
                     value={phone}
                     onChange={(e) => { setPhone(e.target.value); setErrors(prev => ({ ...prev, phone: false })); }}
                   />
@@ -389,14 +413,23 @@ export function Cart() {
                       Name and phone are required above before we can open WhatsApp.
                     </span>
                   )}
-                  <button 
-                    onClick={handleCheckout}
-                    className="w-full bg-primary text-white py-5 px-8 flex items-center justify-center gap-3 hover:bg-secondary transition-all duration-500 group mt-6" 
-                    type="button"
-                  >
-                    <span className="text-[11px] tracking-[0.3em] font-bold uppercase">Proceed to WhatsApp</span>
-                    <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform font-light">arrow_forward</span>
-                  </button>
+                  {checkoutHref ? (
+                    <a
+                      href={checkoutHref}
+                      className="w-full bg-primary text-white py-5 px-8 flex items-center justify-center gap-3 hover:bg-secondary transition-all duration-500 group mt-6"
+                    >
+                      <span className="text-[11px] tracking-[0.3em] font-bold uppercase">Proceed to WhatsApp</span>
+                      <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform font-light">arrow_forward</span>
+                    </a>
+                  ) : (
+                    <button
+                      className="w-full bg-primary text-white py-5 px-8 flex items-center justify-center gap-3 hover:bg-secondary transition-all duration-500 group mt-6"
+                      type="submit"
+                    >
+                      <span className="text-[11px] tracking-[0.3em] font-bold uppercase">Proceed to WhatsApp</span>
+                      <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform font-light">arrow_forward</span>
+                    </button>
+                  )}
                 </div>
               </form>
             </div>

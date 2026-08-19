@@ -78,7 +78,7 @@ export function Layout({ children }: LayoutProps) {
         {children}
       </main>
       <Footer />
-      <BackToTopButton />
+      {location.pathname !== '/cart' ? <BackToTopButton /> : null}
     </div>
   );
 }
